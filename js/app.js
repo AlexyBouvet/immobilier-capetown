@@ -37,8 +37,11 @@ function getZoneLabel(zone) {
     'atlantic_seaboard_upper': 'Atlantic Seaboard (Upper)',
     'city_bowl': 'City Bowl',
     'city_bowl_upper': 'City Bowl (Upper)',
-    'eastern': 'Southern/Eastern',
-    'south_peninsula': 'South Peninsula'
+    'eastern': 'Eastern Suburbs',
+    'south_peninsula': 'South Peninsula',
+    'southern_suburbs': 'Southern Suburbs',
+    'southern_suburbs_premium': 'Southern Suburbs (Premium)',
+    'southern_suburbs_education': 'Southern Suburbs (Education Belt)'
   };
   return labels[zone] || zone;
 }

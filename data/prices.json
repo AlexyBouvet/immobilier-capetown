@@ -392,6 +392,160 @@
         "airbnb": { "nightlyRate": 1800, "occupancy": 55, "monthlyRevenue": 29700 }
       },
       "priceIndex": 40
+    },
+    "constantia": {
+      "name": "Constantia",
+      "zone": "southern_suburbs_premium",
+      "purchase": {
+        "new": { "min": 35000, "max": 65000, "median": 48000 },
+        "resale": { "min": 30000, "max": 55000, "median": 42000 }
+      },
+      "rental": {
+        "longTerm": { "min": 110, "max": 180, "median": 140 },
+        "shortTerm": { "min": 170, "max": 270, "median": 210 },
+        "airbnb": { "nightlyRate": 2200, "occupancy": 52, "monthlyRevenue": 34320 }
+      },
+      "priceIndex": 35
+    },
+    "newlands": {
+      "name": "Newlands",
+      "zone": "southern_suburbs_premium",
+      "purchase": {
+        "new": { "min": 38000, "max": 68000, "median": 50000 },
+        "resale": { "min": 32000, "max": 58000, "median": 44000 }
+      },
+      "rental": {
+        "longTerm": { "min": 115, "max": 185, "median": 145 },
+        "shortTerm": { "min": 175, "max": 280, "median": 220 },
+        "airbnb": { "nightlyRate": 1900, "occupancy": 55, "monthlyRevenue": 31350 }
+      },
+      "priceIndex": 36
+    },
+    "tokai": {
+      "name": "Tokai",
+      "zone": "southern_suburbs_premium",
+      "purchase": {
+        "new": { "min": 32000, "max": 55000, "median": 42000 },
+        "resale": { "min": 28000, "max": 48000, "median": 36000 }
+      },
+      "rental": {
+        "longTerm": { "min": 100, "max": 160, "median": 125 },
+        "shortTerm": { "min": 150, "max": 240, "median": 190 },
+        "airbnb": { "nightlyRate": 1600, "occupancy": 50, "monthlyRevenue": 24000 }
+      },
+      "priceIndex": 30
+    },
+    "rondebosch": {
+      "name": "Rondebosch",
+      "zone": "southern_suburbs_education",
+      "purchase": {
+        "new": { "min": 40000, "max": 70000, "median": 52000 },
+        "resale": { "min": 35000, "max": 60000, "median": 45000 }
+      },
+      "rental": {
+        "longTerm": { "min": 120, "max": 190, "median": 150 },
+        "shortTerm": { "min": 180, "max": 285, "median": 225 },
+        "airbnb": { "nightlyRate": 1700, "occupancy": 58, "monthlyRevenue": 29580 }
+      },
+      "priceIndex": 38
+    },
+    "claremont": {
+      "name": "Claremont",
+      "zone": "southern_suburbs_education",
+      "purchase": {
+        "new": { "min": 35000, "max": 65000, "median": 48000 },
+        "resale": { "min": 30000, "max": 55000, "median": 40000 }
+      },
+      "rental": {
+        "longTerm": { "min": 115, "max": 180, "median": 142 },
+        "shortTerm": { "min": 170, "max": 270, "median": 215 },
+        "airbnb": { "nightlyRate": 1500, "occupancy": 60, "monthlyRevenue": 27000 }
+      },
+      "priceIndex": 34
+    },
+    "kenilworth": {
+      "name": "Kenilworth",
+      "zone": "southern_suburbs_education",
+      "purchase": {
+        "new": { "min": 32000, "max": 55000, "median": 42000 },
+        "resale": { "min": 28000, "max": 48000, "median": 36000 }
+      },
+      "rental": {
+        "longTerm": { "min": 105, "max": 165, "median": 130 },
+        "shortTerm": { "min": 155, "max": 250, "median": 195 },
+        "airbnb": { "nightlyRate": 1300, "occupancy": 55, "monthlyRevenue": 21450 }
+      },
+      "priceIndex": 30
+    },
+    "pinelands": {
+      "name": "Pinelands",
+      "zone": "southern_suburbs",
+      "purchase": {
+        "new": { "min": 30000, "max": 48000, "median": 38000 },
+        "resale": { "min": 25000, "max": 42000, "median": 32000 }
+      },
+      "rental": {
+        "longTerm": { "min": 95, "max": 150, "median": 118 },
+        "shortTerm": { "min": 145, "max": 225, "median": 178 },
+        "airbnb": { "nightlyRate": 1200, "occupancy": 55, "monthlyRevenue": 19800 }
+      },
+      "priceIndex": 26
+    },
+    "wynberg": {
+      "name": "Wynberg",
+      "zone": "southern_suburbs",
+      "purchase": {
+        "new": { "min": 24000, "max": 42000, "median": 32000 },
+        "resale": { "min": 20000, "max": 35000, "median": 26000 }
+      },
+      "rental": {
+        "longTerm": { "min": 82, "max": 130, "median": 102 },
+        "shortTerm": { "min": 125, "max": 195, "median": 155 },
+        "airbnb": { "nightlyRate": 950, "occupancy": 52, "monthlyRevenue": 14820 }
+      },
+      "priceIndex": 20
+    },
+    "plumstead": {
+      "name": "Plumstead",
+      "zone": "southern_suburbs",
+      "purchase": {
+        "new": { "min": 22000, "max": 38000, "median": 28000 },
+        "resale": { "min": 18000, "max": 32000, "median": 24000 }
+      },
+      "rental": {
+        "longTerm": { "min": 75, "max": 120, "median": 94 },
+        "shortTerm": { "min": 115, "max": 180, "median": 142 },
+        "airbnb": { "nightlyRate": 850, "occupancy": 50, "monthlyRevenue": 12750 }
+      },
+      "priceIndex": 18
+    },
+    "bergvliet": {
+      "name": "Bergvliet",
+      "zone": "southern_suburbs",
+      "purchase": {
+        "new": { "min": 26000, "max": 44000, "median": 34000 },
+        "resale": { "min": 22000, "max": 38000, "median": 28000 }
+      },
+      "rental": {
+        "longTerm": { "min": 85, "max": 135, "median": 106 },
+        "shortTerm": { "min": 130, "max": 205, "median": 162 },
+        "airbnb": { "nightlyRate": 1000, "occupancy": 48, "monthlyRevenue": 14400 }
+      },
+      "priceIndex": 22
+    },
+    "ndabeni": {
+      "name": "Ndabeni",
+      "zone": "southern_suburbs",
+      "purchase": {
+        "new": { "min": 22000, "max": 36000, "median": 28000 },
+        "resale": { "min": 18000, "max": 30000, "median": 23000 }
+      },
+      "rental": {
+        "longTerm": { "min": 72, "max": 115, "median": 90 },
+        "shortTerm": { "min": 110, "max": 175, "median": 138 },
+        "airbnb": { "nightlyRate": 800, "occupancy": 48, "monthlyRevenue": 11520 }
+      },
+      "priceIndex": 16
     }
   }
 }
