@@ -71,6 +71,33 @@ Donnees collectees pour 27 quartiers:
 
 **Airbnb insight:** Taux d'occupation 55-70% selon quartier. Clifton/Camps Bay ont les meilleurs revenus absolus mais pas forcement les meilleurs yields.
 
+### 2026-02-17 - Southern Suburbs Added
+
+**Categorie: Marche**
+
+11 nouveaux quartiers ajoutes (total: 38):
+
+**Southern Suburbs Premium:**
+- Constantia: R30k-55k/m² (green/luxury, famille)
+- Newlands: R32k-58k/m² (proche stade rugby)
+- Tokai: R28k-48k/m² (proche montagne, residentiel)
+
+**Education Belt (top schools):**
+- Rondebosch: R35k-60k/m² - le plus cher du Southern Suburbs
+- Claremont: R30k-55k/m² (commercial + residentiel)
+- Kenilworth: R28k-48k/m² (racecourse, residentiel)
+
+**Entry-level Southern:**
+- Pinelands: R25k-42k/m² (bien connecte, calme)
+- Wynberg: R20k-35k/m² (mixte, en gentrification)
+- Plumstead: R18k-32k/m² (abordable, famille)
+- Bergvliet: R22k-38k/m² (proche Constantia, calme)
+- Ndabeni: R18k-30k/m² (industriel/residentiel)
+
+**Key insight:** Les Southern Suburbs offrent des gross yields plus eleves (3.5-4.5%) que l'Atlantic Seaboard (2.8-3.5%) grace a des prix d'achat plus bas et une demande locative stable (universites, ecoles, hopitaux).
+
+**Croissance attendue:** +35-50% sur 5 ans pour l'Education Belt (source: Lew Geffen Sotheby's)
+
 ---
 
 ## Notes
