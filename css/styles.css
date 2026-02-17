@@ -817,6 +817,167 @@ body {
   font-size: 0.7rem;
 }
 
+/* BP Section Divider */
+.bp-section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+  margin: 24px 0;
+}
+
+/* BP Projection Section */
+.bp-projection h3,
+.bp-taxes h3 {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #3498db;
+}
+
+.bp-projection-inputs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.bp-projection-inputs .bp-input-group {
+  flex: 1;
+}
+
+.bp-projection-inputs input {
+  padding: 8px 12px;
+  font-size: 0.95rem;
+}
+
+.bp-chart-container {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  height: 250px;
+}
+
+.bp-breakeven {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.bp-breakeven-item {
+  flex: 1;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.bp-breakeven-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.bp-breakeven-value {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #27ae60;
+}
+
+.bp-projection-summary h4 {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  margin: 0 0 12px 0;
+}
+
+.bp-projection-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.bp-projection-card {
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.bp-projection-card.lt {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+}
+
+.bp-projection-card.ab {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.bp-projection-label {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 4px;
+}
+
+.bp-projection-value {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* BP Taxes Section */
+.bp-taxes-section {
+  margin-bottom: 16px;
+}
+
+.bp-taxes-section h4 {
+  font-size: 0.75rem;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+.bp-tax-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+}
+
+.bp-tax-item span:first-child {
+  color: #7f8c8d;
+}
+
+.bp-tax-item span:last-child {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.bp-tax-item.total {
+  background: #2c3e50;
+}
+
+.bp-tax-item.total span {
+  color: white;
+  font-weight: 700;
+}
+
+.bp-taxes-note {
+  padding: 12px;
+  background: #e8f4fd;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: #2980b9;
+  line-height: 1.5;
+}
+
 /* BP Modal Mobile */
 @media (max-width: 768px) {
   .bp-modal {
@@ -848,5 +1009,23 @@ body {
 
   .bp-summary-value {
     font-size: 1.2rem;
+  }
+
+  .bp-projection-inputs {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bp-breakeven {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bp-projection-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bp-chart-container {
+    height: 200px;
   }
 }

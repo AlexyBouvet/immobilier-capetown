@@ -304,6 +304,8 @@ document.addEventListener('DOMContentLoaded', initMap);
 // Business Plan Modal  //
 // ==================== //
 
+let bpChart = null;
+
 function openBPModal(neighborhoodId) {
   currentNeighborhood = priceData[neighborhoodId];
   if (!currentNeighborhood) return;
@@ -323,8 +325,10 @@ function openBPModal(neighborhoodId) {
   // Calculate
   calculateBP();
 
-  // Add event listener for size input
+  // Add event listeners
   document.getElementById('bp-size').addEventListener('input', calculateBP);
+  document.getElementById('bp-appreciation').addEventListener('input', calculateBP);
+  document.getElementById('bp-rent-increase').addEventListener('input', calculateBP);
 }
 
 function closeBPModal() {
@@ -415,7 +419,212 @@ function calculateBP() {
   // ============ RECOMMENDATION ============
   const recommendation = generateRecommendation(ltNetYield, abNetYield, abOccupancy, data.zone);
   document.getElementById('bp-recommendation').innerHTML = recommendation;
+
+  // ============ 10-YEAR PROJECTION ============
+  calculateProjection(totalPrice, ltNetIncome, abNetIncome, size);
+
+  // ============ TAXES ============
+  calculateTaxes(totalPrice, ltAnnualRevenue, abGrossRevenue);
 }
+
+function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
+  const appreciation = parseFloat(document.getElementById('bp-appreciation').value) / 100 || 0.05;
+  const rentIncrease = parseFloat(document.getElementById('bp-rent-increase').value) / 100 || 0.06;
+
+  // Acquisition costs (~5% of purchase price)
+  const acquisitionCosts = purchasePrice * 0.05 + 45000; // Transfer duty + conveyancing
+
+  const years = [];
+  const ltCumulative = [];
+  const abCumulative = [];
+
+  let ltTotal = -acquisitionCosts;
+  let abTotal = -acquisitionCosts;
+  let ltCurrentNet = ltAnnualNet;
+  let abCurrentNet = abAnnualNet;
+  let propertyValue = purchasePrice;
+
+  let ltBreakeven = null;
+  let abBreakeven = null;
+
+  for (let year = 0; year <= 10; year++) {
+    years.push(year);
+
+    if (year === 0) {
+      ltCumulative.push(ltTotal);
+      abCumulative.push(abTotal);
+    } else {
+      // Add annual net income (after income tax ~25%)
+      const ltAfterTax = ltCurrentNet * 0.75;
+      const abAfterTax = abCurrentNet * 0.75;
+
+      ltTotal += ltAfterTax;
+      abTotal += abAfterTax;
+
+      ltCumulative.push(ltTotal);
+      abCumulative.push(abTotal);
+
+      // Check break-even
+      if (ltBreakeven === null && ltTotal >= 0) {
+        ltBreakeven = year;
+      }
+      if (abBreakeven === null && abTotal >= 0) {
+        abBreakeven = year;
+      }
+
+      // Increase rent for next year
+      ltCurrentNet *= (1 + rentIncrease);
+      abCurrentNet *= (1 + rentIncrease);
+
+      // Property appreciation
+      propertyValue *= (1 + appreciation);
+    }
+  }
+
+  // Add property gain at year 10 (minus selling costs ~15%)
+  const propertyGain = (propertyValue - purchasePrice) * 0.85;
+  const ltFinalProfit = ltTotal + propertyGain;
+  const abFinalProfit = abTotal + propertyGain;
+
+  // Update break-even display
+  document.getElementById('bp-breakeven-lt').textContent = ltBreakeven ? `Year ${ltBreakeven}` : '> 10 years';
+  document.getElementById('bp-breakeven-ab').textContent = abBreakeven ? `Year ${abBreakeven}` : '> 10 years';
+
+  // Update 10-year profit
+  document.getElementById('bp-10y-lt-profit').textContent = formatPrice(Math.round(ltFinalProfit));
+  document.getElementById('bp-10y-ab-profit').textContent = formatPrice(Math.round(abFinalProfit));
+
+  // Render chart
+  renderProjectionChart(years, ltCumulative, abCumulative);
+}
+
+function renderProjectionChart(years, ltData, abData) {
+  const ctx = document.getElementById('bp-chart').getContext('2d');
+
+  // Destroy existing chart
+  if (bpChart) {
+    bpChart.destroy();
+  }
+
+  bpChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: years.map(y => `Y${y}`),
+      datasets: [
+        {
+          label: 'Long-Term',
+          data: ltData,
+          borderColor: '#27ae60',
+          backgroundColor: 'rgba(39, 174, 96, 0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3
+        },
+        {
+          label: 'Airbnb',
+          data: abData,
+          borderColor: '#e74c3c',
+          backgroundColor: 'rgba(231, 76, 60, 0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3
+        },
+        {
+          label: 'Break-even',
+          data: years.map(() => 0),
+          borderColor: '#95a5a6',
+          borderDash: [5, 5],
+          pointRadius: 0,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: {
+            boxWidth: 12,
+            font: { size: 11 }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return context.dataset.label + ': ' + formatPrice(Math.round(context.raw));
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: function(value) {
+              return 'R' + (value / 1000).toFixed(0) + 'k';
+            },
+            font: { size: 10 }
+          },
+          grid: {
+            color: 'rgba(0,0,0,0.05)'
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            font: { size: 10 }
+          }
+        }
+      }
+    }
+  });
+}
+
+function calculateTaxes(purchasePrice, ltAnnualRevenue, abGrossRevenue) {
+  // Transfer duty calculation (2024/2025 rates)
+  let transferDuty = 0;
+  if (purchasePrice > 1210000) {
+    if (purchasePrice <= 1663800) {
+      transferDuty = (purchasePrice - 1210000) * 0.03;
+    } else if (purchasePrice <= 2329500) {
+      transferDuty = 13614 + (purchasePrice - 1663800) * 0.06;
+    } else if (purchasePrice <= 2994000) {
+      transferDuty = 53556 + (purchasePrice - 2329500) * 0.08;
+    } else {
+      transferDuty = 106716 + (purchasePrice - 2994000) * 0.11;
+    }
+  }
+
+  const conveyancing = 45000;
+  const totalAcquisition = transferDuty + conveyancing;
+
+  // Annual taxes
+  const municipalRates = purchasePrice * 0.0072;
+  const ltIncomeTax = ltAnnualRevenue * 0.25; // Effective rate after deductions
+  const abIncomeTax = abGrossRevenue * 0.25;
+
+  // Sale costs (after 10 years with 5% appreciation)
+  const futureValue = purchasePrice * Math.pow(1.05, 10);
+  const agentComm = futureValue * 0.08; // 7% + VAT
+  const capitalGain = futureValue - purchasePrice;
+  const cgt = capitalGain * 0.18; // ~18% effective CGT
+  const withholding = futureValue * 0.075;
+
+  // Update display
+  document.getElementById('bp-tax-transfer').textContent = formatPrice(Math.round(transferDuty));
+  document.getElementById('bp-tax-acq-total').textContent = formatPrice(Math.round(totalAcquisition));
+  document.getElementById('bp-tax-rates').textContent = formatPrice(Math.round(municipalRates)) + '/yr';
+  document.getElementById('bp-tax-income').textContent = formatPrice(Math.round(ltIncomeTax)) + '/yr (LT)';
+  document.getElementById('bp-tax-agent').textContent = formatPrice(Math.round(agentComm));
+  document.getElementById('bp-tax-cgt').textContent = formatPrice(Math.round(cgt));
+  document.getElementById('bp-tax-withhold').textContent = formatPrice(Math.round(withholding));
 
 function generateRecommendation(ltYield, abYield, abOccupancy, zone) {
   const diff = abYield - ltYield;

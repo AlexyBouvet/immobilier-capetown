@@ -209,13 +209,116 @@
         <p id="bp-recommendation">-</p>
       </div>
 
+      <div class="bp-section-divider"></div>
+
+      <div class="bp-projection">
+        <h3>10-Year Projection</h3>
+
+        <div class="bp-projection-inputs">
+          <div class="bp-input-group">
+            <label for="bp-appreciation">Annual Appreciation (%)</label>
+            <input type="number" id="bp-appreciation" value="5" min="0" max="15" step="0.5">
+          </div>
+          <div class="bp-input-group">
+            <label for="bp-rent-increase">Annual Rent Increase (%)</label>
+            <input type="number" id="bp-rent-increase" value="6" min="0" max="15" step="0.5">
+          </div>
+        </div>
+
+        <div class="bp-chart-container">
+          <canvas id="bp-chart"></canvas>
+        </div>
+
+        <div class="bp-breakeven">
+          <div class="bp-breakeven-item">
+            <span class="bp-breakeven-label">Break-even (Long-Term)</span>
+            <span id="bp-breakeven-lt" class="bp-breakeven-value">-</span>
+          </div>
+          <div class="bp-breakeven-item">
+            <span class="bp-breakeven-label">Break-even (Airbnb)</span>
+            <span id="bp-breakeven-ab" class="bp-breakeven-value">-</span>
+          </div>
+        </div>
+
+        <div class="bp-projection-summary">
+          <h4>After 10 Years</h4>
+          <div class="bp-projection-grid">
+            <div class="bp-projection-card lt">
+              <span class="bp-projection-label">Long-Term Total Profit</span>
+              <span id="bp-10y-lt-profit" class="bp-projection-value">-</span>
+            </div>
+            <div class="bp-projection-card ab">
+              <span class="bp-projection-label">Airbnb Total Profit</span>
+              <span id="bp-10y-ab-profit" class="bp-projection-value">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bp-section-divider"></div>
+
+      <div class="bp-taxes">
+        <h3>All Taxes & Fees (Non-Resident)</h3>
+
+        <div class="bp-taxes-section">
+          <h4>Acquisition Costs (One-Time)</h4>
+          <div class="bp-tax-item">
+            <span>Transfer Duty</span>
+            <span id="bp-tax-transfer">-</span>
+          </div>
+          <div class="bp-tax-item">
+            <span>Conveyancing & Deeds</span>
+            <span id="bp-tax-convey">~R45,000</span>
+          </div>
+          <div class="bp-tax-item total">
+            <span>Total Acquisition</span>
+            <span id="bp-tax-acq-total">-</span>
+          </div>
+        </div>
+
+        <div class="bp-taxes-section">
+          <h4>Annual Taxes</h4>
+          <div class="bp-tax-item">
+            <span>Municipal Rates (0.72%)</span>
+            <span id="bp-tax-rates">-</span>
+          </div>
+          <div class="bp-tax-item">
+            <span>Rental Income Tax (~25% effective)</span>
+            <span id="bp-tax-income">-</span>
+          </div>
+        </div>
+
+        <div class="bp-taxes-section">
+          <h4>Sale Costs (If Selling After 10Y)</h4>
+          <div class="bp-tax-item">
+            <span>Agent Commission (7%+VAT)</span>
+            <span id="bp-tax-agent">-</span>
+          </div>
+          <div class="bp-tax-item">
+            <span>CGT (~18% on gain)</span>
+            <span id="bp-tax-cgt">-</span>
+          </div>
+          <div class="bp-tax-item">
+            <span>Non-Resident Withholding (7.5%)</span>
+            <span id="bp-tax-withhold">-</span>
+          </div>
+        </div>
+
+        <div class="bp-taxes-note">
+          <strong>France-SA Tax Treaty:</strong> Rental income taxed in SA first.
+          Credit available against French taxes to avoid double taxation.
+          Consult a cross-border tax advisor for your specific situation.
+        </div>
+      </div>
+
       <div class="bp-footer">
-        <small>Estimates based on market data. Actual results may vary.</small>
+        <small>Estimates based on market data. Actual results may vary. Consult a tax professional.</small>
       </div>
     </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
