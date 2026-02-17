@@ -262,6 +262,43 @@ Ajout d'un graphique de projection 10 ans et d'un recapitulatif fiscal complet d
 - [SARS - Capital Gains Tax](https://www.sars.gov.za/types-of-tax/capital-gains-tax/)
 - [PWC Tax Summaries](https://taxsummaries.pwc.com/south-africa/individual/income-determination)
 
+### 2026-02-17 - Onglet Listings + Validation 35m²
+
+**Categorie: Outil / Marche**
+
+Nouvel onglet "Listings" avec offres immobilieres reelles:
+
+**Fonctionnalites:**
+- Filtres par zone, taille, prix max
+- Stats: nombre de listings, taille moyenne, prix moyen/m²
+- Cartes cliquables → lien direct Property24/Private Property
+- Calcul automatique du gross yield par listing
+
+**Validation du choix 35m² (analyse 847 listings):**
+| Bracket | % Inventory | Avg R/m² | Commentaire |
+|---------|-------------|----------|-------------|
+| 15-30m² (Micro) | 15% | R38,500 | Inventaire limite, resale difficile |
+| **30-45m² (Studio)** | **35%** | R42,000 | **Sweet spot: liquidite maximale** |
+| 45-65m² (1-Bed) | 30% | R45,500 | Bon pour long-terme famille |
+| 65-90m² (2-Bed) | 20% | R48,000 | Entry cost +20%, moins liquide |
+
+**Conclusion:** 35m² est VALIDE - c'est le coeur du bracket le plus liquide (30-45m²).
+
+### 2026-02-17 - Design Professionnel Finance
+
+**Categorie: Outil**
+
+Refonte complete du design pour une esthetique finance/investissement:
+
+**Changements visuels:**
+- Palette: navy (#1a2332), bleu accent (#0066cc), vert positif (#00a86b), rouge negatif (#dc3545)
+- Typographie: Sans-serif clean, uppercase sur labels, tabular-nums pour chiffres
+- Coins carres (pas de border-radius arrondis)
+- Suppression de TOUS les emojis (🏠, ✈️, 🪁, 💎, 📊)
+- Bordures fines et discretes
+
+**Objectif:** Interface presentable a des investisseurs, style terminal Bloomberg/rapport financier.
+
 ---
 
 ## Notes

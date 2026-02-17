@@ -204,7 +204,7 @@ function updateInfoPanel(properties) {
     <span class="zone-badge">${getZoneLabel(data.zone)}</span>
 
     <button class="bp-open-btn" onclick="openBPModal('${id}')">
-      📊 Open Business Plan
+      Open Business Plan
     </button>
   `;
 
@@ -650,13 +650,13 @@ function generateRecommendation(ltYield, abYield, abOccupancy, zone) {
   }
 
   if (isKiteZone) {
-    rec += `<br><br>🪁 <em>Kitesurf zone: Peak season Nov-Mar can command premium nightly rates.</em>`;
+    rec += `<br><br><em>Kitesurf zone: Peak season Nov-Mar can command premium nightly rates.</em>`;
   } else if (isBeachZone) {
-    rec += `<br><br>🏖️ <em>Beach location: Summer (Dec-Feb) has highest demand and rates.</em>`;
+    rec += `<br><br><em>Beach location: Summer (Dec-Feb) has highest demand and rates.</em>`;
   }
 
   if (isPremium) {
-    rec += `<br><br>💎 <em>Premium area: Focus on quality furnishing for higher nightly rates.</em>`;
+    rec += `<br><br><em>Premium area: Focus on quality furnishing for higher nightly rates.</em>`;
   }
 
   return rec;
@@ -786,3 +786,124 @@ function highlightNeighborhood(id) {
     }
   });
 }
+
+// ==================== //
+// Listings Tab         //
+// ==================== //
+
+let listingsData = [];
+
+async function loadListings() {
+  try {
+    const response = await fetch('data/listings.json');
+    const data = await response.json();
+    listingsData = data.listings;
+    filterListings();
+  } catch (error) {
+    console.error('Error loading listings:', error);
+    document.getElementById('listings-container').innerHTML = `
+      <div class="listings-empty">
+        <div class="listings-empty-title">Failed to load listings</div>
+        <div class="listings-empty-text">Check console for details</div>
+      </div>
+    `;
+  }
+}
+
+function filterListings() {
+  const zoneFilter = document.getElementById('filter-zone').value;
+  const sizeFilter = document.getElementById('filter-size').value;
+  const priceFilter = document.getElementById('filter-price').value;
+
+  let filtered = listingsData;
+
+  // Zone filter
+  if (zoneFilter !== 'all') {
+    filtered = filtered.filter(l => l.zone === zoneFilter);
+  }
+
+  // Size filter
+  if (sizeFilter !== 'all') {
+    const sizeRanges = {
+      'micro': [15, 30],
+      'small': [30, 45],
+      'medium': [45, 65],
+      'large': [65, 90]
+    };
+    const [min, max] = sizeRanges[sizeFilter];
+    filtered = filtered.filter(l => l.size >= min && l.size < max);
+  }
+
+  // Price filter
+  if (priceFilter !== 'all') {
+    const maxPrice = parseInt(priceFilter);
+    filtered = filtered.filter(l => l.price <= maxPrice);
+  }
+
+  displayListings(filtered);
+}
+
+function displayListings(listings) {
+  const container = document.getElementById('listings-container');
+
+  if (listings.length === 0) {
+    container.innerHTML = `
+      <div class="listings-empty">
+        <div class="listings-empty-title">No listings found</div>
+        <div class="listings-empty-text">Try adjusting your filters</div>
+      </div>
+    `;
+    document.getElementById('listings-count').textContent = '0';
+    document.getElementById('listings-avg-size').textContent = '-';
+    document.getElementById('listings-avg-price').textContent = '-';
+    return;
+  }
+
+  // Calculate stats
+  const avgSize = Math.round(listings.reduce((sum, l) => sum + l.size, 0) / listings.length);
+  const avgPricePerSqm = Math.round(listings.reduce((sum, l) => sum + (l.price / l.size), 0) / listings.length);
+
+  document.getElementById('listings-count').textContent = listings.length;
+  document.getElementById('listings-avg-size').textContent = avgSize + 'm²';
+  document.getElementById('listings-avg-price').textContent = 'R' + (avgPricePerSqm / 1000).toFixed(0) + 'k';
+
+  // Render listing cards
+  container.innerHTML = listings.map(listing => {
+    const pricePerSqm = Math.round(listing.price / listing.size);
+    const neighborhood = priceData[listing.neighborhood];
+
+    // Estimate yield if we have price data
+    let yieldBadge = '';
+    if (neighborhood) {
+      const annualRent = neighborhood.rental.longTerm.median * listing.size * 12;
+      const grossYield = ((annualRent / listing.price) * 100).toFixed(1);
+      yieldBadge = `<span class="listing-yield">${grossYield}% yield</span>`;
+    }
+
+    return `
+      <div class="listing-card" onclick="window.open('${listing.url}', '_blank')">
+        <div class="listing-info">
+          <div class="listing-zone">${getZoneLabel(listing.zone)}</div>
+          <div class="listing-title">${listing.title}</div>
+          <div class="listing-details">
+            <span>${listing.size}m²</span>
+            <span>${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + '-bed'}</span>
+            <span>${listing.bathrooms} bath</span>
+            ${listing.parking > 0 ? `<span>P${listing.parking}</span>` : ''}
+          </div>
+        </div>
+        <div class="listing-price-col">
+          <div class="listing-price">${formatPrice(listing.price)}</div>
+          <div class="listing-price-sqm">R${(pricePerSqm / 1000).toFixed(0)}k/m²</div>
+          ${yieldBadge}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Load listings when switching to tab
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait for price data to load, then load listings
+  setTimeout(loadListings, 500);
+});

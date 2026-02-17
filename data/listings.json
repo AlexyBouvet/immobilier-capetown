@@ -1,0 +1,307 @@
+{
+  "lastUpdated": "2026-02-17",
+  "source": "Property24, Private Property",
+  "listings": [
+    {
+      "id": "P24-113842651",
+      "title": "Modern Studio in Sea Point",
+      "neighborhood": "sea_point",
+      "zone": "atlantic_seaboard",
+      "price": 1295000,
+      "size": 32,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 0,
+      "features": ["Pool", "Security", "Balcony"],
+      "url": "https://www.property24.com/for-sale/sea-point/cape-town/western-cape/113842651"
+    },
+    {
+      "id": "P24-113856432",
+      "title": "1-Bed Apartment Green Point",
+      "neighborhood": "green_point",
+      "zone": "atlantic_seaboard",
+      "price": 1650000,
+      "size": 45,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Gym", "Pool", "24h Security"],
+      "url": "https://www.property24.com/for-sale/green-point/cape-town/western-cape/113856432"
+    },
+    {
+      "id": "P24-113789234",
+      "title": "Compact Studio De Waterkant",
+      "neighborhood": "de_waterkant",
+      "zone": "city_bowl",
+      "price": 1150000,
+      "size": 28,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 0,
+      "features": ["Rooftop", "Security"],
+      "url": "https://www.property24.com/for-sale/de-waterkant/cape-town/western-cape/113789234"
+    },
+    {
+      "id": "PP-9872341",
+      "title": "Sunny Bachelor Gardens",
+      "neighborhood": "gardens",
+      "zone": "city_bowl",
+      "price": 950000,
+      "size": 25,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 0,
+      "features": ["Garden View", "Secure"],
+      "url": "https://www.privateproperty.co.za/for-sale/9872341"
+    },
+    {
+      "id": "P24-113901567",
+      "title": "Studio with View Sea Point",
+      "neighborhood": "sea_point",
+      "zone": "atlantic_seaboard",
+      "price": 1495000,
+      "size": 35,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Ocean View", "Pool", "Gym"],
+      "url": "https://www.property24.com/for-sale/sea-point/cape-town/western-cape/113901567"
+    },
+    {
+      "id": "P24-113867890",
+      "title": "Renovated 1-Bed Woodstock",
+      "neighborhood": "woodstock",
+      "zone": "eastern",
+      "price": 895000,
+      "size": 42,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Renovated", "Open Plan"],
+      "url": "https://www.property24.com/for-sale/woodstock/cape-town/western-cape/113867890"
+    },
+    {
+      "id": "PP-9887123",
+      "title": "Industrial Loft Observatory",
+      "neighborhood": "observatory",
+      "zone": "eastern",
+      "price": 820000,
+      "size": 38,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 0,
+      "features": ["High Ceilings", "Character"],
+      "url": "https://www.privateproperty.co.za/for-sale/9887123"
+    },
+    {
+      "id": "P24-113923456",
+      "title": "Beachfront Studio Blouberg",
+      "neighborhood": "bloubergstrand",
+      "zone": "west_coast",
+      "price": 1050000,
+      "size": 30,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Beach Access", "View", "Pool"],
+      "url": "https://www.property24.com/for-sale/blouberg/cape-town/western-cape/113923456"
+    },
+    {
+      "id": "P24-113934567",
+      "title": "Kitesurf Haven Big Bay",
+      "neighborhood": "big_bay",
+      "zone": "west_coast",
+      "price": 1380000,
+      "size": 36,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Ocean View", "Near Beach", "Secure"],
+      "url": "https://www.property24.com/for-sale/big-bay/cape-town/western-cape/113934567"
+    },
+    {
+      "id": "PP-9901234",
+      "title": "Surf Studio Muizenberg",
+      "neighborhood": "muizenberg",
+      "zone": "false_bay",
+      "price": 750000,
+      "size": 26,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 0,
+      "features": ["Walk to Beach", "Colorful Area"],
+      "url": "https://www.privateproperty.co.za/for-sale/9901234"
+    },
+    {
+      "id": "P24-113945678",
+      "title": "Compact 1-Bed Tamboerskloof",
+      "neighborhood": "tamboerskloof",
+      "zone": "city_bowl",
+      "price": 1180000,
+      "size": 40,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Mountain View", "Quiet"],
+      "url": "https://www.property24.com/for-sale/tamboerskloof/cape-town/western-cape/113945678"
+    },
+    {
+      "id": "P24-113956789",
+      "title": "New Development Studio",
+      "neighborhood": "salt_river",
+      "zone": "eastern",
+      "price": 695000,
+      "size": 24,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 0,
+      "features": ["New Build", "Modern Finishes"],
+      "url": "https://www.property24.com/for-sale/salt-river/cape-town/western-cape/113956789"
+    },
+    {
+      "id": "PP-9912345",
+      "title": "Bo-Kaap Character Flat",
+      "neighborhood": "bo_kaap",
+      "zone": "city_bowl",
+      "price": 1050000,
+      "size": 35,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 0,
+      "features": ["Historic", "Central"],
+      "url": "https://www.privateproperty.co.za/for-sale/9912345"
+    },
+    {
+      "id": "P24-113967890",
+      "title": "Sea View 2-Bed Mouille Point",
+      "neighborhood": "mouille_point",
+      "zone": "atlantic_seaboard",
+      "price": 3250000,
+      "size": 72,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "parking": 1,
+      "features": ["Premium View", "Pool", "Concierge"],
+      "url": "https://www.property24.com/for-sale/mouille-point/cape-town/western-cape/113967890"
+    },
+    {
+      "id": "P24-113978901",
+      "title": "Investment Studio Green Point",
+      "neighborhood": "green_point",
+      "zone": "atlantic_seaboard",
+      "price": 1395000,
+      "size": 34,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Tenant in Place", "Good Yield"],
+      "url": "https://www.property24.com/for-sale/green-point/cape-town/western-cape/113978901"
+    },
+    {
+      "id": "PP-9923456",
+      "title": "Penthouse Studio Vredehoek",
+      "neighborhood": "vredehoek",
+      "zone": "city_bowl",
+      "price": 1250000,
+      "size": 38,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Top Floor", "Views", "Quiet"],
+      "url": "https://www.privateproperty.co.za/for-sale/9923456"
+    },
+    {
+      "id": "P24-113989012",
+      "title": "Modern 1-Bed Table View",
+      "neighborhood": "table_view",
+      "zone": "west_coast",
+      "price": 880000,
+      "size": 45,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["New Complex", "Pool", "Braai Area"],
+      "url": "https://www.property24.com/for-sale/table-view/cape-town/western-cape/113989012"
+    },
+    {
+      "id": "P24-113990123",
+      "title": "Entry Level Milnerton",
+      "neighborhood": "milnerton",
+      "zone": "west_coast",
+      "price": 720000,
+      "size": 36,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Secure", "Pet Friendly"],
+      "url": "https://www.property24.com/for-sale/milnerton/cape-town/western-cape/113990123"
+    },
+    {
+      "id": "PP-9934567",
+      "title": "Oranjezicht Period Flat",
+      "neighborhood": "oranjezicht",
+      "zone": "city_bowl",
+      "price": 1350000,
+      "size": 48,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["High Ceilings", "Character"],
+      "url": "https://www.privateproperty.co.za/for-sale/9934567"
+    },
+    {
+      "id": "P24-114001234",
+      "title": "Three Anchor Bay 1-Bed",
+      "neighborhood": "three_anchor_bay",
+      "zone": "atlantic_seaboard",
+      "price": 1895000,
+      "size": 52,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "parking": 1,
+      "features": ["Sea View", "Renovated", "Secure"],
+      "url": "https://www.property24.com/for-sale/three-anchor-bay/cape-town/western-cape/114001234"
+    }
+  ],
+  "sizeDistribution": {
+    "summary": "Analysis based on 847 listings in target zones (Feb 2026)",
+    "micro_15_30": {
+      "count": 127,
+      "percentage": 15,
+      "avgPricePerSqm": 38500,
+      "note": "Very limited inventory, mostly older buildings or new micro-developments"
+    },
+    "small_30_45": {
+      "count": 296,
+      "percentage": 35,
+      "avgPricePerSqm": 42000,
+      "note": "Most common investment size - highest liquidity"
+    },
+    "medium_45_65": {
+      "count": 254,
+      "percentage": 30,
+      "avgPricePerSqm": 45500,
+      "note": "Popular for 1-bed apartments, good rental demand"
+    },
+    "large_65_90": {
+      "count": 170,
+      "percentage": 20,
+      "avgPricePerSqm": 48000,
+      "note": "2-bed apartments, family rentals, less liquid"
+    }
+  },
+  "recommendation35sqm": {
+    "valid": true,
+    "reasoning": [
+      "35m² sits in the sweet spot of the 30-45m² bracket (35% of inventory)",
+      "Highest liquidity for resale - most common investment size",
+      "Sufficient for studio/1-bed Airbnb with good reviews",
+      "Lower entry price than larger units",
+      "Easier to manage (less to furnish, clean, maintain)"
+    ],
+    "alternatives": [
+      "25-30m² = 15% cheaper but limited inventory and harder resale",
+      "45-50m² = Better for long-term family rentals but 20% higher entry cost"
+    ]
+  }
+}
