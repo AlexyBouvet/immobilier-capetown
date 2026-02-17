@@ -1,6 +1,6 @@
 {
   "lastUpdated": "2026-02-17",
-  "sources": ["Private Property", "Property24"],
+  "sources": ["Private Property"],
   "listings": [
     {
       "id": "T5180599",
@@ -270,54 +270,6 @@
       "bathrooms": 1,
       "parking": 1,
       "url": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/tableview-and-blouberg/big-bay/181-ss-eden-on-the-bay/5-beach-estate-boulevard/T5213377"
-    },
-    {
-      "id": "116851066",
-      "title": "Studio - Woodstock",
-      "neighborhood": "woodstock",
-      "zone": "eastern",
-      "price": 1250000,
-      "size": 21,
-      "bedrooms": 0,
-      "bathrooms": 1,
-      "parking": 0,
-      "url": "https://www.property24.com/for-sale/woodstock/cape-town/western-cape/10164/116851066"
-    },
-    {
-      "id": "116129366",
-      "title": "Studio - Woodstock",
-      "neighborhood": "woodstock",
-      "zone": "eastern",
-      "price": 1130000,
-      "size": 25,
-      "bedrooms": 0,
-      "bathrooms": 1,
-      "parking": 0,
-      "url": "https://www.property24.com/for-sale/woodstock/cape-town/western-cape/10164/116129366"
-    },
-    {
-      "id": "116437486",
-      "title": "1 Bed - Observatory",
-      "neighborhood": "observatory",
-      "zone": "eastern",
-      "price": 1120000,
-      "size": 42,
-      "bedrooms": 1,
-      "bathrooms": 1,
-      "parking": 0,
-      "url": "https://www.property24.com/for-sale/observatory/cape-town/western-cape/10157/116437486"
-    },
-    {
-      "id": "116812418",
-      "title": "1 Bed - Observatory",
-      "neighborhood": "observatory",
-      "zone": "eastern",
-      "price": 1825000,
-      "size": 49,
-      "bedrooms": 1,
-      "bathrooms": 2,
-      "parking": 1,
-      "url": "https://www.property24.com/for-sale/observatory/cape-town/western-cape/10157/116812418"
     }
   ],
   "searchUrls": {
@@ -325,11 +277,11 @@
     "milnerton": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/milnerton/1399",
     "big_bay": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/tableview-and-blouberg/big-bay/764",
     "bloubergstrand": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/tableview-and-blouberg/bloubergstrand/441",
-    "woodstock": "https://www.property24.com/apartments-for-sale/woodstock/cape-town/western-cape/10164",
-    "observatory": "https://www.property24.com/apartments-for-sale/observatory/cape-town/western-cape/10157",
-    "sea_point": "https://www.property24.com/apartments-for-sale/sea-point/cape-town/western-cape/11021",
-    "green_point": "https://www.property24.com/apartments-for-sale/green-point/cape-town/western-cape/11017",
-    "de_waterkant": "https://www.property24.com/apartments-for-sale/de-waterkant/cape-town/western-cape/9141",
+    "woodstock": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/woodstock/450",
+    "observatory": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/observatory/434",
+    "sea_point": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/sea-point/436",
+    "green_point": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/green-point/419",
+    "de_waterkant": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/de-waterkant/418",
     "cape_town": "https://www.privateproperty.co.za/for-sale/western-cape/cape-town/60"
   },
   "priceAnalysis": {

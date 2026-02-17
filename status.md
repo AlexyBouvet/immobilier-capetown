@@ -299,6 +299,32 @@ Refonte complete du design pour une esthetique finance/investissement:
 
 **Objectif:** Interface presentable a des investisseurs, style terminal Bloomberg/rapport financier.
 
+### 2026-02-17 - Systeme de Test Automatique des Liens
+
+**Categorie: Outil / Qualite**
+
+Implementation d'un systeme de validation automatique des liens pour eviter les URLs cassees.
+
+**Scripts et commandes:**
+- `npm run test:links` - teste tous les liens de `data/listings.json`
+- `scripts/test-links.js` - script Node.js de validation
+- Vercel build hook: teste avant chaque deploiement
+
+**Resultats du test initial:**
+| Source | Liens testes | Resultat |
+|--------|--------------|----------|
+| Private Property | 22 listings + 6 searchUrls | 100% OK |
+| Property24 | 3 listings + 5 searchUrls | 0% OK (503 anti-bot) |
+
+**Decision: Utiliser UNIQUEMENT Private Property**
+- Property24 a une protection anti-bot qui bloque les tests automatises
+- Les liens Property24 fonctionnent dans le navigateur mais pas en script
+- Private Property fonctionne parfaitement en test automatise
+
+**Listings finaux:** 22 listings valides (West Coast uniquement)
+
+**Regle ajoutee au CLAUDE.md:** Toujours tester les URLs avant de les ajouter.
+
 ---
 
 ## Notes

@@ -1,0 +1,13 @@
+{
+  "name": "immobilier-capetown",
+  "version": "1.0.0",
+  "description": "Cape Town Property Investment Map",
+  "scripts": {
+    "test": "node scripts/test-links.js",
+    "test:links": "node scripts/test-links.js",
+    "build": "node scripts/test-links.js && echo 'Build complete - all links valid'"
+  },
+  "keywords": ["cape-town", "property", "investment"],
+  "author": "Alexy Bouvet",
+  "license": "MIT"
+}

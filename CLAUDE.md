@@ -16,6 +16,22 @@ A chaque fois que nous apprenons quelque chose de nouveau sur ce projet (prix, r
 
 **Ce comportement est obligatoire et ne necessite pas de confirmation de l'utilisateur.**
 
+### 2. Test automatique des liens
+
+Avant d'ajouter un nouveau listing dans `data/listings.json`:
+1. **Toujours tester l'URL** avec WebFetch pour verifier qu'elle fonctionne (status 200)
+2. **Ne jamais utiliser Property24** - leur protection anti-bot bloque les tests automatises
+3. **Utiliser uniquement Private Property** pour les listings
+
+Pour valider tous les liens existants:
+```bash
+npm run test:links
+```
+
+Le script `scripts/test-links.js` verifie automatiquement tous les liens avant chaque deploiement Vercel.
+
+**Ce comportement est obligatoire pour eviter les liens casses.**
+
 ---
 
 ## Distinction importante
