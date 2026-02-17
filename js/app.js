@@ -78,7 +78,11 @@ function highlightFeature(e) {
   });
 
   layer.bringToFront();
-  updateInfoPanel(layer.feature.properties);
+
+  // Only update info panel on hover if nothing is selected
+  if (!selectedLayer) {
+    updateInfoPanel(layer.feature.properties);
+  }
 }
 
 // Reset highlight when mouse leaves
@@ -848,21 +852,58 @@ function showZoneListings(neighborhoodId, zone) {
           yieldBadge = `<span class="listing-yield">${grossYield}%</span>`;
         }
 
-        return `
-          <div class="listing-card" onclick="window.open('${listing.url}', '_blank')">
-            <div class="listing-info">
-              <div class="listing-title">${listing.title}</div>
-              <div class="listing-details">
-                <span>${listing.size}m²</span>
-                <span>${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + '-bed'}</span>
-                ${listing.parking > 0 ? `<span>P${listing.parking}</span>` : ''}
+        // Calculate mini business plan
+        let bpHtml = '';
+        if (neighborhood) {
+          // Acquisition costs (transfer duty + attorney ~5%)
+          const transferDuty = listing.price > 1210000 ? (listing.price - 1210000) * 0.03 : 0;
+          const attorneyFees = 45000;
+          const totalAcquisition = listing.price + transferDuty + attorneyFees;
+
+          // Monthly income (long-term)
+          const monthlyRent = neighborhood.rental.longTerm.median * listing.size;
+          const annualRent = monthlyRent * 12;
+
+          // Monthly expenses
+          const levy = listing.size * 45; // Body corporate
+          const rates = (listing.price * 0.005) / 12; // Municipal rates
+          const insurance = (listing.price * 0.002) / 12;
+          const totalExpenses = levy + rates + insurance;
+
+          // Net calculations
+          const monthlyNet = monthlyRent - totalExpenses;
+          const annualNet = monthlyNet * 12;
+          const grossYield = ((annualRent / listing.price) * 100).toFixed(1);
+          const netYield = ((annualNet / listing.price) * 100).toFixed(1);
+
+          bpHtml = `
+            <div class="listing-bp">
+              <div class="bp-row"><span>Acquisition totale</span><span>${formatPrice(Math.round(totalAcquisition))}</span></div>
+              <div class="bp-row"><span>Loyer estimé/mois</span><span>${formatPrice(monthlyRent)}</span></div>
+              <div class="bp-row expense"><span>Charges/mois</span><span>-${formatPrice(Math.round(totalExpenses))}</span></div>
+              <div class="bp-row net"><span>Net/mois</span><span>${formatPrice(Math.round(monthlyNet))}</span></div>
+              <div class="bp-yields">
+                <span class="gross">Brut ${grossYield}%</span>
+                <span class="net">Net ${netYield}%</span>
               </div>
             </div>
-            <div class="listing-price-col">
+          `;
+        }
+
+        return `
+          <div class="listing-card" onclick="window.open('${listing.url}', '_blank')">
+            <div class="listing-header">
+              <div class="listing-title">${listing.title}</div>
               <div class="listing-price">${formatPrice(listing.price)}</div>
-              <div class="listing-price-sqm">R${(pricePerSqm / 1000).toFixed(0)}k/m²</div>
-              ${yieldBadge}
             </div>
+            <div class="listing-specs">
+              <span>${listing.size}m²</span>
+              <span>${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + '-bed'}</span>
+              <span>R${(pricePerSqm / 1000).toFixed(0)}k/m²</span>
+              ${listing.parking > 0 ? `<span>P${listing.parking}</span>` : ''}
+              ${listing.status ? `<span class="status-${listing.status.toLowerCase().replace(' ', '-')}">${listing.status}</span>` : ''}
+            </div>
+            ${bpHtml}
           </div>
         `;
       }).join('')}

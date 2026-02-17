@@ -414,9 +414,7 @@ body {
 }
 
 .listing-card {
-  display: flex;
-  gap: 10px;
-  padding: 10px 12px;
+  padding: 12px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background 0.1s;
@@ -430,69 +428,121 @@ body {
   border-bottom: none;
 }
 
-.listing-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.listing-zone {
-  font-size: 9px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
+.listing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
 }
 
 .listing-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.listing-details {
-  display: flex;
-  gap: 10px;
-  font-size: 10px;
-  color: var(--text-secondary);
-}
-
-.listing-details span {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.listing-price-col {
-  text-align: right;
-  flex-shrink: 0;
+  flex: 1;
+  margin-right: 8px;
 }
 
 .listing-price {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--positive);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.listing-price-sqm {
+.listing-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   font-size: 10px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.listing-specs span {
+  background: var(--bg-light);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.listing-specs .status-new {
+  background: var(--positive);
+  color: white;
+}
+
+.listing-specs .status-under-offer {
+  background: var(--warning);
+  color: white;
+}
+
+.listing-specs .status-sold {
+  background: var(--text-muted);
+  color: white;
+}
+
+/* Mini Business Plan per Listing */
+.listing-bp {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px;
+  font-size: 10px;
+}
+
+.bp-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  color: var(--text-secondary);
+}
+
+.bp-row span:last-child {
+  font-weight: 600;
+  color: var(--text-primary);
   font-variant-numeric: tabular-nums;
 }
 
-.listing-yield {
-  display: inline-block;
+.bp-row.expense span:last-child {
+  color: var(--negative);
+}
+
+.bp-row.net {
+  border-top: 1px solid var(--border);
   margin-top: 4px;
-  padding: 2px 6px;
-  background: var(--accent);
-  color: white;
-  font-size: 9px;
-  font-weight: 600;
+  padding-top: 6px;
+}
+
+.bp-row.net span:last-child {
+  color: var(--positive);
+  font-weight: 700;
+}
+
+.bp-yields {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.bp-yields span {
+  flex: 1;
+  text-align: center;
+  padding: 4px;
   border-radius: 2px;
+  font-weight: 700;
+}
+
+.bp-yields .gross {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.bp-yields .net {
+  background: var(--positive);
+  color: white;
 }
 
 .listings-note {
