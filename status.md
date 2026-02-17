@@ -21,14 +21,21 @@ Etude de marche pour l'achat d'un appartement a Cape Town en vue d'un investisse
 
 ---
 
-## TODO
+## TODO - Demain (2026-02-18)
+
+- [ ] **UX du site** - Revoir l'experience utilisateur globale
+- [ ] **Discuter avec Thomas** - Revoir les BP ensemble, ajuster les hypotheses
+
+---
+
+## TODO - General
 
 - [x] Analyser prix d'achat par quartier (Woodstock, Observatory, City Bowl, Sea Point, Green Point) ✅ Carte interactive
 - [x] Comparer rendement locatif brut par zone (loyer annuel / prix achat) ✅ Gross yield calcule
 - [x] Calculer cash-flow net apres charges (levy, rates, assurance, gestion) ✅ Business Plan calculator
 - [x] Lister les sites d'annonces pour l'achat (Property24, Private Property, etc.) ✅ Ressources ci-dessous
+- [x] Identifier les frais d'acquisition (transfer duty, avocat, etc.) ✅ Dans BP modal
 - [ ] Comprendre les regles pour etrangers (visa, compte bancaire, pret immobilier)
-- [ ] Identifier les frais d'acquisition (transfer duty, avocat, etc.)
 - [ ] Contacter des agents immobiliers locaux
 - [ ] Etudier la fiscalite (impot sur revenus locatifs, plus-value)
 - [ ] Valider taux Airbnb avec property manager local ou AirDNA
@@ -585,6 +592,28 @@ abNetYield = (abGross - abExpenses) / price × 100
 ```
 
 **Resultat:** Les rendements sur les cards = les rendements dans le BP modal
+
+### 2026-02-18 - BP Modal Final + Tooltips
+
+**Categorie: Outil (UI/UX)**
+
+Finalisation du Business Plan modal avec tooltips explicatifs.
+
+**Modifications finales:**
+- Modal agrandi a 99vw × 99vh (quasi plein ecran)
+- Bouton fermer integre dans le coin du modal
+- Summary boxes reduites a 24px de hauteur (une ligne)
+- Graphique agrandi a 180px
+- Badge occupancy dans le header Airbnb
+
+**Tooltips sur hover:**
+Chaque valeur calculee affiche maintenant sa formule au survol:
+- Monthly Rent: `R/m² × size = total`
+- Annual Revenue: `monthly × 12 × 95% occ`
+- Net Yield: `Net Income / Purchase Price = X%`
+- Etc.
+
+**Git push:** Commit `9e84cdd` pousse sur `origin/main`
 
 ---
 
