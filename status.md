@@ -325,6 +325,42 @@ Implementation d'un systeme de validation automatique des liens pour eviter les 
 
 **Regle ajoutee au CLAUDE.md:** Toujours tester les URLs avant de les ajouter.
 
+### 2026-02-17 - Correction Calculs Acquisition et Vente (CRITIQUE)
+
+**Categorie: Fiscalite / Outil**
+
+Bug majeur corrige dans le Business Plan calculator.
+
+**Probleme identifie:**
+| Element | AVANT (incorrect) | APRES (correct) |
+|---------|-------------------|-----------------|
+| Transfer Duty | 5% toujours | Progressive (0% < R1.21M) |
+| Conveyancing | +R45k | +R45k |
+| Frais de vente | 15% du gain | Agent 8% + CGT/Withholding |
+
+**Bareme Transfer Duty (Afrique du Sud 2024/2025):**
+| Tranche | Taux |
+|---------|------|
+| R0 - R1,210,000 | 0% |
+| R1,210,001 - R1,663,800 | 3% au-dessus de R1.21M |
+| R1,663,801 - R2,329,500 | R13,614 + 6% au-dessus |
+| R2,329,501 - R2,994,000 | R53,556 + 8% au-dessus |
+| R2,994,001+ | R106,716 + 11% au-dessus |
+
+**Frais de vente reels:**
+- Agent: 7% + 15% VAT = **8.05%** du prix de vente
+- CGT: ~**18%** du gain (40% inclusion × 45% marginal)
+- Withholding: **7.5%** du prix (acompte sur CGT, rembourse si < CGT)
+- Cout reel = Agent + MAX(CGT, Withholding)
+
+**Exemple pour R995,000 apres 10 ans (valeur R1.62M):**
+| Cout | AVANT | APRES |
+|------|-------|-------|
+| Acquisition | R94,750 | **R45,000** |
+| Vente | ~R94,000 | **~R252,000** |
+
+**Impact:** Les projections sont maintenant plus realistes (moins optimistes).
+
 ---
 
 ## Notes
