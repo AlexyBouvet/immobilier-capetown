@@ -110,14 +110,6 @@ function selectFeature(e) {
 
   layer.bringToFront();
   updateInfoPanel(layer.feature.properties);
-
-  // Smooth zoom to feature
-  map.fitBounds(layer.getBounds(), {
-    padding: [80, 80],
-    maxZoom: 15,
-    animate: true,
-    duration: 0.5
-  });
 }
 
 // Event handlers for each feature
