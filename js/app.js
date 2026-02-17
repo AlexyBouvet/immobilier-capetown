@@ -914,7 +914,7 @@ function showZoneListings(neighborhoodId, zone) {
         }
 
         return `
-          <div class="listing-card" onclick="window.open('${listing.url}', '_blank')">
+          <div class="listing-card">
             <div class="listing-header">
               <div class="listing-title">${listing.title}</div>
               <div class="listing-price">${formatPrice(listing.price)}</div>
@@ -927,6 +927,10 @@ function showZoneListings(neighborhoodId, zone) {
               ${listing.status ? `<span class="status-${listing.status.toLowerCase().replace(' ', '-')}">${listing.status}</span>` : ''}
             </div>
             ${bpHtml}
+            <div class="listing-actions">
+              <button class="listing-bp-btn" onclick="event.stopPropagation(); openListingBP('${listing.id}')">Open Business Plan</button>
+              <a href="${listing.url}" target="_blank" class="listing-link" onclick="event.stopPropagation()">Voir sur ${listing.url.includes('privateproperty') ? 'Private Property' : 'Property24'}</a>
+            </div>
           </div>
         `;
       }).join('')}
@@ -934,6 +938,128 @@ function showZoneListings(neighborhoodId, zone) {
   `;
   container.style.display = 'block';
 }
+
+// Open BP modal for a specific listing
+function openListingBP(listingId) {
+  const listing = listingsData.find(l => l.id === listingId);
+  if (!listing) return;
+
+  const neighborhood = priceData[listing.neighborhood];
+  if (!neighborhood) return;
+
+  // Store listing data for the modal
+  currentNeighborhood = neighborhood;
+  currentListing = listing;
+
+  const modal = document.getElementById('bp-modal');
+  modal.classList.add('active');
+
+  // Set header with listing info
+  document.getElementById('bp-title').textContent = listing.title;
+  document.getElementById('bp-zone').textContent = `${listing.size}m² - ${formatPrice(listing.price)}`;
+
+  // Set the size input to the listing's actual size
+  document.getElementById('bp-size').value = listing.size;
+
+  // Determine if it's new or resale based on price per sqm
+  const pricePerSqm = listing.price / listing.size;
+  const isNew = pricePerSqm >= neighborhood.purchase.new.min * 0.9;
+  purchaseType = isNew ? 'new' : 'resale';
+  document.getElementById('btn-resale').classList.toggle('active', !isNew);
+  document.getElementById('btn-new').classList.toggle('active', isNew);
+
+  // Calculate with listing's actual price
+  calculateListingBP(listing);
+
+  // Add event listeners
+  document.getElementById('bp-size').addEventListener('input', () => calculateListingBP(listing));
+  document.getElementById('bp-appreciation').addEventListener('input', () => calculateListingBP(listing));
+  document.getElementById('bp-rent-increase').addEventListener('input', () => calculateListingBP(listing));
+}
+
+// Calculate BP for a specific listing (uses actual price instead of zone average)
+function calculateListingBP(listing) {
+  if (!currentNeighborhood || !listing) return;
+
+  const size = listing.size; // Use actual listing size
+  const data = currentNeighborhood;
+  const rental = data.rental;
+
+  // Use ACTUAL listing price
+  const totalPrice = listing.price;
+  const pricePerSqm = Math.round(totalPrice / size);
+
+  document.getElementById('bp-purchase-price').textContent = formatPrice(totalPrice);
+  document.getElementById('bp-price-sqm').textContent = formatPrice(pricePerSqm) + '/m²';
+
+  // ============ LONG-TERM RENTAL ============
+  const ltRentPerSqm = rental.longTerm.median;
+  const ltMonthlyRent = ltRentPerSqm * size;
+  const ltAnnualRevenue = ltMonthlyRent * 12;
+  const ltOccupancy = 0.95;
+  const ltEffectiveRevenue = ltAnnualRevenue * ltOccupancy;
+
+  const ltLevy = size * 45 * 12;
+  const ltRates = totalPrice * 0.005;
+  const ltInsurance = totalPrice * 0.002;
+  const ltMaintenance = ltEffectiveRevenue * 0.05;
+  const ltTotalExpenses = ltLevy + ltRates + ltInsurance + ltMaintenance;
+
+  const ltNetIncome = ltEffectiveRevenue - ltTotalExpenses;
+  const ltGrossYield = (ltAnnualRevenue / totalPrice) * 100;
+  const ltNetYield = (ltNetIncome / totalPrice) * 100;
+
+  document.getElementById('bp-lt-rent').textContent = formatPrice(ltMonthlyRent) + '/mo';
+  document.getElementById('bp-lt-annual').textContent = formatPrice(ltAnnualRevenue);
+  document.getElementById('bp-lt-occupancy').textContent = '95%';
+  document.getElementById('bp-lt-levy').textContent = formatPrice(ltLevy);
+  document.getElementById('bp-lt-rates').textContent = formatPrice(ltRates);
+  document.getElementById('bp-lt-insurance').textContent = formatPrice(ltInsurance);
+  document.getElementById('bp-lt-maintenance').textContent = formatPrice(ltMaintenance);
+  document.getElementById('bp-lt-net').textContent = formatPrice(ltNetIncome);
+  document.getElementById('bp-lt-gross-yield').textContent = ltGrossYield.toFixed(1) + '%';
+  document.getElementById('bp-lt-net-yield').textContent = ltNetYield.toFixed(1) + '%';
+
+  // ============ AIRBNB ============
+  const abNightlyRate = rental.airbnb.nightlyRate;
+  const abOccupancy = rental.airbnb.occupancy / 100;
+  const abNightsPerYear = 365 * abOccupancy;
+  const abGrossRevenue = abNightlyRate * abNightsPerYear;
+
+  const abFees = abGrossRevenue * 0.15;
+  const abTurnovers = abNightsPerYear / 3;
+  const abCleaning = abTurnovers * 400;
+  const abUtilities = size * 80 * 12;
+  const abManagement = (abGrossRevenue - abFees) * 0.20;
+  const abTotalExpenses = abFees + abCleaning + abUtilities + abManagement + ltLevy + ltRates + ltInsurance;
+
+  const abNetIncome = abGrossRevenue - abTotalExpenses;
+  const abGrossYield = (abGrossRevenue / totalPrice) * 100;
+  const abNetYield = (abNetIncome / totalPrice) * 100;
+
+  document.getElementById('bp-ab-nightly').textContent = formatPrice(abNightlyRate);
+  document.getElementById('bp-ab-annual').textContent = formatPrice(abGrossRevenue);
+  document.getElementById('bp-ab-occupancy').textContent = rental.airbnb.occupancy + '%';
+  document.getElementById('bp-ab-fees').textContent = formatPrice(abFees);
+  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning);
+  document.getElementById('bp-ab-utilities').textContent = formatPrice(abUtilities);
+  document.getElementById('bp-ab-management').textContent = formatPrice(abManagement);
+  document.getElementById('bp-ab-net').textContent = formatPrice(abNetIncome);
+  document.getElementById('bp-ab-gross-yield').textContent = abGrossYield.toFixed(1) + '%';
+  document.getElementById('bp-ab-net-yield').textContent = abNetYield.toFixed(1) + '%';
+
+  // ============ RECOMMENDATION ============
+  const recommendation = generateRecommendation(ltNetYield, abNetYield, abOccupancy, data.zone);
+  document.getElementById('bp-recommendation').innerHTML = recommendation;
+
+  // ============ 10-YEAR PROJECTION ============
+  calculateProjection(totalPrice, ltNetIncome, abNetIncome, size);
+
+  // ============ TAXES ============
+  calculateTaxes(totalPrice, ltAnnualRevenue, abGrossRevenue);
+}
+
+let currentListing = null;
 
 // Load listings on init
 document.addEventListener('DOMContentLoaded', function() {
