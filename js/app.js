@@ -4,13 +4,14 @@
 let map;
 let geojsonLayer;
 let priceData = {};
+let selectedLayer = null;
 
 // Map Configuration
 const MAP_CONFIG = {
   center: [-33.92, 18.42],
-  zoom: 13,
-  minZoom: 11,
-  maxZoom: 17
+  zoom: 12,
+  minZoom: 10,
+  maxZoom: 18
 };
 
 // Color scale based on median resale price
@@ -32,7 +33,10 @@ function formatPrice(num) {
 function getZoneLabel(zone) {
   const labels = {
     'atlantic_seaboard': 'Atlantic Seaboard',
+    'atlantic_seaboard_premium': 'Atlantic Seaboard (Premium)',
+    'atlantic_seaboard_upper': 'Atlantic Seaboard (Upper)',
     'city_bowl': 'City Bowl',
+    'city_bowl_upper': 'City Bowl (Upper)',
     'eastern': 'Southern/Eastern',
     'south_peninsula': 'South Peninsula'
   };
@@ -55,15 +59,15 @@ function styleFeature(feature) {
   };
 }
 
-// Highlight feature on hover
+// Highlight feature on hover/touch
 function highlightFeature(e) {
   const layer = e.target;
 
   layer.setStyle({
     weight: 4,
-    color: '#333',
+    color: '#2c3e50',
     dashArray: '',
-    fillOpacity: 0.9
+    fillOpacity: 0.85
   });
 
   layer.bringToFront();
@@ -72,13 +76,41 @@ function highlightFeature(e) {
 
 // Reset highlight when mouse leaves
 function resetHighlight(e) {
-  geojsonLayer.resetStyle(e.target);
-  resetInfoPanel();
+  if (selectedLayer !== e.target) {
+    geojsonLayer.resetStyle(e.target);
+  }
+  if (!selectedLayer) {
+    resetInfoPanel();
+  }
 }
 
-// Zoom to feature on click
-function zoomToFeature(e) {
-  map.fitBounds(e.target.getBounds(), { padding: [50, 50] });
+// Select feature on click
+function selectFeature(e) {
+  // Reset previous selection
+  if (selectedLayer) {
+    geojsonLayer.resetStyle(selectedLayer);
+  }
+
+  const layer = e.target;
+  selectedLayer = layer;
+
+  layer.setStyle({
+    weight: 4,
+    color: '#2c3e50',
+    dashArray: '',
+    fillOpacity: 0.85
+  });
+
+  layer.bringToFront();
+  updateInfoPanel(layer.feature.properties);
+
+  // Smooth zoom to feature
+  map.fitBounds(layer.getBounds(), {
+    padding: [80, 80],
+    maxZoom: 15,
+    animate: true,
+    duration: 0.5
+  });
 }
 
 // Event handlers for each feature
@@ -86,7 +118,7 @@ function onEachFeature(feature, layer) {
   layer.on({
     mouseover: highlightFeature,
     mouseout: resetHighlight,
-    click: zoomToFeature
+    click: selectFeature
   });
 }
 
@@ -101,48 +133,82 @@ function updateInfoPanel(properties) {
   }
 
   const priceInfo = document.getElementById('price-info');
+  const medianNew = data.newDevelopment.median;
+  const medianResale = data.resale.median;
+
   priceInfo.innerHTML = `
     <h3>${data.name}</h3>
-    <div class="price-section">
-      <h4>New Developments</h4>
-      <p class="price-range new">
-        ${formatPrice(data.newDevelopment.min)} - ${formatPrice(data.newDevelopment.max)}/m²
-      </p>
-    </div>
-    <div class="price-section">
-      <h4>Resale (Second Hand)</h4>
-      <p class="price-range resale">
-        ${formatPrice(data.resale.min)} - ${formatPrice(data.resale.max)}/m²
-      </p>
+    <div class="price-grid">
+      <div class="price-section">
+        <h4>Neuf</h4>
+        <p class="price-range new">
+          ${formatPrice(data.newDevelopment.min)} - ${formatPrice(data.newDevelopment.max)}
+        </p>
+        <p class="price-median">Median: ${formatPrice(medianNew)}/m²</p>
+      </div>
+      <div class="price-section">
+        <h4>Occasion</h4>
+        <p class="price-range resale">
+          ${formatPrice(data.resale.min)} - ${formatPrice(data.resale.max)}
+        </p>
+        <p class="price-median">Median: ${formatPrice(medianResale)}/m²</p>
+      </div>
     </div>
     <span class="zone-badge">${getZoneLabel(data.zone)}</span>
   `;
 
   document.querySelector('.info-panel .instruction').style.display = 'none';
+  document.getElementById('price-info').style.display = 'block';
 }
 
 // Reset info panel to default state
 function resetInfoPanel() {
-  document.getElementById('price-info').innerHTML = '';
+  document.getElementById('price-info').style.display = 'none';
   document.querySelector('.info-panel .instruction').style.display = 'block';
+}
+
+// Close selection when clicking on map (not on a feature)
+function closeSelection() {
+  if (selectedLayer) {
+    geojsonLayer.resetStyle(selectedLayer);
+    selectedLayer = null;
+    resetInfoPanel();
+  }
 }
 
 // Initialize the map
 async function initMap() {
-  // Create map
+  // Create map with no default markers
   map = L.map('map', {
     center: MAP_CONFIG.center,
     zoom: MAP_CONFIG.zoom,
     minZoom: MAP_CONFIG.minZoom,
-    maxZoom: MAP_CONFIG.maxZoom
+    maxZoom: MAP_CONFIG.maxZoom,
+    zoomControl: true,
+    attributionControl: true
   });
 
-  // Add base tile layer (CartoDB Positron for clean look)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  // Add base tile layer (CartoDB Positron No Labels for cleaner look)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 20
   }).addTo(map);
+
+  // Add labels layer on top (separate layer so polygons go between)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    maxZoom: 20,
+    pane: 'shadowPane' // Put labels below polygons
+  }).addTo(map);
+
+  // Click on map to deselect
+  map.on('click', function(e) {
+    if (e.originalEvent.target === map.getContainer().querySelector('.leaflet-tile-pane') ||
+        e.originalEvent.target.classList.contains('leaflet-tile')) {
+      closeSelection();
+    }
+  });
 
   // Load data
   try {
@@ -156,14 +222,23 @@ async function initMap() {
 
     priceData = prices.neighborhoods;
 
-    // Add GeoJSON layer
+    // Add GeoJSON layer (no point markers, only polygons)
     geojsonLayer = L.geoJSON(geojson, {
       style: styleFeature,
-      onEachFeature: onEachFeature
+      onEachFeature: onEachFeature,
+      pointToLayer: function(feature, latlng) {
+        // Don't render point features - only polygons
+        return null;
+      },
+      filter: function(feature) {
+        // Only include Polygon and MultiPolygon geometries
+        return feature.geometry.type === 'Polygon' ||
+               feature.geometry.type === 'MultiPolygon';
+      }
     }).addTo(map);
 
     // Fit map to boundaries
-    map.fitBounds(geojsonLayer.getBounds(), { padding: [20, 20] });
+    map.fitBounds(geojsonLayer.getBounds(), { padding: [30, 30] });
 
     console.log('Map initialized with', geojson.features.length, 'neighborhoods');
   } catch (error) {

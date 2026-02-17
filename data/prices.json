@@ -5,38 +5,46 @@
     "lastUpdated": "2026-02-17",
     "newVsResalePremium": "15-25%",
     "sources": [
-      "The Africanvestor (theafricanvestor.com)",
+      "The Africanvestor",
       "Property24",
       "Lightstone",
       "Seeff",
-      "Private Property"
+      "Private Property",
+      "Pam Golding"
     ]
   },
   "neighborhoods": {
     "clifton": {
       "name": "Clifton",
-      "zone": "atlantic_seaboard",
+      "zone": "atlantic_seaboard_premium",
       "newDevelopment": { "min": 95000, "max": 210000, "median": 150000 },
       "resale": { "min": 80000, "max": 180000, "median": 130000 },
       "priceIndex": 100
     },
     "camps_bay": {
       "name": "Camps Bay",
-      "zone": "atlantic_seaboard",
+      "zone": "atlantic_seaboard_premium",
       "newDevelopment": { "min": 92000, "max": 200000, "median": 145000 },
       "resale": { "min": 80000, "max": 170000, "median": 125000 },
       "priceIndex": 95
     },
+    "glen_beach": {
+      "name": "Glen Beach",
+      "zone": "atlantic_seaboard_premium",
+      "newDevelopment": { "min": 88000, "max": 180000, "median": 130000 },
+      "resale": { "min": 75000, "max": 155000, "median": 112000 },
+      "priceIndex": 88
+    },
     "bantry_bay": {
       "name": "Bantry Bay",
-      "zone": "atlantic_seaboard",
+      "zone": "atlantic_seaboard_premium",
       "newDevelopment": { "min": 82000, "max": 175000, "median": 125000 },
       "resale": { "min": 70000, "max": 150000, "median": 110000 },
       "priceIndex": 85
     },
     "bakoven": {
       "name": "Bakoven",
-      "zone": "atlantic_seaboard",
+      "zone": "atlantic_seaboard_premium",
       "newDevelopment": { "min": 85000, "max": 160000, "median": 120000 },
       "resale": { "min": 72000, "max": 140000, "median": 105000 },
       "priceIndex": 82
@@ -50,10 +58,17 @@
     },
     "fresnaye": {
       "name": "Fresnaye",
-      "zone": "atlantic_seaboard",
+      "zone": "atlantic_seaboard_upper",
       "newDevelopment": { "min": 70000, "max": 140000, "median": 100000 },
       "resale": { "min": 60000, "max": 120000, "median": 85000 },
       "priceIndex": 70
+    },
+    "mouille_point": {
+      "name": "Mouille Point",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 60000, "max": 110000, "median": 80000 },
+      "resale": { "min": 52000, "max": 95000, "median": 70000 },
+      "priceIndex": 56
     },
     "sea_point": {
       "name": "Sea Point",
@@ -69,13 +84,6 @@
       "resale": { "min": 48000, "max": 82000, "median": 63000 },
       "priceIndex": 50
     },
-    "mouille_point": {
-      "name": "Mouille Point",
-      "zone": "atlantic_seaboard",
-      "newDevelopment": { "min": 60000, "max": 110000, "median": 80000 },
-      "resale": { "min": 52000, "max": 95000, "median": 70000 },
-      "priceIndex": 56
-    },
     "green_point": {
       "name": "Green Point",
       "zone": "atlantic_seaboard",
@@ -89,6 +97,13 @@
       "newDevelopment": { "min": 55000, "max": 95000, "median": 72000 },
       "resale": { "min": 48000, "max": 80000, "median": 62000 },
       "priceIndex": 48
+    },
+    "schotsche_kloof": {
+      "name": "Schotsche Kloof",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 48000, "max": 82000, "median": 62000 },
+      "resale": { "min": 40000, "max": 70000, "median": 53000 },
+      "priceIndex": 42
     },
     "foreshore": {
       "name": "Foreshore",
@@ -106,31 +121,38 @@
     },
     "gardens": {
       "name": "Gardens",
-      "zone": "city_bowl",
+      "zone": "city_bowl_upper",
       "newDevelopment": { "min": 52000, "max": 82000, "median": 65000 },
       "resale": { "min": 45000, "max": 70000, "median": 56000 },
       "priceIndex": 43
     },
     "oranjezicht": {
       "name": "Oranjezicht",
-      "zone": "city_bowl",
+      "zone": "city_bowl_upper",
       "newDevelopment": { "min": 55000, "max": 90000, "median": 70000 },
       "resale": { "min": 48000, "max": 78000, "median": 60000 },
       "priceIndex": 46
     },
     "tamboerskloof": {
       "name": "Tamboerskloof",
-      "zone": "city_bowl",
+      "zone": "city_bowl_upper",
       "newDevelopment": { "min": 52000, "max": 85000, "median": 66000 },
       "resale": { "min": 45000, "max": 72000, "median": 57000 },
       "priceIndex": 44
     },
     "vredehoek": {
       "name": "Vredehoek",
-      "zone": "city_bowl",
+      "zone": "city_bowl_upper",
       "newDevelopment": { "min": 48000, "max": 78000, "median": 60000 },
       "resale": { "min": 42000, "max": 66000, "median": 52000 },
       "priceIndex": 38
+    },
+    "district_six": {
+      "name": "District Six",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 28000, "max": 48000, "median": 36000 },
+      "resale": { "min": 24000, "max": 40000, "median": 30000 },
+      "priceIndex": 18
     },
     "zonnebloem": {
       "name": "Zonnebloem",
@@ -146,6 +168,13 @@
       "resale": { "min": 25000, "max": 42000, "median": 32000 },
       "priceIndex": 20
     },
+    "salt_river": {
+      "name": "Salt River",
+      "zone": "eastern",
+      "newDevelopment": { "min": 26000, "max": 42000, "median": 32000 },
+      "resale": { "min": 22000, "max": 35000, "median": 27000 },
+      "priceIndex": 12
+    },
     "observatory": {
       "name": "Observatory",
       "zone": "eastern",
@@ -153,12 +182,19 @@
       "resale": { "min": 24000, "max": 40000, "median": 30000 },
       "priceIndex": 18
     },
-    "salt_river": {
-      "name": "Salt River",
+    "mowbray": {
+      "name": "Mowbray",
       "zone": "eastern",
-      "newDevelopment": { "min": 26000, "max": 42000, "median": 32000 },
-      "resale": { "min": 22000, "max": 35000, "median": 27000 },
-      "priceIndex": 12
+      "newDevelopment": { "min": 26000, "max": 44000, "median": 34000 },
+      "resale": { "min": 22000, "max": 38000, "median": 28000 },
+      "priceIndex": 16
+    },
+    "rosebank": {
+      "name": "Rosebank",
+      "zone": "eastern",
+      "newDevelopment": { "min": 28000, "max": 46000, "median": 35000 },
+      "resale": { "min": 24000, "max": 40000, "median": 30000 },
+      "priceIndex": 18
     },
     "hout_bay": {
       "name": "Hout Bay",
