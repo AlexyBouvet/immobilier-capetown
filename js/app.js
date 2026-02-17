@@ -958,13 +958,8 @@ function createListingCard(listing, neighborhood) {
 function showZoneListings(neighborhoodId, zone) {
   const container = document.getElementById('zone-listings');
 
-  // Filter listings for this neighborhood or zone
+  // Filter listings ONLY for this exact neighborhood (no zone fallback)
   let filtered = listingsData.filter(l => l.neighborhood === neighborhoodId);
-
-  // If no exact match, show zone listings
-  if (filtered.length === 0) {
-    filtered = listingsData.filter(l => l.zone === zone);
-  }
 
   // Get the correct search URL
   const searchUrl = searchUrls[neighborhoodId] || searchUrls.cape_town;
