@@ -98,6 +98,25 @@ Donnees collectees pour 27 quartiers:
 
 **Croissance attendue:** +35-50% sur 5 ans pour l'Education Belt (source: Lew Geffen Sotheby's)
 
+### 2026-02-17 - West Coast / Blouberg Zone Added
+
+**Categorie: Marche**
+
+4 nouveaux quartiers (zone kitesurf):
+
+| Zone | Prix resale/m² | Gross Yield | Airbnb Occupancy |
+|------|---------------|-------------|------------------|
+| **Table View** | R22k | 5.1% | 55% |
+| **Milnerton** | R25k | 4.9% | 58% |
+| **Bloubergstrand** | R32k | 4.6% | 65% |
+| **Big Bay** | R38k | 4.3% | 70% |
+
+**Key insight:** Zone kitesurf = forte demande Airbnb (occupancy 65-70% a Big Bay/Blouberg).
+Vue iconique sur Table Mountain depuis la plage.
+Studios disponibles, beaucoup d'immeubles en bord de mer.
+
+**Strategie potentielle:** Acheter petit appart a Bloubergstrand/Milnerton, louer en Airbnb aux kitesurfers (saison novembre-mars = vent optimal)
+
 ---
 
 ## Notes
