@@ -7,7 +7,9 @@
     "sources": [
       "The Africanvestor (theafricanvestor.com)",
       "Property24",
-      "Lightstone"
+      "Lightstone",
+      "Seeff",
+      "Private Property"
     ]
   },
   "neighborhoods": {
@@ -32,6 +34,20 @@
       "resale": { "min": 70000, "max": 150000, "median": 110000 },
       "priceIndex": 85
     },
+    "bakoven": {
+      "name": "Bakoven",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 85000, "max": 160000, "median": 120000 },
+      "resale": { "min": 72000, "max": 140000, "median": 105000 },
+      "priceIndex": 82
+    },
+    "llandudno": {
+      "name": "Llandudno",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 75000, "max": 150000, "median": 110000 },
+      "resale": { "min": 65000, "max": 130000, "median": 95000 },
+      "priceIndex": 75
+    },
     "fresnaye": {
       "name": "Fresnaye",
       "zone": "atlantic_seaboard",
@@ -46,6 +62,20 @@
       "resale": { "min": 50000, "max": 90000, "median": 68000 },
       "priceIndex": 55
     },
+    "three_anchor_bay": {
+      "name": "Three Anchor Bay",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 55000, "max": 95000, "median": 72000 },
+      "resale": { "min": 48000, "max": 82000, "median": 63000 },
+      "priceIndex": 50
+    },
+    "mouille_point": {
+      "name": "Mouille Point",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 60000, "max": 110000, "median": 80000 },
+      "resale": { "min": 52000, "max": 95000, "median": 70000 },
+      "priceIndex": 56
+    },
     "green_point": {
       "name": "Green Point",
       "zone": "atlantic_seaboard",
@@ -59,6 +89,13 @@
       "newDevelopment": { "min": 55000, "max": 95000, "median": 72000 },
       "resale": { "min": 48000, "max": 80000, "median": 62000 },
       "priceIndex": 48
+    },
+    "foreshore": {
+      "name": "Foreshore",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 45000, "max": 75000, "median": 58000 },
+      "resale": { "min": 38000, "max": 65000, "median": 50000 },
+      "priceIndex": 38
     },
     "bo_kaap": {
       "name": "Bo-Kaap",
@@ -95,6 +132,13 @@
       "resale": { "min": 42000, "max": 66000, "median": 52000 },
       "priceIndex": 38
     },
+    "zonnebloem": {
+      "name": "Zonnebloem",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 32000, "max": 52000, "median": 40000 },
+      "resale": { "min": 26000, "max": 44000, "median": 34000 },
+      "priceIndex": 22
+    },
     "woodstock": {
       "name": "Woodstock",
       "zone": "eastern",
@@ -115,6 +159,13 @@
       "newDevelopment": { "min": 26000, "max": 42000, "median": 32000 },
       "resale": { "min": 22000, "max": 35000, "median": 27000 },
       "priceIndex": 12
+    },
+    "hout_bay": {
+      "name": "Hout Bay",
+      "zone": "south_peninsula",
+      "newDevelopment": { "min": 42000, "max": 85000, "median": 60000 },
+      "resale": { "min": 35000, "max": 72000, "median": 52000 },
+      "priceIndex": 40
     }
   }
 }

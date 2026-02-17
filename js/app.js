@@ -33,7 +33,8 @@ function getZoneLabel(zone) {
   const labels = {
     'atlantic_seaboard': 'Atlantic Seaboard',
     'city_bowl': 'City Bowl',
-    'eastern': 'Southern/Eastern'
+    'eastern': 'Southern/Eastern',
+    'south_peninsula': 'South Peninsula'
   };
   return labels[zone] || zone;
 }
