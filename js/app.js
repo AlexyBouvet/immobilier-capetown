@@ -841,11 +841,11 @@ function highlightNeighborhood(id) {
     if (layer.feature.properties.id === id) {
       // Trigger click on this layer
       layer.fire('click');
-      // Switch to info tab
-      document.querySelectorAll('.panel-tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelector('.panel-tab').classList.add('active');
+      // Switch to zone tab
+      document.querySelectorAll('.main-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector('.main-tab').classList.add('active');
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.getElementById('tab-info').classList.add('active');
+      document.getElementById('tab-zone').classList.add('active');
     }
   });
 }
