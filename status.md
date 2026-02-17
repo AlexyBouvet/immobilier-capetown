@@ -46,6 +46,108 @@ Etude de marche pour l'achat d'un appartement a Cape Town en vue d'un investisse
 
 ## Journal des apprentissages
 
+### 2026-02-17 - Redesign UI Professionnel + ROE Indicator
+
+**Categorie: Autre (UI/UX)**
+
+Refonte complete du design pour un look finance professionnel:
+
+**Charte graphique 3 palettes:**
+- **Long-Term**: Indigo (#6366F1)
+- **Airbnb**: Orange (#F97316)
+- **UI/Navigation**: Slate (#475569)
+- Vert uniquement pour carte et badges positifs
+
+**Listing cards simplifiées:**
+- Suppression du mini BP verbeux
+- Barre de rendement compacte (LT/AB)
+- Boutons "Simulate" et "View" toujours visibles
+- Design épuré style finance dashboard
+
+**ROE (Return on Equity) ajouté au graphique:**
+- Courbe ROE en pointillés (axe Y secondaire)
+- Ligne de seuil rouge à 7% (sell signal)
+- Indicateur "Sell Signal" pour savoir quand vendre et réinvestir
+
+**Prix grid refait:**
+- 6 colonnes propres avec bordures
+- Typographie hiérarchisée
+- Labels courts (New Dev, Resale, LT Rent, etc.)
+
+---
+
+### 2026-02-17 - BP Enrichi (analyse BP Saint-Mandé)
+
+**Categorie: Fiscalite / Financement**
+
+Analyse du BP hotel Saint-Mandé pour enrichir notre modele Cape Town.
+
+**Elements ajoutes:**
+1. **FF&E Reserve** (3% CA Airbnb) - provision remplacement mobilier
+2. **Simulation pret** - LTV, taux d'interet, mensualites
+3. **Cash flow apres levier** - net de remboursement dette
+
+### 2026-02-17 - Corrections contexte Afrique du Sud (vs France)
+
+**Categorie: Fiscalite / Reglementation**
+
+Apres analyse du BP francais, verification des regles specifiques a l'Afrique du Sud:
+
+**Corrections importantes:**
+1. **PAS de frais de courtier pour l'acheteur** - en SA, c'est le vendeur qui paie l'agent (7-8% + VAT). L'acheteur ne paie RIEN au broker.
+2. **LTV max 50%** pour non-residents (vs 70-80% en France)
+3. **Prime rate ~10.25%** + spread 0.5-2% = 10.75-12.25% pour non-residents
+4. **Pas d'amortissement fiscal** sur immeuble residentiel locatif (contrairement a la France)
+5. **Wear and tear allowance** sur mobilier deductible (meubles, electromenager)
+
+**Elements gardes du BP francais:**
+- FF&E Reserve (3% Airbnb) - valide universellement
+- Simulation pret avec LTV/taux variables
+- Projection 10 ans avec appreciation et hausse loyers
+
+**Sources:**
+- ooba.co.za (courtier pret SA)
+- sars.gov.za (fiscalite)
+- property24.com/guides/buying
+
+**Elements identifies mais non implementes:**
+- Amortissement fiscal du bien (deduction 3% prix/an sur 33 ans en France, different en SA)
+- Deficit reportable (report pertes fiscales sur annees suivantes)
+- TVA sur travaux (recoverable pour Airbnb commercial)
+
+**Taux SA identifies:**
+- Pret immobilier SA: 10.5-12% (prime rate + spread)
+- LTV max non-resident: 50-60%
+- Duree pret: 20-25 ans
+
+---
+
+### 2026-02-17 - Bloomberg-Style Dashboard Redesign
+
+**Categorie: Autre (UI/UX)**
+
+Redesign complet de l'interface avec esthetique finance professionnelle:
+
+**Changements majeurs:**
+- Carte carree (aspect-ratio 1/1) fixee en sidebar gauche (~35% viewport)
+- Legende en overlay DANS la carte (semi-transparent, bottom-left)
+- Dark theme inspire Bloomberg/GitHub avec palette monochrome
+- Typography: JetBrains Mono (code/chiffres) + IBM Plex Sans (texte)
+- Tile layer Leaflet passe en Dark Matter (CARTO)
+- Stats rapides sous la carte (zones, listings, best yield, date)
+
+**Fichiers modifies:**
+- `css/styles.css`: nouveau design system complet
+- `index.html`: structure HTML adaptee
+- `js/app.js`: dark tiles + chart colors
+
+**Stack UX:**
+- CSS Grid pour layout principal
+- CSS variables pour theming
+- Responsive breakpoints (mobile: carte en header)
+
+---
+
 ### 2026-02-17 - Interactive Map + Rental Data
 
 **Categorie: Marche**

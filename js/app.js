@@ -145,45 +145,42 @@ function updateInfoPanel(properties) {
   // Update zone header
   document.getElementById('zone-title').textContent = data.name;
   document.getElementById('zone-badges').innerHTML = `
-    <span class="yield-badge">Gross Yield: ${grossYield}%</span>
+    <span class="yield-badge">${grossYield}% yield</span>
     <span class="zone-badge">${getZoneLabel(data.zone)}</span>
   `;
 
   // Hide instruction, show stats
   document.getElementById('zone-stats').innerHTML = '';
 
-  // Build price cards
+  // Build price cards - clean 6-column grid
   document.getElementById('zone-price-info').innerHTML = `
     <div class="price-card">
-      <h4>New Development (per m²)</h4>
-      <div class="price-value">${formatPrice(purchase.new.min)} - ${formatPrice(purchase.new.max)}</div>
-      <div class="price-sub">Median: ${formatPrice(purchase.new.median)}</div>
+      <h4>New Dev /m²</h4>
+      <div class="price-value">${formatPrice(purchase.new.median)}</div>
+      <div class="price-sub">${formatPrice(purchase.new.min)} - ${formatPrice(purchase.new.max)}</div>
     </div>
     <div class="price-card">
-      <h4>Resale (per m²)</h4>
-      <div class="price-value">${formatPrice(purchase.resale.min)} - ${formatPrice(purchase.resale.max)}</div>
-      <div class="price-sub">Median: ${formatPrice(purchase.resale.median)}</div>
+      <h4>Resale /m²</h4>
+      <div class="price-value">${formatPrice(purchase.resale.median)}</div>
+      <div class="price-sub">${formatPrice(purchase.resale.min)} - ${formatPrice(purchase.resale.max)}</div>
     </div>
     <div class="price-card">
-      <h4>Long-Term Rent (per m²/month)</h4>
+      <h4>LT Rent /m²</h4>
       <div class="price-value">${formatPrice(rental.longTerm.median)}</div>
-      <div class="price-sub">${formatPrice(rental.longTerm.min)} - ${formatPrice(rental.longTerm.max)}</div>
+      <div class="price-sub">per month</div>
     </div>
     <div class="price-card">
-      <h4>Airbnb Nightly Rate</h4>
+      <h4>Airbnb /night</h4>
       <div class="price-value">${formatPrice(rental.airbnb.nightlyRate)}</div>
-      <div class="price-sub">Occupancy: ${rental.airbnb.occupancy}%</div>
+      <div class="price-sub">${rental.airbnb.occupancy}% occupancy</div>
     </div>
     <div class="price-card highlight">
-      <h4>Airbnb Monthly Revenue</h4>
+      <h4>AB Monthly</h4>
       <div class="price-value">${formatPrice(rental.airbnb.monthlyRevenue)}</div>
-      <div class="price-sub">Based on ${rental.airbnb.occupancy}% occupancy</div>
+      <div class="price-sub">gross revenue</div>
     </div>
-    <div class="price-card">
-      <h4>Open Full Business Plan</h4>
-      <button class="listing-bp-btn" onclick="openBPModal('${id}')" style="margin-top:8px">
-        Calculate ROI
-      </button>
+    <div class="price-card action">
+      <button class="listing-bp-btn" onclick="openBPModal('${id}')">Simulate ROI →</button>
     </div>
   `;
 
@@ -221,18 +218,11 @@ async function initMap() {
     attributionControl: true
   });
 
-  // Add base tile layer (CartoDB Positron No Labels for cleaner look)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+  // Add light tile layer (CartoDB Positron)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 20
-  }).addTo(map);
-
-  // Add labels layer on top (separate layer so polygons go between)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
-    subdomains: 'abcd',
-    maxZoom: 20,
-    pane: 'shadowPane' // Put labels below polygons
   }).addTo(map);
 
   // Click on map to deselect
@@ -311,6 +301,8 @@ function openBPModal(neighborhoodId) {
   document.getElementById('bp-size').addEventListener('input', calculateBP);
   document.getElementById('bp-appreciation').addEventListener('input', calculateBP);
   document.getElementById('bp-rent-increase').addEventListener('input', calculateBP);
+  document.getElementById('bp-ltv').addEventListener('input', calculateBP);
+  document.getElementById('bp-rate').addEventListener('input', calculateBP);
 }
 
 function closeBPModal() {
@@ -337,7 +329,12 @@ function calculateBP() {
   const pricePerSqm = purchaseType === 'new' ? purchase.new.median : purchase.resale.median;
   const totalPrice = pricePerSqm * size;
 
+  // Calculate acquisition costs for display
+  const transferDutyDisplay = calculateTransferDuty(totalPrice);
+  const acquisitionTotal = transferDutyDisplay + 45000;
+
   document.getElementById('bp-purchase-price').textContent = formatPrice(totalPrice);
+  document.getElementById('bp-tax-acq-total').textContent = '+' + formatPrice(acquisitionTotal);
   document.getElementById('bp-price-sqm').textContent = formatPrice(pricePerSqm) + '/m²';
 
   // ============ LONG-TERM RENTAL ============
@@ -360,13 +357,10 @@ function calculateBP() {
 
   document.getElementById('bp-lt-rent').textContent = formatPrice(ltMonthlyRent) + '/mo';
   document.getElementById('bp-lt-annual').textContent = formatPrice(ltAnnualRevenue);
-  document.getElementById('bp-lt-occupancy').textContent = '95%';
   document.getElementById('bp-lt-levy').textContent = formatPrice(ltLevy);
-  document.getElementById('bp-lt-rates').textContent = formatPrice(ltRates);
-  document.getElementById('bp-lt-insurance').textContent = formatPrice(ltInsurance);
+  document.getElementById('bp-lt-rates').textContent = formatPrice(ltRates + ltInsurance);
   document.getElementById('bp-lt-maintenance').textContent = formatPrice(ltMaintenance);
   document.getElementById('bp-lt-net').textContent = formatPrice(ltNetIncome);
-  document.getElementById('bp-lt-gross-yield').textContent = ltGrossYield.toFixed(1) + '%';
   document.getElementById('bp-lt-net-yield').textContent = ltNetYield.toFixed(1) + '%';
 
   // ============ AIRBNB ============
@@ -389,13 +383,11 @@ function calculateBP() {
 
   document.getElementById('bp-ab-nightly').textContent = formatPrice(abNightlyRate);
   document.getElementById('bp-ab-annual').textContent = formatPrice(abGrossRevenue);
-  document.getElementById('bp-ab-occupancy').textContent = rental.airbnb.occupancy + '%';
+  document.getElementById('bp-ab-occupancy').textContent = rental.airbnb.occupancy;
   document.getElementById('bp-ab-fees').textContent = formatPrice(abFees);
-  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning);
-  document.getElementById('bp-ab-utilities').textContent = formatPrice(abUtilities);
+  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning + abUtilities);
   document.getElementById('bp-ab-management').textContent = formatPrice(abManagement);
   document.getElementById('bp-ab-net').textContent = formatPrice(abNetIncome);
-  document.getElementById('bp-ab-gross-yield').textContent = abGrossYield.toFixed(1) + '%';
   document.getElementById('bp-ab-net-yield').textContent = abNetYield.toFixed(1) + '%';
 
   // ============ RECOMMENDATION ============
@@ -444,37 +436,67 @@ function calculateSaleCosts(salePrice, purchasePrice) {
 function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
   const appreciation = parseFloat(document.getElementById('bp-appreciation').value) / 100 || 0.05;
   const rentIncrease = parseFloat(document.getElementById('bp-rent-increase').value) / 100 || 0.06;
+  const ltv = parseFloat(document.getElementById('bp-ltv').value) / 100 || 0;
+  const interestRate = parseFloat(document.getElementById('bp-rate').value) / 100 || 0.11;
 
   // Acquisition costs: Transfer Duty (progressive) + Conveyancing
+  // Note: In South Africa, buyer does NOT pay broker fees - seller pays the agent
   const transferDuty = calculateTransferDuty(purchasePrice);
   const conveyancing = 45000;
   const acquisitionCosts = transferDuty + conveyancing;
 
+  // Loan calculation
+  const loanAmount = purchasePrice * ltv;
+  const equityRequired = purchasePrice + acquisitionCosts - loanAmount;
+  const loanTerm = 20; // 20 years
+  const monthlyRate = interestRate / 12;
+  const numPayments = loanTerm * 12;
+  const monthlyPayment = loanAmount > 0 ? (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1) : 0;
+  const annualDebtService = monthlyPayment * 12;
+
+  // FF&E Reserve (3% of Airbnb revenue for furniture replacement)
+  const ffEReserve = abAnnualNet > 0 ? abAnnualNet * 0.03 : 0;
+
   const years = [];
   const ltTotalROI = [];  // Total ROI if sold at each year (cash + appreciation - costs)
   const abTotalROI = [];
+  const ltROE = [];  // Return on Equity (annual income / equity)
+  const abROE = [];
 
-  let ltCashFlow = -acquisitionCosts;  // Cumulative cash flow
-  let abCashFlow = -acquisitionCosts;
+  // Initial equity investment (not full price if using leverage)
+  let ltCashFlow = -equityRequired;
+  let abCashFlow = -equityRequired;
   let ltCurrentNet = ltAnnualNet;
-  let abCurrentNet = abAnnualNet;
+  let abCurrentNet = abAnnualNet - ffEReserve; // Subtract FF&E reserve for Airbnb
   let propertyValue = purchasePrice;
+  let remainingLoan = loanAmount;
 
   let ltBreakeven = null;
   let abBreakeven = null;
+  let ltSellSignal = null;  // When ROE drops below 7%
+  let abSellSignal = null;
 
   for (let year = 0; year <= 10; year++) {
     years.push(year);
 
     if (year > 0) {
-      // Add annual net income (after income tax ~25%)
-      const ltAfterTax = ltCurrentNet * 0.75;
-      const abAfterTax = abCurrentNet * 0.75;
+      // Calculate interest portion of debt service (simplified)
+      const interestPortion = remainingLoan * interestRate;
+      const principalPortion = annualDebtService - interestPortion;
+      remainingLoan = Math.max(0, remainingLoan - principalPortion);
+
+      // Net income after debt service and income tax
+      const ltAfterDebt = ltCurrentNet - annualDebtService;
+      const abAfterDebt = abCurrentNet - annualDebtService;
+
+      // Apply income tax on positive income only
+      const ltAfterTax = ltAfterDebt > 0 ? ltAfterDebt * 0.75 : ltAfterDebt;
+      const abAfterTax = abAfterDebt > 0 ? abAfterDebt * 0.75 : abAfterDebt;
 
       ltCashFlow += ltAfterTax;
       abCashFlow += abAfterTax;
 
-      // Increase rent for next year
+      // Increase rent for next year (with inflation)
       ltCurrentNet *= (1 + rentIncrease);
       abCurrentNet *= (1 + rentIncrease);
 
@@ -482,13 +504,35 @@ function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
       propertyValue *= (1 + appreciation);
     }
 
-    // Calculate total position if sold NOW (at this year)
-    // = Cash flow so far + (Property value - Purchase price - Sale costs)
-    const saleCostsNow = calculateSaleCosts(propertyValue, purchasePrice);
-    const netGainIfSold = propertyValue - purchasePrice - saleCostsNow;
+    // Calculate equity (property value - remaining loan)
+    const currentEquity = propertyValue - remainingLoan;
 
-    const ltTotalNow = ltCashFlow + netGainIfSold;
-    const abTotalNow = abCashFlow + netGainIfSold;
+    // Calculate ROE: Net annual income / Equity (as percentage)
+    // Use current year's net income (after tax, after debt service)
+    const ltNetForROE = year === 0 ? ltAnnualNet * 0.75 : (ltCurrentNet - annualDebtService) * 0.75;
+    const abNetForROE = year === 0 ? (abAnnualNet - ffEReserve) * 0.75 : (abCurrentNet - annualDebtService) * 0.75;
+
+    const ltROEValue = currentEquity > 0 ? (ltNetForROE / currentEquity) * 100 : 0;
+    const abROEValue = currentEquity > 0 ? (abNetForROE / currentEquity) * 100 : 0;
+
+    ltROE.push(ltROEValue);
+    abROE.push(abROEValue);
+
+    // Check when ROE drops below 7% (sell signal)
+    if (ltSellSignal === null && year > 0 && ltROEValue < 7) {
+      ltSellSignal = year;
+    }
+    if (abSellSignal === null && year > 0 && abROEValue < 7) {
+      abSellSignal = year;
+    }
+
+    // Calculate total position if sold NOW (at this year)
+    // Profit = Cash flow so far + (Property value - Remaining Loan - Sale costs)
+    // Note: ltCashFlow already includes -equityRequired as initial investment
+    const saleCostsNow = calculateSaleCosts(propertyValue, purchasePrice);
+
+    const ltTotalNow = ltCashFlow + propertyValue - remainingLoan - saleCostsNow;
+    const abTotalNow = abCashFlow + propertyValue - remainingLoan - saleCostsNow;
 
     ltTotalROI.push(ltTotalNow);
     abTotalROI.push(abTotalNow);
@@ -514,11 +558,17 @@ function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
   document.getElementById('bp-10y-lt-profit').textContent = formatPrice(Math.round(ltFinalProfit));
   document.getElementById('bp-10y-ab-profit').textContent = formatPrice(Math.round(abFinalProfit));
 
-  // Render chart with TOTAL ROI (not just cash flow)
-  renderProjectionChart(years, ltTotalROI, abTotalROI);
+  // Update sell signal (when ROE < 7%)
+  const sellLtEl = document.getElementById('bp-sell-lt');
+  const sellAbEl = document.getElementById('bp-sell-ab');
+  if (sellLtEl) sellLtEl.textContent = ltSellSignal !== null ? `Year ${ltSellSignal}` : '> 10 years';
+  if (sellAbEl) sellAbEl.textContent = abSellSignal !== null ? `Year ${abSellSignal}` : '> 10 years';
+
+  // Render chart with TOTAL ROI and ROE
+  renderProjectionChart(years, ltTotalROI, abTotalROI, ltROE, abROE);
 }
 
-function renderProjectionChart(years, ltData, abData) {
+function renderProjectionChart(years, ltData, abData, ltROE, abROE) {
   const ctx = document.getElementById('bp-chart').getContext('2d');
 
   // Destroy existing chart
@@ -534,28 +584,46 @@ function renderProjectionChart(years, ltData, abData) {
         {
           label: 'Long-Term',
           data: ltData,
-          borderColor: '#27ae60',
-          backgroundColor: 'rgba(39, 174, 96, 0.1)',
+          borderColor: '#6366F1',
+          backgroundColor: 'rgba(99, 102, 241, 0.08)',
           fill: true,
           tension: 0.3,
-          pointRadius: 3
+          pointRadius: 4,
+          pointBackgroundColor: '#6366F1',
+          borderWidth: 2,
+          yAxisID: 'y'
         },
         {
           label: 'Airbnb',
           data: abData,
-          borderColor: '#e74c3c',
-          backgroundColor: 'rgba(231, 76, 60, 0.1)',
+          borderColor: '#F97316',
+          backgroundColor: 'rgba(249, 115, 22, 0.08)',
           fill: true,
           tension: 0.3,
-          pointRadius: 3
+          pointRadius: 4,
+          pointBackgroundColor: '#F97316',
+          borderWidth: 2,
+          yAxisID: 'y'
+        },
+        {
+          label: 'Sell @ 7% ROE',
+          data: years.map(() => 7),
+          borderColor: '#e74c3c',
+          borderDash: [6, 4],
+          pointRadius: 0,
+          fill: false,
+          borderWidth: 2,
+          yAxisID: 'y1'
         },
         {
           label: 'Break-even',
           data: years.map(() => 0),
-          borderColor: '#95a5a6',
-          borderDash: [5, 5],
+          borderColor: '#999',
+          borderDash: [4, 4],
           pointRadius: 0,
-          fill: false
+          fill: false,
+          borderWidth: 1,
+          yAxisID: 'y'
         }
       ]
     },
@@ -571,12 +639,28 @@ function renderProjectionChart(years, ltData, abData) {
           position: 'top',
           labels: {
             boxWidth: 12,
-            font: { size: 11 }
+            font: { size: 11 },
+            color: '#666',
+            padding: 16,
+            filter: function(item) {
+              // Hide reference lines from legend
+              return item.text !== 'Break-even' && item.text !== 'Sell @ 7% ROE';
+            }
           }
         },
         tooltip: {
+          backgroundColor: '#fff',
+          borderColor: '#e0e0e0',
+          borderWidth: 1,
+          titleColor: '#1a1a1a',
+          bodyColor: '#666',
+          padding: 12,
           callbacks: {
             label: function(context) {
+              if (context.dataset.yAxisID === 'y1') {
+                return context.dataset.label + ': ' + context.raw + '%';
+              }
+              if (context.dataset.label === 'Break-even') return null;
               return context.dataset.label + ': ' + formatPrice(Math.round(context.raw));
             }
           }
@@ -584,14 +668,34 @@ function renderProjectionChart(years, ltData, abData) {
       },
       scales: {
         y: {
+          type: 'linear',
+          position: 'left',
           ticks: {
             callback: function(value) {
               return 'R' + (value / 1000).toFixed(0) + 'k';
             },
-            font: { size: 10 }
+            font: { size: 10 },
+            color: '#999'
           },
           grid: {
-            color: 'rgba(0,0,0,0.05)'
+            color: '#f0f0f0'
+          }
+        },
+        y1: {
+          type: 'linear',
+          position: 'right',
+          min: 0,
+          max: 15,
+          ticks: {
+            callback: function(value) {
+              return value + '%';
+            },
+            font: { size: 10 },
+            color: '#e74c3c',
+            stepSize: 5
+          },
+          grid: {
+            display: false
           }
         },
         x: {
@@ -599,7 +703,8 @@ function renderProjectionChart(years, ltData, abData) {
             display: false
           },
           ticks: {
-            font: { size: 10 }
+            font: { size: 10 },
+            color: '#999'
           }
         }
       }
@@ -868,66 +973,50 @@ async function loadListings() {
   }
 }
 
-// Create a listing card HTML
+// Create a listing card HTML - Clean, minimal design
 function createListingCard(listing, neighborhood) {
   const pricePerSqm = Math.round(listing.price / listing.size);
 
-  // Calculate mini business plan for BOTH scenarios
-  let bpHtml = '';
+  // Calculate yields for compact display
+  let yieldHtml = '';
   if (neighborhood) {
-    // Acquisition costs (using proper progressive transfer duty)
-    const transferDuty = calculateTransferDuty(listing.price);
-    const attorneyFees = 45000;
-    const totalAcquisition = listing.price + transferDuty + attorneyFees;
-
-    // Base monthly expenses (both scenarios)
     const levy = listing.size * 45;
     const rates = (listing.price * 0.005) / 12;
     const insurance = (listing.price * 0.002) / 12;
     const baseExpenses = levy + rates + insurance;
 
-    // === LONG-TERM ===
+    // Long-Term yield
     const ltRent = neighborhood.rental.longTerm.median * listing.size;
-    const ltExpenses = baseExpenses + (ltRent * 0.05); // +5% maintenance
+    const ltExpenses = baseExpenses + (ltRent * 0.05);
     const ltNet = ltRent - ltExpenses;
     const ltNetYield = ((ltNet * 12 / listing.price) * 100).toFixed(1);
 
-    // === AIRBNB ===
+    // Airbnb yield
     const abNightly = neighborhood.rental.airbnb.nightlyRate;
     const abOccupancy = neighborhood.rental.airbnb.occupancy / 100;
     const abNights = 30 * abOccupancy;
     const abGross = abNightly * abNights;
-    const abFees = abGross * 0.15; // Airbnb fees
-    const abCleaning = (abNights / 3) * 400; // R400 per turnover, avg 3 nights stay
-    const abUtilities = listing.size * 80; // R80/m²/month
-    const abManagement = (abGross - abFees) * 0.20; // 20% management
+    const abFees = abGross * 0.15;
+    const abCleaning = (abNights / 3) * 400;
+    const abUtilities = listing.size * 80;
+    const abManagement = (abGross - abFees) * 0.20;
     const abExpenses = baseExpenses + abFees + abCleaning + abUtilities + abManagement;
     const abNet = abGross - abExpenses;
     const abNetYield = ((abNet * 12 / listing.price) * 100).toFixed(1);
 
-    bpHtml = `
-      <div class="listing-bp-dual">
-        <div class="bp-header-row">
-          <span>Acquisition: ${formatPrice(Math.round(totalAcquisition))}</span>
+    const bestStrategy = parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'ab' : 'lt';
+    const ltPositive = parseFloat(ltNetYield) >= 0;
+    const abPositive = parseFloat(abNetYield) >= 0;
+
+    yieldHtml = `
+      <div class="listing-yields">
+        <div class="yield-item ${bestStrategy === 'lt' ? 'best' : ''} ${!ltPositive ? 'negative' : ''}">
+          <span class="yield-label">LT</span>
+          <span class="yield-value">${ltNetYield}%</span>
         </div>
-        <div class="bp-comparison">
-          <div class="bp-col lt">
-            <div class="bp-col-title">Long-Terme</div>
-            <div class="bp-col-income">${formatPrice(Math.round(ltRent))}/mois</div>
-            <div class="bp-col-expense">-${formatPrice(Math.round(ltExpenses))}</div>
-            <div class="bp-col-net">${formatPrice(Math.round(ltNet))}</div>
-            <div class="bp-col-yield">${ltNetYield}% net</div>
-          </div>
-          <div class="bp-col ab">
-            <div class="bp-col-title">Airbnb</div>
-            <div class="bp-col-income">${formatPrice(Math.round(abGross))}/mois</div>
-            <div class="bp-col-expense">-${formatPrice(Math.round(abExpenses))}</div>
-            <div class="bp-col-net">${formatPrice(Math.round(abNet))}</div>
-            <div class="bp-col-yield">${abNetYield}% net</div>
-          </div>
-        </div>
-        <div class="bp-winner ${parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'airbnb' : 'longterm'}">
-          ${parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'Airbnb +' + (abNetYield - ltNetYield).toFixed(1) + '%' : 'Long-terme recommandé'}
+        <div class="yield-item ${bestStrategy === 'ab' ? 'best' : ''} ${!abPositive ? 'negative' : ''}">
+          <span class="yield-label">AB</span>
+          <span class="yield-value">${abNetYield}%</span>
         </div>
       </div>
     `;
@@ -936,20 +1025,19 @@ function createListingCard(listing, neighborhood) {
   return `
     <div class="listing-card">
       <div class="listing-header">
-        <div class="listing-title">${listing.title}</div>
+        <div class="listing-meta">
+          <span class="listing-size">${listing.size}m²</span>
+          <span class="listing-beds">${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + ' bed'}</span>
+          ${listing.parking > 0 ? `<span class="listing-parking">P${listing.parking}</span>` : ''}
+        </div>
         <div class="listing-price">${formatPrice(listing.price)}</div>
       </div>
-      <div class="listing-specs">
-        <span>${listing.size}m²</span>
-        <span>${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + '-bed'}</span>
-        <span>R${(pricePerSqm / 1000).toFixed(0)}k/m²</span>
-        ${listing.parking > 0 ? `<span>P${listing.parking}</span>` : ''}
-        ${listing.status ? `<span class="status-${listing.status.toLowerCase().replace(' ', '-')}">${listing.status}</span>` : ''}
-      </div>
-      ${bpHtml}
+      <div class="listing-title">${listing.title}</div>
+      <div class="listing-sqm">R${(pricePerSqm / 1000).toFixed(0)}k/m²</div>
+      ${yieldHtml}
       <div class="listing-actions">
-        <button class="listing-bp-btn" onclick="openListingBP('${listing.id}')">Open BP</button>
-        <a href="${listing.url}" target="_blank" class="listing-link">View Listing</a>
+        <button class="btn-simulate" onclick="openListingBP('${listing.id}')">Simulate →</button>
+        <a href="${listing.url}" target="_blank" class="btn-view">View ↗</a>
       </div>
     </div>
   `;
@@ -1019,6 +1107,8 @@ function openListingBP(listingId) {
   document.getElementById('bp-size').addEventListener('input', () => calculateListingBP(listing));
   document.getElementById('bp-appreciation').addEventListener('input', () => calculateListingBP(listing));
   document.getElementById('bp-rent-increase').addEventListener('input', () => calculateListingBP(listing));
+  document.getElementById('bp-ltv').addEventListener('input', () => calculateListingBP(listing));
+  document.getElementById('bp-rate').addEventListener('input', () => calculateListingBP(listing));
 }
 
 // Calculate BP for a specific listing (uses actual price instead of zone average)
@@ -1033,7 +1123,12 @@ function calculateListingBP(listing) {
   const totalPrice = listing.price;
   const pricePerSqm = Math.round(totalPrice / size);
 
+  // Calculate acquisition costs for display
+  const transferDutyDisplay = calculateTransferDuty(totalPrice);
+  const acquisitionTotal = transferDutyDisplay + 45000;
+
   document.getElementById('bp-purchase-price').textContent = formatPrice(totalPrice);
+  document.getElementById('bp-tax-acq-total').textContent = '+' + formatPrice(acquisitionTotal);
   document.getElementById('bp-price-sqm').textContent = formatPrice(pricePerSqm) + '/m²';
 
   // ============ LONG-TERM RENTAL ============
@@ -1055,13 +1150,10 @@ function calculateListingBP(listing) {
 
   document.getElementById('bp-lt-rent').textContent = formatPrice(ltMonthlyRent) + '/mo';
   document.getElementById('bp-lt-annual').textContent = formatPrice(ltAnnualRevenue);
-  document.getElementById('bp-lt-occupancy').textContent = '95%';
   document.getElementById('bp-lt-levy').textContent = formatPrice(ltLevy);
-  document.getElementById('bp-lt-rates').textContent = formatPrice(ltRates);
-  document.getElementById('bp-lt-insurance').textContent = formatPrice(ltInsurance);
+  document.getElementById('bp-lt-rates').textContent = formatPrice(ltRates + ltInsurance);
   document.getElementById('bp-lt-maintenance').textContent = formatPrice(ltMaintenance);
   document.getElementById('bp-lt-net').textContent = formatPrice(ltNetIncome);
-  document.getElementById('bp-lt-gross-yield').textContent = ltGrossYield.toFixed(1) + '%';
   document.getElementById('bp-lt-net-yield').textContent = ltNetYield.toFixed(1) + '%';
 
   // ============ AIRBNB ============
@@ -1083,13 +1175,11 @@ function calculateListingBP(listing) {
 
   document.getElementById('bp-ab-nightly').textContent = formatPrice(abNightlyRate);
   document.getElementById('bp-ab-annual').textContent = formatPrice(abGrossRevenue);
-  document.getElementById('bp-ab-occupancy').textContent = rental.airbnb.occupancy + '%';
+  document.getElementById('bp-ab-occupancy').textContent = rental.airbnb.occupancy;
   document.getElementById('bp-ab-fees').textContent = formatPrice(abFees);
-  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning);
-  document.getElementById('bp-ab-utilities').textContent = formatPrice(abUtilities);
+  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning + abUtilities);
   document.getElementById('bp-ab-management').textContent = formatPrice(abManagement);
   document.getElementById('bp-ab-net').textContent = formatPrice(abNetIncome);
-  document.getElementById('bp-ab-gross-yield').textContent = abGrossYield.toFixed(1) + '%';
   document.getElementById('bp-ab-net-yield').textContent = abNetYield.toFixed(1) + '%';
 
   // ============ RECOMMENDATION ============
