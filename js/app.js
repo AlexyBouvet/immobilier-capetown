@@ -788,12 +788,14 @@ function highlightNeighborhood(id) {
 // ==================== //
 
 let listingsData = [];
+let searchUrls = {};
 
 async function loadListings() {
   try {
     const response = await fetch('data/listings.json');
     const data = await response.json();
     listingsData = data.listings;
+    searchUrls = data.searchUrls || {};
   } catch (error) {
     console.error('Error loading listings:', error);
   }
@@ -810,14 +812,17 @@ function showZoneListings(neighborhoodId, zone) {
     filtered = listingsData.filter(l => l.zone === zone);
   }
 
+  // Get the correct search URL
+  const searchUrl = searchUrls[neighborhoodId] || searchUrls.cape_town || 'https://www.property24.com/apartments-for-sale/cape-town/western-cape/432';
+
   if (filtered.length === 0) {
     container.innerHTML = `
       <div class="zone-listings-header">
         <h4>Available Listings</h4>
       </div>
       <div class="listings-empty">
-        <div class="listings-empty-text">No listings in this area</div>
-        <a href="https://www.property24.com/for-sale/cape-town/western-cape/432" target="_blank" class="search-link">
+        <div class="listings-empty-text">No listings scraped for this area yet</div>
+        <a href="${searchUrl}" target="_blank" class="search-link">
           Search on Property24
         </a>
       </div>
@@ -826,13 +831,9 @@ function showZoneListings(neighborhoodId, zone) {
     return;
   }
 
-  // Get neighborhood name for search link
-  const neighborhoodName = priceData[neighborhoodId]?.name || 'Cape Town';
-  const searchUrl = `https://www.property24.com/for-sale/${neighborhoodId.replace(/_/g, '-')}/cape-town/western-cape/432`;
-
   container.innerHTML = `
     <div class="zone-listings-header">
-      <h4>Listings (${filtered.length})</h4>
+      <h4>Real Listings (${filtered.length})</h4>
       <a href="${searchUrl}" target="_blank" class="see-all-link">See all on Property24</a>
     </div>
     <div class="zone-listings-list">
