@@ -852,39 +852,62 @@ function showZoneListings(neighborhoodId, zone) {
           yieldBadge = `<span class="listing-yield">${grossYield}%</span>`;
         }
 
-        // Calculate mini business plan
+        // Calculate mini business plan for BOTH scenarios
         let bpHtml = '';
         if (neighborhood) {
-          // Acquisition costs (transfer duty + attorney ~5%)
+          // Acquisition costs
           const transferDuty = listing.price > 1210000 ? (listing.price - 1210000) * 0.03 : 0;
           const attorneyFees = 45000;
           const totalAcquisition = listing.price + transferDuty + attorneyFees;
 
-          // Monthly income (long-term)
-          const monthlyRent = neighborhood.rental.longTerm.median * listing.size;
-          const annualRent = monthlyRent * 12;
-
-          // Monthly expenses
-          const levy = listing.size * 45; // Body corporate
-          const rates = (listing.price * 0.005) / 12; // Municipal rates
+          // Base monthly expenses (both scenarios)
+          const levy = listing.size * 45;
+          const rates = (listing.price * 0.005) / 12;
           const insurance = (listing.price * 0.002) / 12;
-          const totalExpenses = levy + rates + insurance;
+          const baseExpenses = levy + rates + insurance;
 
-          // Net calculations
-          const monthlyNet = monthlyRent - totalExpenses;
-          const annualNet = monthlyNet * 12;
-          const grossYield = ((annualRent / listing.price) * 100).toFixed(1);
-          const netYield = ((annualNet / listing.price) * 100).toFixed(1);
+          // === LONG-TERM ===
+          const ltRent = neighborhood.rental.longTerm.median * listing.size;
+          const ltExpenses = baseExpenses + (ltRent * 0.05); // +5% maintenance
+          const ltNet = ltRent - ltExpenses;
+          const ltNetYield = ((ltNet * 12 / listing.price) * 100).toFixed(1);
+
+          // === AIRBNB ===
+          const abNightly = neighborhood.rental.airbnb.nightlyRate;
+          const abOccupancy = neighborhood.rental.airbnb.occupancy / 100;
+          const abNights = 30 * abOccupancy;
+          const abGross = abNightly * abNights;
+          const abFees = abGross * 0.15; // Airbnb fees
+          const abCleaning = (abNights / 3) * 400; // R400 per turnover, avg 3 nights stay
+          const abUtilities = listing.size * 80; // R80/m²/month
+          const abManagement = (abGross - abFees) * 0.20; // 20% management
+          const abExpenses = baseExpenses + abFees + abCleaning + abUtilities + abManagement;
+          const abNet = abGross - abExpenses;
+          const abNetYield = ((abNet * 12 / listing.price) * 100).toFixed(1);
 
           bpHtml = `
-            <div class="listing-bp">
-              <div class="bp-row"><span>Acquisition totale</span><span>${formatPrice(Math.round(totalAcquisition))}</span></div>
-              <div class="bp-row"><span>Loyer estimé/mois</span><span>${formatPrice(monthlyRent)}</span></div>
-              <div class="bp-row expense"><span>Charges/mois</span><span>-${formatPrice(Math.round(totalExpenses))}</span></div>
-              <div class="bp-row net"><span>Net/mois</span><span>${formatPrice(Math.round(monthlyNet))}</span></div>
-              <div class="bp-yields">
-                <span class="gross">Brut ${grossYield}%</span>
-                <span class="net">Net ${netYield}%</span>
+            <div class="listing-bp-dual">
+              <div class="bp-header-row">
+                <span>Acquisition: ${formatPrice(Math.round(totalAcquisition))}</span>
+              </div>
+              <div class="bp-comparison">
+                <div class="bp-col lt">
+                  <div class="bp-col-title">Long-Terme</div>
+                  <div class="bp-col-income">${formatPrice(Math.round(ltRent))}/mois</div>
+                  <div class="bp-col-expense">-${formatPrice(Math.round(ltExpenses))}</div>
+                  <div class="bp-col-net">${formatPrice(Math.round(ltNet))}</div>
+                  <div class="bp-col-yield">${ltNetYield}% net</div>
+                </div>
+                <div class="bp-col ab">
+                  <div class="bp-col-title">Airbnb</div>
+                  <div class="bp-col-income">${formatPrice(Math.round(abGross))}/mois</div>
+                  <div class="bp-col-expense">-${formatPrice(Math.round(abExpenses))}</div>
+                  <div class="bp-col-net">${formatPrice(Math.round(abNet))}</div>
+                  <div class="bp-col-yield">${abNetYield}% net</div>
+                </div>
+              </div>
+              <div class="bp-winner ${parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'airbnb' : 'longterm'}">
+                ${parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'Airbnb +' + (abNetYield - ltNetYield).toFixed(1) + '%' : 'Long-terme recommandé'}
               </div>
             </div>
           `;
