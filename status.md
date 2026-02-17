@@ -221,6 +221,47 @@ Nouvel onglet "Top 5" sur la carte pour comparer les meilleurs investissements p
 
 **Acces:** Panneau info > Onglet "Top 5"
 
+### 2026-02-17 - Projection 10 ans + Taxes completes
+
+**Categorie: Outil / Fiscalite**
+
+Ajout d'un graphique de projection 10 ans et d'un recapitulatif fiscal complet dans le Business Plan.
+
+**Graphique de projection:**
+- Courbe cumulative profit/perte sur 10 ans
+- Comparaison Long-terme vs Airbnb
+- Ligne de break-even (equilibre)
+- Parametres ajustables: appreciation (defaut 5%), augmentation loyer (defaut 6%)
+
+**Point d'equilibre calcule:**
+- Prend en compte: couts d'acquisition, impot sur revenu, croissance loyer
+- Affiche l'annee ou l'investissement devient rentable
+
+**TOUTES LES TAXES (Non-Resident):**
+
+| Type | Detail | Montant |
+|------|--------|---------|
+| **ACQUISITION** | | |
+| Transfer duty | Progressive, 0% jusqu'a R1.21M | 0-11% |
+| Conveyancing | Avocat + Deeds Office | ~R45,000 |
+| **ANNUEL** | | |
+| Municipal rates | Taxe fonciere Cape Town | 0.72%/an |
+| Rental income tax | Impot sur revenu locatif | ~25% effectif |
+| **VENTE** | | |
+| Agent commission | 7% + 15% VAT | ~8% |
+| CGT | 40% du gain × taux marginal | ~18% effectif |
+| Withholding | Retenue non-resident | 7.5% du prix |
+
+**Convention France-Afrique du Sud:**
+- Les revenus locatifs sont imposes en Afrique du Sud en priorite
+- Credit d'impot disponible en France pour eviter double imposition
+- Consulter un fiscaliste pour situation personnelle
+
+**Sources:**
+- [The Africanvestor - Cape Town Property Taxes](https://theafricanvestor.com/blogs/news/cape-town-property-taxes-fees)
+- [SARS - Capital Gains Tax](https://www.sars.gov.za/types-of-tax/capital-gains-tax/)
+- [PWC Tax Summaries](https://taxsummaries.pwc.com/south-africa/individual/income-determination)
+
 ---
 
 ## Notes
