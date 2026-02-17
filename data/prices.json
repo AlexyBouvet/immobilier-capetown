@@ -43,8 +43,8 @@
         },
         "airbnb": {
           "nightlyRate": 5500,
-          "occupancy": 65,
-          "monthlyRevenue": 107250
+          "occupancy": 45,
+          "monthlyRevenue": 74250
         }
       },
       "priceIndex": 100
@@ -77,8 +77,8 @@
         },
         "airbnb": {
           "nightlyRate": 4500,
-          "occupancy": 68,
-          "monthlyRevenue": 91800
+          "occupancy": 48,
+          "monthlyRevenue": 64800
         }
       },
       "priceIndex": 95
@@ -111,8 +111,8 @@
         },
         "airbnb": {
           "nightlyRate": 4000,
-          "occupancy": 65,
-          "monthlyRevenue": 78000
+          "occupancy": 50,
+          "monthlyRevenue": 60000
         }
       },
       "priceIndex": 85
@@ -145,8 +145,8 @@
         },
         "airbnb": {
           "nightlyRate": 2800,
-          "occupancy": 58,
-          "monthlyRevenue": 48720
+          "occupancy": 52,
+          "monthlyRevenue": 43680
         }
       },
       "priceIndex": 70
@@ -179,8 +179,8 @@
         },
         "airbnb": {
           "nightlyRate": 2200,
-          "occupancy": 62,
-          "monthlyRevenue": 40920
+          "occupancy": 54,
+          "monthlyRevenue": 35640
         }
       },
       "priceIndex": 56
@@ -213,8 +213,8 @@
         },
         "airbnb": {
           "nightlyRate": 1800,
-          "occupancy": 65,
-          "monthlyRevenue": 35100
+          "occupancy": 55,
+          "monthlyRevenue": 29700
         }
       },
       "priceIndex": 55
@@ -247,8 +247,8 @@
         },
         "airbnb": {
           "nightlyRate": 1600,
-          "occupancy": 63,
-          "monthlyRevenue": 30240
+          "occupancy": 53,
+          "monthlyRevenue": 25440
         }
       },
       "priceIndex": 50
@@ -281,8 +281,8 @@
         },
         "airbnb": {
           "nightlyRate": 1700,
-          "occupancy": 65,
-          "monthlyRevenue": 33150
+          "occupancy": 55,
+          "monthlyRevenue": 28050
         }
       },
       "priceIndex": 50
@@ -315,8 +315,8 @@
         },
         "airbnb": {
           "nightlyRate": 1500,
-          "occupancy": 68,
-          "monthlyRevenue": 30600
+          "occupancy": 58,
+          "monthlyRevenue": 26100
         }
       },
       "priceIndex": 48
@@ -349,8 +349,8 @@
         },
         "airbnb": {
           "nightlyRate": 1200,
-          "occupancy": 60,
-          "monthlyRevenue": 21600
+          "occupancy": 45,
+          "monthlyRevenue": 16200
         }
       },
       "priceIndex": 42
@@ -383,8 +383,8 @@
         },
         "airbnb": {
           "nightlyRate": 1100,
-          "occupancy": 58,
-          "monthlyRevenue": 19140
+          "occupancy": 48,
+          "monthlyRevenue": 15840
         }
       },
       "priceIndex": 38
@@ -417,8 +417,8 @@
         },
         "airbnb": {
           "nightlyRate": 1400,
-          "occupancy": 70,
-          "monthlyRevenue": 29400
+          "occupancy": 60,
+          "monthlyRevenue": 25200
         }
       },
       "priceIndex": 42
@@ -451,8 +451,8 @@
         },
         "airbnb": {
           "nightlyRate": 1300,
-          "occupancy": 65,
-          "monthlyRevenue": 25350
+          "occupancy": 52,
+          "monthlyRevenue": 20280
         }
       },
       "priceIndex": 43
@@ -485,8 +485,8 @@
         },
         "airbnb": {
           "nightlyRate": 1400,
-          "occupancy": 62,
-          "monthlyRevenue": 26040
+          "occupancy": 50,
+          "monthlyRevenue": 21000
         }
       },
       "priceIndex": 46
@@ -519,8 +519,8 @@
         },
         "airbnb": {
           "nightlyRate": 1250,
-          "occupancy": 60,
-          "monthlyRevenue": 22500
+          "occupancy": 48,
+          "monthlyRevenue": 18000
         }
       },
       "priceIndex": 44
@@ -553,8 +553,8 @@
         },
         "airbnb": {
           "nightlyRate": 1100,
-          "occupancy": 58,
-          "monthlyRevenue": 19140
+          "occupancy": 46,
+          "monthlyRevenue": 15180
         }
       },
       "priceIndex": 38
@@ -587,8 +587,8 @@
         },
         "airbnb": {
           "nightlyRate": 800,
-          "occupancy": 55,
-          "monthlyRevenue": 13200
+          "occupancy": 42,
+          "monthlyRevenue": 10080
         }
       },
       "priceIndex": 18
@@ -621,8 +621,8 @@
         },
         "airbnb": {
           "nightlyRate": 850,
-          "occupancy": 55,
-          "monthlyRevenue": 14025
+          "occupancy": 44,
+          "monthlyRevenue": 11220
         }
       },
       "priceIndex": 22
@@ -655,8 +655,8 @@
         },
         "airbnb": {
           "nightlyRate": 950,
-          "occupancy": 60,
-          "monthlyRevenue": 17100
+          "occupancy": 52,
+          "monthlyRevenue": 14820
         }
       },
       "priceIndex": 20
@@ -689,8 +689,8 @@
         },
         "airbnb": {
           "nightlyRate": 750,
-          "occupancy": 55,
-          "monthlyRevenue": 12375
+          "occupancy": 45,
+          "monthlyRevenue": 10125
         }
       },
       "priceIndex": 12
@@ -723,8 +723,8 @@
         },
         "airbnb": {
           "nightlyRate": 900,
-          "occupancy": 62,
-          "monthlyRevenue": 16740
+          "occupancy": 50,
+          "monthlyRevenue": 13500
         }
       },
       "priceIndex": 18
@@ -757,8 +757,8 @@
         },
         "airbnb": {
           "nightlyRate": 800,
-          "occupancy": 58,
-          "monthlyRevenue": 13920
+          "occupancy": 46,
+          "monthlyRevenue": 11040
         }
       },
       "priceIndex": 16
@@ -791,8 +791,8 @@
         },
         "airbnb": {
           "nightlyRate": 850,
-          "occupancy": 58,
-          "monthlyRevenue": 14790
+          "occupancy": 45,
+          "monthlyRevenue": 11475
         }
       },
       "priceIndex": 18
@@ -825,8 +825,8 @@
         },
         "airbnb": {
           "nightlyRate": 1700,
-          "occupancy": 58,
-          "monthlyRevenue": 29580
+          "occupancy": 42,
+          "monthlyRevenue": 21420
         }
       },
       "priceIndex": 38
@@ -859,8 +859,8 @@
         },
         "airbnb": {
           "nightlyRate": 1500,
-          "occupancy": 60,
-          "monthlyRevenue": 27000
+          "occupancy": 44,
+          "monthlyRevenue": 19800
         }
       },
       "priceIndex": 34
@@ -893,8 +893,8 @@
         },
         "airbnb": {
           "nightlyRate": 1200,
-          "occupancy": 62,
-          "monthlyRevenue": 22320
+          "occupancy": 50,
+          "monthlyRevenue": 18000
         }
       },
       "priceIndex": 18
@@ -927,8 +927,8 @@
         },
         "airbnb": {
           "nightlyRate": 1400,
-          "occupancy": 65,
-          "monthlyRevenue": 27300
+          "occupancy": 52,
+          "monthlyRevenue": 21840
         }
       },
       "priceIndex": 25
@@ -961,8 +961,8 @@
         },
         "airbnb": {
           "nightlyRate": 1800,
-          "occupancy": 70,
-          "monthlyRevenue": 37800
+          "occupancy": 55,
+          "monthlyRevenue": 29700
         }
       },
       "priceIndex": 32
@@ -995,8 +995,8 @@
         },
         "airbnb": {
           "nightlyRate": 1100,
-          "occupancy": 58,
-          "monthlyRevenue": 19140
+          "occupancy": 45,
+          "monthlyRevenue": 14850
         }
       },
       "priceIndex": 20
@@ -1029,8 +1029,8 @@
         },
         "airbnb": {
           "nightlyRate": 950,
-          "occupancy": 55,
-          "monthlyRevenue": 15675
+          "occupancy": 42,
+          "monthlyRevenue": 11970
         }
       },
       "priceIndex": 18
