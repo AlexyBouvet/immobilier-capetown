@@ -39,9 +39,8 @@ function getZoneLabel(zone) {
     'city_bowl_upper': 'City Bowl (Upper)',
     'eastern': 'Eastern Suburbs',
     'south_peninsula': 'South Peninsula',
-    'southern_suburbs': 'Southern Suburbs',
-    'southern_suburbs_premium': 'Southern Suburbs (Premium)',
-    'southern_suburbs_education': 'Southern Suburbs (Education Belt)'
+    'southern_suburbs_education': 'Southern Suburbs (Education Belt)',
+    'false_bay': 'False Bay Coast'
   };
   return labels[zone] || zone;
 }
