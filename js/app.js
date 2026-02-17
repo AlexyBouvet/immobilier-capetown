@@ -135,7 +135,6 @@ function updateInfoPanel(properties) {
     return;
   }
 
-  const priceInfo = document.getElementById('price-info');
   const purchase = data.purchase;
   const rental = data.rental;
 
@@ -143,69 +142,50 @@ function updateInfoPanel(properties) {
   const annualRental = rental.longTerm.median * 12;
   const grossYield = ((annualRental / purchase.resale.median) * 100).toFixed(1);
 
-  priceInfo.innerHTML = `
-    <h3>${data.name}</h3>
-
-    <div class="section-title">Purchase Price (per m²)</div>
-    <div class="price-grid">
-      <div class="price-section">
-        <h4>New Development</h4>
-        <p class="price-range new">
-          ${formatPrice(purchase.new.min)} - ${formatPrice(purchase.new.max)}
-        </p>
-        <p class="price-median">Median: ${formatPrice(purchase.new.median)}</p>
-      </div>
-      <div class="price-section">
-        <h4>Resale</h4>
-        <p class="price-range resale">
-          ${formatPrice(purchase.resale.min)} - ${formatPrice(purchase.resale.max)}
-        </p>
-        <p class="price-median">Median: ${formatPrice(purchase.resale.median)}</p>
-      </div>
-    </div>
-
-    <div class="section-title">Rental (per m²/month)</div>
-    <div class="price-grid">
-      <div class="price-section">
-        <h4>Long-Term</h4>
-        <p class="price-range rental-long">${formatPrice(rental.longTerm.median)}</p>
-        <p class="price-median">${formatPrice(rental.longTerm.min)} - ${formatPrice(rental.longTerm.max)}</p>
-      </div>
-      <div class="price-section">
-        <h4>Short-Term</h4>
-        <p class="price-range rental-short">${formatPrice(rental.shortTerm.median)}</p>
-        <p class="price-median">${formatPrice(rental.shortTerm.min)} - ${formatPrice(rental.shortTerm.max)}</p>
-      </div>
-    </div>
-
-    <div class="section-title">Airbnb Estimate</div>
-    <div class="airbnb-section">
-      <div class="airbnb-stat">
-        <span class="airbnb-label">Nightly Rate</span>
-        <span class="airbnb-value">${formatPrice(rental.airbnb.nightlyRate)}</span>
-      </div>
-      <div class="airbnb-stat">
-        <span class="airbnb-label">Occupancy</span>
-        <span class="airbnb-value">${rental.airbnb.occupancy}%</span>
-      </div>
-      <div class="airbnb-stat">
-        <span class="airbnb-label">Monthly Revenue</span>
-        <span class="airbnb-value highlight">${formatPrice(rental.airbnb.monthlyRevenue)}</span>
-      </div>
-    </div>
-
-    <div class="yield-badge">
-      <span>Gross Yield: ${grossYield}%</span>
-    </div>
+  // Update zone header
+  document.getElementById('zone-title').textContent = data.name;
+  document.getElementById('zone-badges').innerHTML = `
+    <span class="yield-badge">Gross Yield: ${grossYield}%</span>
     <span class="zone-badge">${getZoneLabel(data.zone)}</span>
-
-    <button class="bp-open-btn" onclick="openBPModal('${id}')">
-      Open Business Plan
-    </button>
   `;
 
-  document.querySelector('.info-panel .instruction').style.display = 'none';
-  document.getElementById('price-info').style.display = 'block';
+  // Hide instruction, show stats
+  document.getElementById('zone-stats').innerHTML = '';
+
+  // Build price cards
+  document.getElementById('zone-price-info').innerHTML = `
+    <div class="price-card">
+      <h4>New Development (per m²)</h4>
+      <div class="price-value">${formatPrice(purchase.new.min)} - ${formatPrice(purchase.new.max)}</div>
+      <div class="price-sub">Median: ${formatPrice(purchase.new.median)}</div>
+    </div>
+    <div class="price-card">
+      <h4>Resale (per m²)</h4>
+      <div class="price-value">${formatPrice(purchase.resale.min)} - ${formatPrice(purchase.resale.max)}</div>
+      <div class="price-sub">Median: ${formatPrice(purchase.resale.median)}</div>
+    </div>
+    <div class="price-card">
+      <h4>Long-Term Rent (per m²/month)</h4>
+      <div class="price-value">${formatPrice(rental.longTerm.median)}</div>
+      <div class="price-sub">${formatPrice(rental.longTerm.min)} - ${formatPrice(rental.longTerm.max)}</div>
+    </div>
+    <div class="price-card">
+      <h4>Airbnb Nightly Rate</h4>
+      <div class="price-value">${formatPrice(rental.airbnb.nightlyRate)}</div>
+      <div class="price-sub">Occupancy: ${rental.airbnb.occupancy}%</div>
+    </div>
+    <div class="price-card highlight">
+      <h4>Airbnb Monthly Revenue</h4>
+      <div class="price-value">${formatPrice(rental.airbnb.monthlyRevenue)}</div>
+      <div class="price-sub">Based on ${rental.airbnb.occupancy}% occupancy</div>
+    </div>
+    <div class="price-card">
+      <h4>Open Full Business Plan</h4>
+      <button class="listing-bp-btn" onclick="openBPModal('${id}')" style="margin-top:8px">
+        Calculate ROI
+      </button>
+    </div>
+  `;
 
   // Show contextual listings for this neighborhood
   showZoneListings(id, data.zone);
@@ -213,9 +193,11 @@ function updateInfoPanel(properties) {
 
 // Reset info panel to default state
 function resetInfoPanel() {
-  document.getElementById('price-info').style.display = 'none';
-  document.getElementById('zone-listings').style.display = 'none';
-  document.querySelector('.info-panel .instruction').style.display = 'block';
+  document.getElementById('zone-title').textContent = 'Select a zone on the map';
+  document.getElementById('zone-badges').innerHTML = '';
+  document.getElementById('zone-stats').innerHTML = '<p class="zone-instruction">Click on a neighborhood in the map to see price data, rental yields, and available listings.</p>';
+  document.getElementById('zone-price-info').innerHTML = '';
+  document.getElementById('zone-listings').innerHTML = '';
 }
 
 // Close selection when clicking on map (not on a feature)
@@ -718,10 +700,12 @@ document.addEventListener('keydown', function(e) {
 
 function showTab(tabName) {
   // Update tab buttons
-  document.querySelectorAll('.panel-tab').forEach(tab => {
+  document.querySelectorAll('.main-tab').forEach(tab => {
     tab.classList.remove('active');
   });
-  event.target.classList.add('active');
+  if (event && event.target) {
+    event.target.classList.add('active');
+  }
 
   // Update tab content
   document.querySelectorAll('.tab-content').forEach(content => {
@@ -733,6 +717,47 @@ function showTab(tabName) {
   if (tabName === 'rankings') {
     calculateRankings();
   }
+
+  // Populate all listings when switching to that tab
+  if (tabName === 'all-listings') {
+    populateAllListings();
+  }
+}
+
+function populateAllListings() {
+  const container = document.getElementById('all-listings-grid');
+  if (!container || !listingsData || listingsData.length === 0) return;
+
+  filterListings();
+}
+
+function filterListings() {
+  const container = document.getElementById('all-listings-grid');
+  if (!container || !listingsData) return;
+
+  const zoneFilter = document.getElementById('filter-zone').value;
+  const priceFilter = parseInt(document.getElementById('filter-price').value);
+  const bedsFilter = document.getElementById('filter-beds').value;
+
+  let filtered = listingsData.filter(listing => {
+    if (zoneFilter !== 'all' && listing.neighborhood !== zoneFilter) return false;
+    if (listing.price > priceFilter) return false;
+    if (bedsFilter !== 'all' && listing.bedrooms !== parseInt(bedsFilter)) return false;
+    return true;
+  });
+
+  // Sort by price
+  filtered.sort((a, b) => a.price - b.price);
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="zone-instruction">No listings match your filters.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(listing => {
+    const neighborhood = priceData[listing.neighborhood];
+    return createListingCard(listing, neighborhood);
+  }).join('');
 }
 
 function calculateRankings() {
@@ -840,6 +865,93 @@ async function loadListings() {
   }
 }
 
+// Create a listing card HTML
+function createListingCard(listing, neighborhood) {
+  const pricePerSqm = Math.round(listing.price / listing.size);
+
+  // Calculate mini business plan for BOTH scenarios
+  let bpHtml = '';
+  if (neighborhood) {
+    // Acquisition costs (using proper progressive transfer duty)
+    const transferDuty = calculateTransferDuty(listing.price);
+    const attorneyFees = 45000;
+    const totalAcquisition = listing.price + transferDuty + attorneyFees;
+
+    // Base monthly expenses (both scenarios)
+    const levy = listing.size * 45;
+    const rates = (listing.price * 0.005) / 12;
+    const insurance = (listing.price * 0.002) / 12;
+    const baseExpenses = levy + rates + insurance;
+
+    // === LONG-TERM ===
+    const ltRent = neighborhood.rental.longTerm.median * listing.size;
+    const ltExpenses = baseExpenses + (ltRent * 0.05); // +5% maintenance
+    const ltNet = ltRent - ltExpenses;
+    const ltNetYield = ((ltNet * 12 / listing.price) * 100).toFixed(1);
+
+    // === AIRBNB ===
+    const abNightly = neighborhood.rental.airbnb.nightlyRate;
+    const abOccupancy = neighborhood.rental.airbnb.occupancy / 100;
+    const abNights = 30 * abOccupancy;
+    const abGross = abNightly * abNights;
+    const abFees = abGross * 0.15; // Airbnb fees
+    const abCleaning = (abNights / 3) * 400; // R400 per turnover, avg 3 nights stay
+    const abUtilities = listing.size * 80; // R80/m²/month
+    const abManagement = (abGross - abFees) * 0.20; // 20% management
+    const abExpenses = baseExpenses + abFees + abCleaning + abUtilities + abManagement;
+    const abNet = abGross - abExpenses;
+    const abNetYield = ((abNet * 12 / listing.price) * 100).toFixed(1);
+
+    bpHtml = `
+      <div class="listing-bp-dual">
+        <div class="bp-header-row">
+          <span>Acquisition: ${formatPrice(Math.round(totalAcquisition))}</span>
+        </div>
+        <div class="bp-comparison">
+          <div class="bp-col lt">
+            <div class="bp-col-title">Long-Terme</div>
+            <div class="bp-col-income">${formatPrice(Math.round(ltRent))}/mois</div>
+            <div class="bp-col-expense">-${formatPrice(Math.round(ltExpenses))}</div>
+            <div class="bp-col-net">${formatPrice(Math.round(ltNet))}</div>
+            <div class="bp-col-yield">${ltNetYield}% net</div>
+          </div>
+          <div class="bp-col ab">
+            <div class="bp-col-title">Airbnb</div>
+            <div class="bp-col-income">${formatPrice(Math.round(abGross))}/mois</div>
+            <div class="bp-col-expense">-${formatPrice(Math.round(abExpenses))}</div>
+            <div class="bp-col-net">${formatPrice(Math.round(abNet))}</div>
+            <div class="bp-col-yield">${abNetYield}% net</div>
+          </div>
+        </div>
+        <div class="bp-winner ${parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'airbnb' : 'longterm'}">
+          ${parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'Airbnb +' + (abNetYield - ltNetYield).toFixed(1) + '%' : 'Long-terme recommandé'}
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="listing-card">
+      <div class="listing-header">
+        <div class="listing-title">${listing.title}</div>
+        <div class="listing-price">${formatPrice(listing.price)}</div>
+      </div>
+      <div class="listing-specs">
+        <span>${listing.size}m²</span>
+        <span>${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + '-bed'}</span>
+        <span>R${(pricePerSqm / 1000).toFixed(0)}k/m²</span>
+        ${listing.parking > 0 ? `<span>P${listing.parking}</span>` : ''}
+        ${listing.status ? `<span class="status-${listing.status.toLowerCase().replace(' ', '-')}">${listing.status}</span>` : ''}
+      </div>
+      ${bpHtml}
+      <div class="listing-actions">
+        <button class="listing-bp-btn" onclick="openListingBP('${listing.id}')">Open BP</button>
+        <a href="${listing.url}" target="_blank" class="listing-link">View Listing</a>
+      </div>
+    </div>
+  `;
+}
+
 function showZoneListings(neighborhoodId, zone) {
   const container = document.getElementById('zone-listings');
 
@@ -852,126 +964,25 @@ function showZoneListings(neighborhoodId, zone) {
   }
 
   // Get the correct search URL
-  const searchUrl = searchUrls[neighborhoodId] || searchUrls.cape_town || 'https://www.property24.com/apartments-for-sale/cape-town/western-cape/432';
+  const searchUrl = searchUrls[neighborhoodId] || searchUrls.cape_town;
 
   if (filtered.length === 0) {
     container.innerHTML = `
-      <div class="zone-listings-header">
-        <h4>Available Listings</h4>
-      </div>
-      <div class="listings-empty">
-        <div class="listings-empty-text">No listings scraped for this area yet</div>
-        <a href="${searchUrl}" target="_blank" class="search-link">
-          Search on Property24
-        </a>
+      <div class="zone-instruction">
+        No listings available for this zone.
+        <a href="${searchUrl}" target="_blank" style="display:block; margin-top:8px; color:var(--accent);">Search on Private Property</a>
       </div>
     `;
-    container.style.display = 'block';
     return;
   }
 
-  container.innerHTML = `
-    <div class="zone-listings-header">
-      <h4>Real Listings (${filtered.length})</h4>
-      <a href="${searchUrl}" target="_blank" class="see-all-link">See all on Property24</a>
-    </div>
-    <div class="zone-listings-list">
-      ${filtered.slice(0, 5).map(listing => {
-        const pricePerSqm = Math.round(listing.price / listing.size);
-        const neighborhood = priceData[listing.neighborhood];
+  // Sort by price
+  filtered.sort((a, b) => a.price - b.price);
 
-        let yieldBadge = '';
-        if (neighborhood) {
-          const annualRent = neighborhood.rental.longTerm.median * listing.size * 12;
-          const grossYield = ((annualRent / listing.price) * 100).toFixed(1);
-          yieldBadge = `<span class="listing-yield">${grossYield}%</span>`;
-        }
-
-        // Calculate mini business plan for BOTH scenarios
-        let bpHtml = '';
-        if (neighborhood) {
-          // Acquisition costs (using proper progressive transfer duty)
-          const transferDuty = calculateTransferDuty(listing.price);
-          const attorneyFees = 45000;
-          const totalAcquisition = listing.price + transferDuty + attorneyFees;
-
-          // Base monthly expenses (both scenarios)
-          const levy = listing.size * 45;
-          const rates = (listing.price * 0.005) / 12;
-          const insurance = (listing.price * 0.002) / 12;
-          const baseExpenses = levy + rates + insurance;
-
-          // === LONG-TERM ===
-          const ltRent = neighborhood.rental.longTerm.median * listing.size;
-          const ltExpenses = baseExpenses + (ltRent * 0.05); // +5% maintenance
-          const ltNet = ltRent - ltExpenses;
-          const ltNetYield = ((ltNet * 12 / listing.price) * 100).toFixed(1);
-
-          // === AIRBNB ===
-          const abNightly = neighborhood.rental.airbnb.nightlyRate;
-          const abOccupancy = neighborhood.rental.airbnb.occupancy / 100;
-          const abNights = 30 * abOccupancy;
-          const abGross = abNightly * abNights;
-          const abFees = abGross * 0.15; // Airbnb fees
-          const abCleaning = (abNights / 3) * 400; // R400 per turnover, avg 3 nights stay
-          const abUtilities = listing.size * 80; // R80/m²/month
-          const abManagement = (abGross - abFees) * 0.20; // 20% management
-          const abExpenses = baseExpenses + abFees + abCleaning + abUtilities + abManagement;
-          const abNet = abGross - abExpenses;
-          const abNetYield = ((abNet * 12 / listing.price) * 100).toFixed(1);
-
-          bpHtml = `
-            <div class="listing-bp-dual">
-              <div class="bp-header-row">
-                <span>Acquisition: ${formatPrice(Math.round(totalAcquisition))}</span>
-              </div>
-              <div class="bp-comparison">
-                <div class="bp-col lt">
-                  <div class="bp-col-title">Long-Terme</div>
-                  <div class="bp-col-income">${formatPrice(Math.round(ltRent))}/mois</div>
-                  <div class="bp-col-expense">-${formatPrice(Math.round(ltExpenses))}</div>
-                  <div class="bp-col-net">${formatPrice(Math.round(ltNet))}</div>
-                  <div class="bp-col-yield">${ltNetYield}% net</div>
-                </div>
-                <div class="bp-col ab">
-                  <div class="bp-col-title">Airbnb</div>
-                  <div class="bp-col-income">${formatPrice(Math.round(abGross))}/mois</div>
-                  <div class="bp-col-expense">-${formatPrice(Math.round(abExpenses))}</div>
-                  <div class="bp-col-net">${formatPrice(Math.round(abNet))}</div>
-                  <div class="bp-col-yield">${abNetYield}% net</div>
-                </div>
-              </div>
-              <div class="bp-winner ${parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'airbnb' : 'longterm'}">
-                ${parseFloat(abNetYield) > parseFloat(ltNetYield) ? 'Airbnb +' + (abNetYield - ltNetYield).toFixed(1) + '%' : 'Long-terme recommandé'}
-              </div>
-            </div>
-          `;
-        }
-
-        return `
-          <div class="listing-card">
-            <div class="listing-header">
-              <div class="listing-title">${listing.title}</div>
-              <div class="listing-price">${formatPrice(listing.price)}</div>
-            </div>
-            <div class="listing-specs">
-              <span>${listing.size}m²</span>
-              <span>${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + '-bed'}</span>
-              <span>R${(pricePerSqm / 1000).toFixed(0)}k/m²</span>
-              ${listing.parking > 0 ? `<span>P${listing.parking}</span>` : ''}
-              ${listing.status ? `<span class="status-${listing.status.toLowerCase().replace(' ', '-')}">${listing.status}</span>` : ''}
-            </div>
-            ${bpHtml}
-            <div class="listing-actions" style="display:flex !important; margin-top:10px; padding:10px; background:#f0f0f0; border:2px solid #0066cc;">
-              <button class="listing-bp-btn" onclick="openListingBP('${listing.id}')" style="flex:1; padding:8px; background:#0066cc; color:white; border:none; cursor:pointer; font-weight:bold;">OPEN BP</button>
-              <a href="${listing.url}" target="_blank" class="listing-link" style="flex:1; padding:8px; text-align:center; background:white; border:1px solid #ccc; text-decoration:none; color:#333;">Voir annonce</a>
-            </div>
-          </div>
-        `;
-      }).join('')}
-    </div>
-  `;
-  container.style.display = 'block';
+  container.innerHTML = filtered.map(listing => {
+    const neighborhood = priceData[listing.neighborhood];
+    return createListingCard(listing, neighborhood);
+  }).join('');
 }
 
 // Open BP modal for a specific listing

@@ -9,70 +9,134 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div id="map"></div>
+  <!-- HEADER -->
+  <header class="site-header">
+    <h1>Cape Town Property Investment</h1>
+    <span class="header-subtitle">Non-Resident Investor Analysis</span>
+  </header>
 
-  <div id="info-panel" class="info-panel">
-    <div class="panel-tabs">
-      <button class="panel-tab active" onclick="showTab('info')">Zone Info</button>
-      <button class="panel-tab" onclick="showTab('rankings')">Top 5</button>
-    </div>
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+    <!-- LEFT SIDEBAR: Map -->
+    <aside class="map-sidebar">
+      <div class="map-container">
+        <div id="map"></div>
+      </div>
+      <div class="legend">
+        <h4>Price per m² (ZAR)</h4>
+        <div class="legend-item"><span class="color-box" style="background:#2ECC71"></span><span>R24k - R35k</span></div>
+        <div class="legend-item"><span class="color-box" style="background:#F1C40F"></span><span>R35k - R50k</span></div>
+        <div class="legend-item"><span class="color-box" style="background:#F39C12"></span><span>R50k - R70k</span></div>
+        <div class="legend-item"><span class="color-box" style="background:#E67E22"></span><span>R70k - R100k</span></div>
+        <div class="legend-item"><span class="color-box" style="background:#E74C3C"></span><span>R100k - R140k</span></div>
+        <div class="legend-item"><span class="color-box" style="background:#8E44AD"></span><span>R140k+</span></div>
+      </div>
+      <div class="map-instructions">
+        Click a zone to view listings
+      </div>
+    </aside>
 
-    <div id="tab-info" class="tab-content active">
-      <h2>Cape Town Property Prices</h2>
-      <p class="instruction">Click on a neighborhood to see details and listings</p>
-      <div id="price-info"></div>
-      <div id="zone-listings" class="zone-listings"></div>
-    </div>
-
-    <div id="tab-rankings" class="tab-content">
-      <h2>Investment Rankings</h2>
-      <p class="rankings-subtitle">Top 5 neighborhoods by net yield (35m² apartment)</p>
-
-      <div class="rankings-grid">
-        <div class="ranking-card">
-          <h4>Long-Term + Resale</h4>
-          <ol id="rank-lt-resale" class="ranking-list"></ol>
-        </div>
-
-        <div class="ranking-card">
-          <h4>Long-Term + New</h4>
-          <ol id="rank-lt-new" class="ranking-list"></ol>
-        </div>
-
-        <div class="ranking-card">
-          <h4>Airbnb + Resale</h4>
-          <ol id="rank-ab-resale" class="ranking-list"></ol>
-        </div>
-
-        <div class="ranking-card">
-          <h4>Airbnb + New</h4>
-          <ol id="rank-ab-new" class="ranking-list"></ol>
-        </div>
+    <!-- MAIN CONTENT -->
+    <main class="content-area">
+      <!-- TABS -->
+      <div class="main-tabs">
+        <button class="main-tab active" onclick="showTab('zone')">Selected Zone</button>
+        <button class="main-tab" onclick="showTab('rankings')">Top 5 Rankings</button>
+        <button class="main-tab" onclick="showTab('all-listings')">All Listings</button>
       </div>
 
-      <div class="rankings-note">
-        <strong>Note:</strong> Net yield includes all costs (levy, rates, insurance, fees, management).
-        Airbnb assumes average occupancy - top performers can achieve higher yields.
-      </div>
-    </div>
+      <!-- TAB: Selected Zone -->
+      <section id="tab-zone" class="tab-content active">
+        <div class="zone-header">
+          <h2 id="zone-title">Select a zone on the map</h2>
+          <div id="zone-badges" class="zone-badges"></div>
+        </div>
 
+        <div id="zone-stats" class="zone-stats">
+          <p class="zone-instruction">Click on a neighborhood in the map to see price data, rental yields, and available listings.</p>
+        </div>
+
+        <div id="zone-price-info" class="zone-price-grid"></div>
+
+        <div id="zone-listings" class="listings-grid"></div>
+      </section>
+
+      <!-- TAB: Rankings -->
+      <section id="tab-rankings" class="tab-content">
+        <h2>Investment Rankings</h2>
+        <p class="section-subtitle">Top 5 neighborhoods by net yield (35m² apartment)</p>
+
+        <div class="rankings-grid">
+          <div class="ranking-card">
+            <h4>Long-Term + Resale</h4>
+            <ol id="rank-lt-resale" class="ranking-list"></ol>
+          </div>
+          <div class="ranking-card">
+            <h4>Long-Term + New</h4>
+            <ol id="rank-lt-new" class="ranking-list"></ol>
+          </div>
+          <div class="ranking-card">
+            <h4>Airbnb + Resale</h4>
+            <ol id="rank-ab-resale" class="ranking-list"></ol>
+          </div>
+          <div class="ranking-card">
+            <h4>Airbnb + New</h4>
+            <ol id="rank-ab-new" class="ranking-list"></ol>
+          </div>
+        </div>
+
+        <div class="rankings-note">
+          <strong>Note:</strong> Net yield includes all costs (levy, rates, insurance, fees, management).
+          Airbnb assumes average occupancy - top performers can achieve higher yields.
+        </div>
+      </section>
+
+      <!-- TAB: All Listings -->
+      <section id="tab-all-listings" class="tab-content">
+        <h2>All Available Listings</h2>
+        <p class="section-subtitle">22 properties from Private Property</p>
+
+        <div class="listings-filters">
+          <div class="filter-group">
+            <label>Zone</label>
+            <select id="filter-zone" onchange="filterListings()">
+              <option value="all">All Zones</option>
+              <option value="table_view">Table View</option>
+              <option value="milnerton">Milnerton</option>
+              <option value="big_bay">Big Bay</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Max Price</label>
+            <select id="filter-price" onchange="filterListings()">
+              <option value="999999999">Any</option>
+              <option value="1000000">Under R1M</option>
+              <option value="1250000">Under R1.25M</option>
+              <option value="1500000">Under R1.5M</option>
+              <option value="2000000">Under R2M</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Bedrooms</label>
+            <select id="filter-beds" onchange="filterListings()">
+              <option value="all">Any</option>
+              <option value="1">1 Bed</option>
+              <option value="2">2 Bed</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="all-listings-grid" class="listings-grid"></div>
+      </section>
+    </main>
   </div>
 
-  <div id="legend" class="legend">
-    <h4>Price per m² (ZAR)</h4>
-    <div class="legend-item"><span class="color-box" style="background:#2ECC71"></span><span>R24k - R35k</span></div>
-    <div class="legend-item"><span class="color-box" style="background:#F1C40F"></span><span>R35k - R50k</span></div>
-    <div class="legend-item"><span class="color-box" style="background:#F39C12"></span><span>R50k - R70k</span></div>
-    <div class="legend-item"><span class="color-box" style="background:#E67E22"></span><span>R70k - R100k</span></div>
-    <div class="legend-item"><span class="color-box" style="background:#E74C3C"></span><span>R100k - R140k</span></div>
-    <div class="legend-item"><span class="color-box" style="background:#8E44AD"></span><span>R140k+</span></div>
-  </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    Data: The Africanvestor, Private Property, Lightstone, Airbnb (Feb 2026)
+  </footer>
 
-  <div id="data-source" class="data-source">
-    Data: The Africanvestor, Property24, Lightstone, Airbnb (Feb 2026)
-  </div>
-
-  <!-- Mini Business Plan Modal -->
+  <!-- BP Modal (unchanged) -->
   <div id="bp-modal" class="bp-modal">
     <div class="bp-modal-content">
       <button class="bp-close" onclick="closeBPModal()">&times;</button>
