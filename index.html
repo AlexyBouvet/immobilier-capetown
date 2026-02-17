@@ -11,9 +11,48 @@
   <div id="map"></div>
 
   <div id="info-panel" class="info-panel">
-    <h2>Cape Town Property Prices</h2>
-    <p class="instruction">Hover over a neighborhood to see prices</p>
-    <div id="price-info"></div>
+    <div class="panel-tabs">
+      <button class="panel-tab active" onclick="showTab('info')">Info</button>
+      <button class="panel-tab" onclick="showTab('rankings')">Top 5</button>
+    </div>
+
+    <div id="tab-info" class="tab-content active">
+      <h2>Cape Town Property Prices</h2>
+      <p class="instruction">Hover over a neighborhood to see prices</p>
+      <div id="price-info"></div>
+    </div>
+
+    <div id="tab-rankings" class="tab-content">
+      <h2>Investment Rankings</h2>
+      <p class="rankings-subtitle">Top 5 neighborhoods by net yield (35m² apartment)</p>
+
+      <div class="rankings-grid">
+        <div class="ranking-card">
+          <h4>🏠 Long-Term + Resale</h4>
+          <ol id="rank-lt-resale" class="ranking-list"></ol>
+        </div>
+
+        <div class="ranking-card">
+          <h4>🏠 Long-Term + New</h4>
+          <ol id="rank-lt-new" class="ranking-list"></ol>
+        </div>
+
+        <div class="ranking-card">
+          <h4>✈️ Airbnb + Resale</h4>
+          <ol id="rank-ab-resale" class="ranking-list"></ol>
+        </div>
+
+        <div class="ranking-card">
+          <h4>✈️ Airbnb + New</h4>
+          <ol id="rank-ab-new" class="ranking-list"></ol>
+        </div>
+      </div>
+
+      <div class="rankings-note">
+        <strong>Note:</strong> Net yield includes all costs (levy, rates, insurance, fees, management).
+        Airbnb assumes average occupancy - top performers can achieve higher yields.
+      </div>
+    </div>
   </div>
 
   <div id="legend" class="legend">

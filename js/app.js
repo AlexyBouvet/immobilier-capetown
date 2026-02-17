@@ -466,3 +466,113 @@ document.addEventListener('keydown', function(e) {
     closeBPModal();
   }
 });
+
+// ==================== //
+// Rankings Tab         //
+// ==================== //
+
+function showTab(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.panel-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  event.target.classList.add('active');
+
+  // Update tab content
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  document.getElementById('tab-' + tabName).classList.add('active');
+
+  // Calculate rankings when switching to rankings tab
+  if (tabName === 'rankings') {
+    calculateRankings();
+  }
+}
+
+function calculateRankings() {
+  if (!priceData || Object.keys(priceData).length === 0) return;
+
+  const size = 35; // 35m² apartment
+  const rankings = {
+    ltResale: [],
+    ltNew: [],
+    abResale: [],
+    abNew: []
+  };
+
+  // Calculate yields for all neighborhoods
+  Object.entries(priceData).forEach(([id, data]) => {
+    const purchase = data.purchase;
+    const rental = data.rental;
+
+    // For each purchase type (resale and new)
+    ['resale', 'new'].forEach(purchaseType => {
+      const pricePerSqm = purchase[purchaseType].median;
+      const totalPrice = pricePerSqm * size;
+
+      // Long-term calculation
+      const ltRent = rental.longTerm.median * size;
+      const ltAnnual = ltRent * 12 * 0.95; // 95% occupancy
+      const ltLevy = size * 45 * 12;
+      const ltRates = totalPrice * 0.005;
+      const ltInsurance = totalPrice * 0.002;
+      const ltMaintenance = ltAnnual * 0.05;
+      const ltNet = ltAnnual - ltLevy - ltRates - ltInsurance - ltMaintenance;
+      const ltNetYield = (ltNet / totalPrice) * 100;
+
+      // Airbnb calculation
+      const abOccupancy = rental.airbnb.occupancy / 100;
+      const abNightly = rental.airbnb.nightlyRate;
+      const abGross = abNightly * 365 * abOccupancy;
+      const abFees = abGross * 0.15;
+      const abTurnovers = (365 * abOccupancy) / 3;
+      const abCleaning = abTurnovers * 400;
+      const abUtilities = size * 80 * 12;
+      const abManagement = (abGross - abFees) * 0.20;
+      const abNet = abGross - abFees - abCleaning - abUtilities - abManagement - ltLevy - ltRates - ltInsurance;
+      const abNetYield = (abNet / totalPrice) * 100;
+
+      if (purchaseType === 'resale') {
+        rankings.ltResale.push({ name: data.name, id, yield: ltNetYield });
+        rankings.abResale.push({ name: data.name, id, yield: abNetYield });
+      } else {
+        rankings.ltNew.push({ name: data.name, id, yield: ltNetYield });
+        rankings.abNew.push({ name: data.name, id, yield: abNetYield });
+      }
+    });
+  });
+
+  // Sort and display
+  displayRanking('rank-lt-resale', rankings.ltResale);
+  displayRanking('rank-lt-new', rankings.ltNew);
+  displayRanking('rank-ab-resale', rankings.abResale);
+  displayRanking('rank-ab-new', rankings.abNew);
+}
+
+function displayRanking(elementId, data) {
+  const sorted = data.sort((a, b) => b.yield - a.yield).slice(0, 5);
+  const container = document.getElementById(elementId);
+
+  container.innerHTML = sorted.map((item, index) => `
+    <li onclick="highlightNeighborhood('${item.id}')">
+      <span class="ranking-name">${item.name}</span>
+      <span class="ranking-yield ${index === 0 ? 'top' : ''}">${item.yield.toFixed(1)}%</span>
+    </li>
+  `).join('');
+}
+
+function highlightNeighborhood(id) {
+  // Find and click the neighborhood on the map
+  geojsonLayer.eachLayer(layer => {
+    if (layer.feature.properties.id === id) {
+      // Trigger click on this layer
+      layer.fire('click');
+      // Switch to info tab
+      document.querySelectorAll('.panel-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector('.panel-tab').classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById('tab-info').classList.add('active');
+    }
+  });
+}

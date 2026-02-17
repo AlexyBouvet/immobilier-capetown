@@ -204,6 +204,144 @@ body {
   transform: translateY(0);
 }
 
+/* Panel Tabs */
+.panel-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  background: #f1f2f6;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.panel-tab {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.panel-tab.active {
+  background: white;
+  color: #2c3e50;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.panel-tab:hover:not(.active) {
+  color: #2c3e50;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Rankings Tab */
+.rankings-subtitle {
+  font-size: 0.75rem;
+  color: #7f8c8d;
+  margin-bottom: 16px;
+}
+
+.rankings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ranking-card {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.ranking-card h4 {
+  font-size: 0.7rem;
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.ranking-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: ranking;
+}
+
+.ranking-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.72rem;
+  border-bottom: 1px solid #ecf0f1;
+  counter-increment: ranking;
+}
+
+.ranking-list li:last-child {
+  border-bottom: none;
+}
+
+.ranking-list li::before {
+  content: counter(ranking) ".";
+  font-weight: 700;
+  color: #7f8c8d;
+  margin-right: 6px;
+  min-width: 16px;
+}
+
+.ranking-name {
+  flex: 1;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.ranking-yield {
+  font-weight: 700;
+  color: #27ae60;
+  background: #e8f6e9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+}
+
+.ranking-yield.top {
+  background: #27ae60;
+  color: white;
+}
+
+.rankings-note {
+  margin-top: 16px;
+  padding: 10px;
+  background: #fff3cd;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  color: #856404;
+}
+
+/* Mobile rankings */
+@media (max-width: 768px) {
+  .rankings-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ranking-card {
+    padding: 10px;
+  }
+}
+
 /* Legend */
 .legend {
   position: fixed;
