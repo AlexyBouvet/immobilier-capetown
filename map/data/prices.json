@@ -1,0 +1,120 @@
+{
+  "metadata": {
+    "currency": "ZAR",
+    "unit": "per sqm",
+    "lastUpdated": "2026-02-17",
+    "newVsResalePremium": "15-25%",
+    "sources": [
+      "The Africanvestor (theafricanvestor.com)",
+      "Property24",
+      "Lightstone"
+    ]
+  },
+  "neighborhoods": {
+    "clifton": {
+      "name": "Clifton",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 95000, "max": 210000, "median": 150000 },
+      "resale": { "min": 80000, "max": 180000, "median": 130000 },
+      "priceIndex": 100
+    },
+    "camps_bay": {
+      "name": "Camps Bay",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 92000, "max": 200000, "median": 145000 },
+      "resale": { "min": 80000, "max": 170000, "median": 125000 },
+      "priceIndex": 95
+    },
+    "bantry_bay": {
+      "name": "Bantry Bay",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 82000, "max": 175000, "median": 125000 },
+      "resale": { "min": 70000, "max": 150000, "median": 110000 },
+      "priceIndex": 85
+    },
+    "fresnaye": {
+      "name": "Fresnaye",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 70000, "max": 140000, "median": 100000 },
+      "resale": { "min": 60000, "max": 120000, "median": 85000 },
+      "priceIndex": 70
+    },
+    "sea_point": {
+      "name": "Sea Point",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 58000, "max": 105000, "median": 78000 },
+      "resale": { "min": 50000, "max": 90000, "median": 68000 },
+      "priceIndex": 55
+    },
+    "green_point": {
+      "name": "Green Point",
+      "zone": "atlantic_seaboard",
+      "newDevelopment": { "min": 58000, "max": 100000, "median": 75000 },
+      "resale": { "min": 50000, "max": 85000, "median": 65000 },
+      "priceIndex": 50
+    },
+    "de_waterkant": {
+      "name": "De Waterkant",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 55000, "max": 95000, "median": 72000 },
+      "resale": { "min": 48000, "max": 80000, "median": 62000 },
+      "priceIndex": 48
+    },
+    "bo_kaap": {
+      "name": "Bo-Kaap",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 50000, "max": 85000, "median": 65000 },
+      "resale": { "min": 42000, "max": 72000, "median": 55000 },
+      "priceIndex": 42
+    },
+    "gardens": {
+      "name": "Gardens",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 52000, "max": 82000, "median": 65000 },
+      "resale": { "min": 45000, "max": 70000, "median": 56000 },
+      "priceIndex": 43
+    },
+    "oranjezicht": {
+      "name": "Oranjezicht",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 55000, "max": 90000, "median": 70000 },
+      "resale": { "min": 48000, "max": 78000, "median": 60000 },
+      "priceIndex": 46
+    },
+    "tamboerskloof": {
+      "name": "Tamboerskloof",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 52000, "max": 85000, "median": 66000 },
+      "resale": { "min": 45000, "max": 72000, "median": 57000 },
+      "priceIndex": 44
+    },
+    "vredehoek": {
+      "name": "Vredehoek",
+      "zone": "city_bowl",
+      "newDevelopment": { "min": 48000, "max": 78000, "median": 60000 },
+      "resale": { "min": 42000, "max": 66000, "median": 52000 },
+      "priceIndex": 38
+    },
+    "woodstock": {
+      "name": "Woodstock",
+      "zone": "eastern",
+      "newDevelopment": { "min": 30000, "max": 50000, "median": 38000 },
+      "resale": { "min": 25000, "max": 42000, "median": 32000 },
+      "priceIndex": 20
+    },
+    "observatory": {
+      "name": "Observatory",
+      "zone": "eastern",
+      "newDevelopment": { "min": 28000, "max": 48000, "median": 36000 },
+      "resale": { "min": 24000, "max": 40000, "median": 30000 },
+      "priceIndex": 18
+    },
+    "salt_river": {
+      "name": "Salt River",
+      "zone": "eastern",
+      "newDevelopment": { "min": 26000, "max": 42000, "median": 32000 },
+      "resale": { "min": 22000, "max": 35000, "median": 27000 },
+      "priceIndex": 12
+    }
+  }
+}

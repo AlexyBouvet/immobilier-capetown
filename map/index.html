@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cape Town Property Prices - Interactive Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="info-panel" class="info-panel">
+    <h2>Cape Town Property Prices</h2>
+    <p class="instruction">Hover over a neighborhood to see prices</p>
+    <div id="price-info"></div>
+  </div>
+
+  <div id="legend" class="legend">
+    <h4>Price per m² (ZAR)</h4>
+    <div class="legend-item"><span class="color-box" style="background:#2ECC71"></span><span>R24k - R35k</span></div>
+    <div class="legend-item"><span class="color-box" style="background:#F1C40F"></span><span>R35k - R50k</span></div>
+    <div class="legend-item"><span class="color-box" style="background:#F39C12"></span><span>R50k - R70k</span></div>
+    <div class="legend-item"><span class="color-box" style="background:#E67E22"></span><span>R70k - R100k</span></div>
+    <div class="legend-item"><span class="color-box" style="background:#E74C3C"></span><span>R100k - R140k</span></div>
+    <div class="legend-item"><span class="color-box" style="background:#8E44AD"></span><span>R140k+</span></div>
+  </div>
+
+  <div id="data-source" class="data-source">
+    Data: The Africanvestor, Property24, Lightstone (Feb 2026)
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
