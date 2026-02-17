@@ -465,6 +465,129 @@ Bug majeur corrige dans le Business Plan calculator.
 
 ---
 
+### 2026-02-17 - Expansion Massive des Listings (82 annonces)
+
+**Categorie: Marche / Data**
+
+Expansion du fichier listings.json de 22 a 82 annonces couvrant 20 quartiers.
+
+**Zones ajoutees:**
+
+| Zone | Quartiers | Nb Annonces | Prix Range |
+|------|-----------|-------------|------------|
+| Atlantic Seaboard | sea_point, green_point, three_anchor_bay | 5 | R2.5-3M |
+| City Bowl | de_waterkant, bo_kaap, cape_town_city_centre, zonnebloem | 14 | R1.1-2.9M |
+| City Bowl Upper | gardens, vredehoek, tamboerskloof | 6 | R1.6-2.8M |
+| Eastern | woodstock, observatory, salt_river | 18 | R1.1-3M |
+| Southern Suburbs | claremont, rondebosch | 16 | R1.4-2.9M |
+
+**URLs Private Property decouvertes:**
+- Structure: `/for-sale/western-cape/cape-town/[region]/[quartier]/[id]`
+- Atlantic Seaboard ID: 1683, Sea Point: 437, Green Point: 864
+- City Bowl ID: 59, Woodstock: 438, Observatory: 1098
+- Southern Suburbs ID: 58, Claremont: 433, Rondebosch: 435
+
+**Favoris marques (8 top picks):**
+1. T5157125 - Woodstock 1 On Albert (R1.14M, Airbnb-friendly, piscine/gym)
+2. T5231497 - Observatory Shonsay (R1.12M, proche cafes, bon prix)
+3. T5389806 - Observatory Obs Court (R1.475M, meuble, R12-13k loyer)
+4. T5363815 - Sea Point Montclaire (R2.5M, vue Signal Hill, Airbnb)
+5. T5383233 - Green Point Central (R2.7M, proche stade, renove)
+6. T4397265 - De Waterkant Quayside (R2.2M, trendy, bon m2)
+7. T5142064 - Bo-Kaap (R1.75M, culturel, touristes)
+
+**Zones trop cheres (> R3M minimum):**
+- Mouille Point - starts at R3.3M
+- Fresnaye - starts at R4.2M
+- Clifton, Camps Bay - > R5M
+
+**SearchUrls mis a jour:** 20 quartiers avec URLs valides
+
+### 2026-02-17 - Corrections UI Listings
+
+**Categorie: Outil (UI/UX)**
+
+Corrections suite aux retours utilisateur:
+
+**1. Rendements NET toujours affiches:**
+- Ajout de `cape_town_city_centre` dans prices.json (manquait)
+- Creation de la fonction `calculateListingYields()` pour centraliser le calcul
+- Les 2 rendements (LT et AB) sont maintenant toujours visibles sur chaque card
+
+**2. Badge TOP PICK pour favoris:**
+- Nouveau badge dore "#F59E0B" en coin superieur droit
+- Background gradient jaune clair sur les cards favorites
+- Bordure doree distingue visuellement les top picks
+
+**3. Tri par rendement decroissant:**
+- Listings tries par `bestYield` (max de LT ou AB) en ordre decroissant
+- La premiere annonce est toujours celle avec le meilleur rendement
+- Fonctionne dans "All Listings" ET dans les vues par zone
+
+**Fichiers modifies:**
+- `js/app.js`: nouvelle fonction de calcul, tri decroissant, badge HTML
+- `css/styles.css`: styles `.listing-favorite-badge`, `.listing-card.favorite`
+- `data/prices.json`: ajout `cape_town_city_centre`
+
+### 2026-02-17 - Optimisation Business Plan Modal
+
+**Categorie: Outil (UI/UX)**
+
+Optimisation du modal Business Plan pour afficher tout le contenu sans scroll.
+
+**Modifications:**
+| Element | Avant | Apres |
+|---------|-------|-------|
+| Modal size | 95vw × 92vh | 96vw × 96vh |
+| Header padding | 14px | 8px |
+| Inputs section | 12px padding, 20px gap | 6px padding, 12px gap |
+| Summary items | 12px padding | 6px padding |
+| Metrics rows | 6px padding | 3px padding |
+| Chart height | 180px | 130px |
+| Taxes grid | 16px gap | 10px gap |
+| Font sizes | 10-20px | 8-16px |
+| Dividers | 1px solid var(--border) | 1px solid #f0f0f0 (plus leger) |
+
+**Objectif:** Tout le contenu visible sans scroll - sliders, comparaison LT/AB, projection, taxes.
+
+**Fichiers modifies:**
+- `css/styles.css`: compaction de toutes les sections du BP modal
+
+### 2026-02-17 - Alignement des Calculs de Rendement (CRITIQUE)
+
+**Categorie: Outil / Calcul**
+
+Correction de l'incohérence entre les rendements affiches sur les cards et dans le BP modal.
+
+**Probleme identifie:**
+La fonction `calculateListingYields()` utilisait des formules differentes de `calculateBP()` et `calculateListingBP()`.
+
+**Differences corrigees:**
+| Element | Avant (listing card) | Apres (aligne sur BP) |
+|---------|---------------------|----------------------|
+| LT Occupancy | 100% | 95% |
+| Airbnb nights/year | 30 × occ × 12 = 360 | 365 × occ |
+| LT Maintenance | 5% du loyer | 5% du revenu effectif |
+| Base expenses | Mensuel × 12 | Annuel direct |
+
+**Formules standardisees (identiques partout):**
+```
+// Long-Term
+ltEffectiveRevenue = ltMonthlyRent × 12 × 0.95
+ltExpenses = (size × 45 × 12) + (price × 0.005) + (price × 0.002) + (ltEffective × 0.05)
+ltNetYield = (ltEffective - ltExpenses) / price × 100
+
+// Airbnb
+abNights = 365 × (occupancy/100)
+abGross = nightlyRate × abNights
+abExpenses = abGross×0.15 + (abNights/3)×400 + size×80×12 + (abGross×0.85)×0.20 + ltLevy + ltRates + ltInsurance
+abNetYield = (abGross - abExpenses) / price × 100
+```
+
+**Resultat:** Les rendements sur les cards = les rendements dans le BP modal
+
+---
+
 ## Notes
 
 - Pour donnees Airbnb plus precises par quartier: souscrire AirDNA (~$20/mois)

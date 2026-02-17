@@ -423,6 +423,40 @@
       },
       "priceIndex": 42
     },
+    "cape_town_city_centre": {
+      "name": "Cape Town City Centre",
+      "zone": "city_bowl",
+      "purchase": {
+        "new": {
+          "min": 52000,
+          "max": 90000,
+          "median": 68000
+        },
+        "resale": {
+          "min": 45000,
+          "max": 75000,
+          "median": 58000
+        }
+      },
+      "rental": {
+        "longTerm": {
+          "min": 135,
+          "max": 210,
+          "median": 168
+        },
+        "shortTerm": {
+          "min": 200,
+          "max": 315,
+          "median": 250
+        },
+        "airbnb": {
+          "nightlyRate": 1350,
+          "occupancy": 55,
+          "monthlyRevenue": 22275
+        }
+      },
+      "priceIndex": 44
+    },
     "gardens": {
       "name": "Gardens",
       "zone": "city_bowl_upper",
