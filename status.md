@@ -191,6 +191,36 @@ Les taux d'occupation initiaux etaient **trop optimistes**. Mise a jour avec don
 
 **Sources:** [AirDNA](https://www.airdna.co/vacation-rental-data/app/za/western-cape/cape-town/overview), [Airbtics](https://airbtics.com/annual-airbnb-revenue-in-cape-town-south-africa/), [The Africanvestor](https://theafricanvestor.com/blogs/news/cape-town-airbnb-investment-still)
 
+### 2026-02-17 - Onglet Top 5 Rankings
+
+**Categorie: Outil**
+
+Nouvel onglet "Top 5" sur la carte pour comparer les meilleurs investissements par scenario.
+
+**4 scenarios compares:**
+| Scenario | Description |
+|----------|-------------|
+| Long-Term + Resale | Location classique + achat occasion |
+| Long-Term + New | Location classique + achat neuf |
+| Airbnb + Resale | Location courte duree + achat occasion |
+| Airbnb + New | Location courte duree + achat neuf |
+
+**Calcul du Net Yield inclut:**
+- Body corporate (~R45/m²/mois)
+- Rates & taxes (0.5% du prix d'achat)
+- Insurance (0.2% du prix d'achat)
+- Maintenance (5% du revenu)
+- Pour Airbnb: fees 15%, cleaning R400/turnover, utilities R80/m²/mois, management 20%
+
+**Base de calcul:** Appartement de 35m²
+
+**Fonctionnalites:**
+- Classement des 5 meilleurs quartiers par net yield
+- Clic sur un quartier = zoom sur la carte + affichage details
+- Distinction visuelle du #1 (badge vert)
+
+**Acces:** Panneau info > Onglet "Top 5"
+
 ---
 
 ## Notes
