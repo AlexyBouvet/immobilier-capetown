@@ -40,7 +40,8 @@ function getZoneLabel(zone) {
     'eastern': 'Eastern Suburbs',
     'south_peninsula': 'South Peninsula',
     'southern_suburbs_education': 'Southern Suburbs (Education Belt)',
-    'false_bay': 'False Bay Coast'
+    'false_bay': 'False Bay Coast',
+    'west_coast': 'West Coast (Blouberg)'
   };
   return labels[zone] || zone;
 }

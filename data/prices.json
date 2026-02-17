@@ -898,6 +898,142 @@
         }
       },
       "priceIndex": 18
+    },
+    "bloubergstrand": {
+      "name": "Bloubergstrand",
+      "zone": "west_coast",
+      "purchase": {
+        "new": {
+          "min": 28000,
+          "max": 55000,
+          "median": 38000
+        },
+        "resale": {
+          "min": 24000,
+          "max": 48000,
+          "median": 32000
+        }
+      },
+      "rental": {
+        "longTerm": {
+          "min": 95,
+          "max": 160,
+          "median": 122
+        },
+        "shortTerm": {
+          "min": 160,
+          "max": 280,
+          "median": 210
+        },
+        "airbnb": {
+          "nightlyRate": 1400,
+          "occupancy": 65,
+          "monthlyRevenue": 27300
+        }
+      },
+      "priceIndex": 25
+    },
+    "big_bay": {
+      "name": "Big Bay",
+      "zone": "west_coast",
+      "purchase": {
+        "new": {
+          "min": 32000,
+          "max": 65000,
+          "median": 45000
+        },
+        "resale": {
+          "min": 28000,
+          "max": 55000,
+          "median": 38000
+        }
+      },
+      "rental": {
+        "longTerm": {
+          "min": 105,
+          "max": 175,
+          "median": 135
+        },
+        "shortTerm": {
+          "min": 180,
+          "max": 320,
+          "median": 240
+        },
+        "airbnb": {
+          "nightlyRate": 1800,
+          "occupancy": 70,
+          "monthlyRevenue": 37800
+        }
+      },
+      "priceIndex": 32
+    },
+    "milnerton": {
+      "name": "Milnerton",
+      "zone": "west_coast",
+      "purchase": {
+        "new": {
+          "min": 22000,
+          "max": 40000,
+          "median": 30000
+        },
+        "resale": {
+          "min": 18000,
+          "max": 35000,
+          "median": 25000
+        }
+      },
+      "rental": {
+        "longTerm": {
+          "min": 80,
+          "max": 130,
+          "median": 102
+        },
+        "shortTerm": {
+          "min": 130,
+          "max": 210,
+          "median": 165
+        },
+        "airbnb": {
+          "nightlyRate": 1100,
+          "occupancy": 58,
+          "monthlyRevenue": 19140
+        }
+      },
+      "priceIndex": 20
+    },
+    "table_view": {
+      "name": "Table View",
+      "zone": "west_coast",
+      "purchase": {
+        "new": {
+          "min": 20000,
+          "max": 36000,
+          "median": 26000
+        },
+        "resale": {
+          "min": 16000,
+          "max": 30000,
+          "median": 22000
+        }
+      },
+      "rental": {
+        "longTerm": {
+          "min": 75,
+          "max": 120,
+          "median": 94
+        },
+        "shortTerm": {
+          "min": 120,
+          "max": 190,
+          "median": 150
+        },
+        "airbnb": {
+          "nightlyRate": 950,
+          "occupancy": 55,
+          "monthlyRevenue": 15675
+        }
+      },
+      "priceIndex": 18
     }
   }
 }
