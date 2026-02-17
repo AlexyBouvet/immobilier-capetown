@@ -625,6 +625,7 @@ function calculateTaxes(purchasePrice, ltAnnualRevenue, abGrossRevenue) {
   document.getElementById('bp-tax-agent').textContent = formatPrice(Math.round(agentComm));
   document.getElementById('bp-tax-cgt').textContent = formatPrice(Math.round(cgt));
   document.getElementById('bp-tax-withhold').textContent = formatPrice(Math.round(withholding));
+}
 
 function generateRecommendation(ltYield, abYield, abOccupancy, zone) {
   const diff = abYield - ltYield;
