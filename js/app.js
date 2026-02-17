@@ -927,9 +927,9 @@ function showZoneListings(neighborhoodId, zone) {
               ${listing.status ? `<span class="status-${listing.status.toLowerCase().replace(' ', '-')}">${listing.status}</span>` : ''}
             </div>
             ${bpHtml}
-            <div class="listing-actions">
-              <button class="listing-bp-btn" onclick="event.stopPropagation(); openListingBP('${listing.id}')">Open Business Plan</button>
-              <a href="${listing.url}" target="_blank" class="listing-link" onclick="event.stopPropagation()">Voir sur ${listing.url.includes('privateproperty') ? 'Private Property' : 'Property24'}</a>
+            <div class="listing-actions" style="display:flex !important; margin-top:10px; padding:10px; background:#f0f0f0; border:2px solid #0066cc;">
+              <button class="listing-bp-btn" onclick="openListingBP('${listing.id}')" style="flex:1; padding:8px; background:#0066cc; color:white; border:none; cursor:pointer; font-weight:bold;">OPEN BP</button>
+              <a href="${listing.url}" target="_blank" class="listing-link" style="flex:1; padding:8px; text-align:center; background:white; border:1px solid #ccc; text-decoration:none; color:#333;">Voir annonce</a>
             </div>
           </div>
         `;

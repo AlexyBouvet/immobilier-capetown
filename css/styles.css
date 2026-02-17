@@ -593,11 +593,12 @@ body {
 
 /* Listing Action Buttons */
 .listing-actions {
-  display: flex;
+  display: flex !important;
   gap: 8px;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid var(--accent);
+  background: var(--bg-card);
 }
 
 .listing-bp-btn {
