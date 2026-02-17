@@ -427,12 +427,46 @@ function calculateBP() {
   calculateTaxes(totalPrice, ltAnnualRevenue, abGrossRevenue);
 }
 
+function calculateTransferDuty(price) {
+  // South Africa Transfer Duty rates (2024/2025)
+  // R0 - R1,210,000: 0%
+  // R1,210,001 - R1,663,800: 3% of value above R1,210,000
+  // R1,663,801 - R2,329,500: R13,614 + 6% of value above R1,663,800
+  // R2,329,501 - R2,994,000: R53,556 + 8% of value above R2,329,500
+  // R2,994,001+: R106,716 + 11% of value above R2,994,000
+  if (price <= 1210000) return 0;
+  if (price <= 1663800) return (price - 1210000) * 0.03;
+  if (price <= 2329500) return 13614 + (price - 1663800) * 0.06;
+  if (price <= 2994000) return 53556 + (price - 2329500) * 0.08;
+  return 106716 + (price - 2994000) * 0.11;
+}
+
+function calculateSaleCosts(salePrice, purchasePrice) {
+  // Agent commission: 7% + 15% VAT = 8.05%
+  const agentComm = salePrice * 0.0805;
+
+  // Capital Gains Tax: 40% inclusion rate × marginal rate (~45% for non-resident)
+  // Effective rate: ~18% on the gain
+  const capitalGain = salePrice - purchasePrice;
+  const cgt = capitalGain > 0 ? capitalGain * 0.18 : 0;
+
+  // Non-resident withholding: 7.5% of sale price
+  // This is a PREPAYMENT of CGT, refundable if CGT is less
+  // So actual cost is MAX of CGT or minimum withholding
+  const withholding = salePrice * 0.075;
+  const actualTaxCost = Math.max(cgt, withholding);
+
+  return agentComm + actualTaxCost;
+}
+
 function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
   const appreciation = parseFloat(document.getElementById('bp-appreciation').value) / 100 || 0.05;
   const rentIncrease = parseFloat(document.getElementById('bp-rent-increase').value) / 100 || 0.06;
 
-  // Acquisition costs (~5% of purchase price)
-  const acquisitionCosts = purchasePrice * 0.05 + 45000; // Transfer duty + conveyancing
+  // Acquisition costs: Transfer Duty (progressive) + Conveyancing
+  const transferDuty = calculateTransferDuty(purchasePrice);
+  const conveyancing = 45000;
+  const acquisitionCosts = transferDuty + conveyancing;
 
   const years = [];
   const ltCumulative = [];
@@ -481,10 +515,11 @@ function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
     }
   }
 
-  // Add property gain at year 10 (minus selling costs ~15%)
-  const propertyGain = (propertyValue - purchasePrice) * 0.85;
-  const ltFinalProfit = ltTotal + propertyGain;
-  const abFinalProfit = abTotal + propertyGain;
+  // Sale costs: Agent + CGT/Withholding (the higher of the two)
+  const saleCosts = calculateSaleCosts(propertyValue, purchasePrice);
+  const netSaleProceeds = propertyValue - purchasePrice - saleCosts;
+  const ltFinalProfit = ltTotal + netSaleProceeds;
+  const abFinalProfit = abTotal + netSaleProceeds;
 
   // Update break-even display
   document.getElementById('bp-breakeven-lt').textContent = ltBreakeven ? `Year ${ltBreakeven}` : '> 10 years';
@@ -855,8 +890,8 @@ function showZoneListings(neighborhoodId, zone) {
         // Calculate mini business plan for BOTH scenarios
         let bpHtml = '';
         if (neighborhood) {
-          // Acquisition costs
-          const transferDuty = listing.price > 1210000 ? (listing.price - 1210000) * 0.03 : 0;
+          // Acquisition costs (using proper progressive transfer duty)
+          const transferDuty = calculateTransferDuty(listing.price);
           const attorneyFees = 45000;
           const totalAcquisition = listing.price + transferDuty + attorneyFees;
 
