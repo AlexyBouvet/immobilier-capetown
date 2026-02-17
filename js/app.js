@@ -451,11 +451,11 @@ function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
   const acquisitionCosts = transferDuty + conveyancing;
 
   const years = [];
-  const ltCumulative = [];
-  const abCumulative = [];
+  const ltTotalROI = [];  // Total ROI if sold at each year (cash + appreciation - costs)
+  const abTotalROI = [];
 
-  let ltTotal = -acquisitionCosts;
-  let abTotal = -acquisitionCosts;
+  let ltCashFlow = -acquisitionCosts;  // Cumulative cash flow
+  let abCashFlow = -acquisitionCosts;
   let ltCurrentNet = ltAnnualNet;
   let abCurrentNet = abAnnualNet;
   let propertyValue = purchasePrice;
@@ -466,27 +466,13 @@ function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
   for (let year = 0; year <= 10; year++) {
     years.push(year);
 
-    if (year === 0) {
-      ltCumulative.push(ltTotal);
-      abCumulative.push(abTotal);
-    } else {
+    if (year > 0) {
       // Add annual net income (after income tax ~25%)
       const ltAfterTax = ltCurrentNet * 0.75;
       const abAfterTax = abCurrentNet * 0.75;
 
-      ltTotal += ltAfterTax;
-      abTotal += abAfterTax;
-
-      ltCumulative.push(ltTotal);
-      abCumulative.push(abTotal);
-
-      // Check break-even
-      if (ltBreakeven === null && ltTotal >= 0) {
-        ltBreakeven = year;
-      }
-      if (abBreakeven === null && abTotal >= 0) {
-        abBreakeven = year;
-      }
+      ltCashFlow += ltAfterTax;
+      abCashFlow += abAfterTax;
 
       // Increase rent for next year
       ltCurrentNet *= (1 + rentIncrease);
@@ -495,24 +481,41 @@ function calculateProjection(purchasePrice, ltAnnualNet, abAnnualNet, size) {
       // Property appreciation
       propertyValue *= (1 + appreciation);
     }
+
+    // Calculate total position if sold NOW (at this year)
+    // = Cash flow so far + (Property value - Purchase price - Sale costs)
+    const saleCostsNow = calculateSaleCosts(propertyValue, purchasePrice);
+    const netGainIfSold = propertyValue - purchasePrice - saleCostsNow;
+
+    const ltTotalNow = ltCashFlow + netGainIfSold;
+    const abTotalNow = abCashFlow + netGainIfSold;
+
+    ltTotalROI.push(ltTotalNow);
+    abTotalROI.push(abTotalNow);
+
+    // Check break-even (when total ROI becomes positive)
+    if (ltBreakeven === null && ltTotalNow >= 0) {
+      ltBreakeven = year;
+    }
+    if (abBreakeven === null && abTotalNow >= 0) {
+      abBreakeven = year;
+    }
   }
 
-  // Sale costs: Agent + CGT/Withholding (the higher of the two)
-  const saleCosts = calculateSaleCosts(propertyValue, purchasePrice);
-  const netSaleProceeds = propertyValue - purchasePrice - saleCosts;
-  const ltFinalProfit = ltTotal + netSaleProceeds;
-  const abFinalProfit = abTotal + netSaleProceeds;
+  // Final values (year 10)
+  const ltFinalProfit = ltTotalROI[10];
+  const abFinalProfit = abTotalROI[10];
 
   // Update break-even display
-  document.getElementById('bp-breakeven-lt').textContent = ltBreakeven ? `Year ${ltBreakeven}` : '> 10 years';
-  document.getElementById('bp-breakeven-ab').textContent = abBreakeven ? `Year ${abBreakeven}` : '> 10 years';
+  document.getElementById('bp-breakeven-lt').textContent = ltBreakeven !== null ? `Year ${ltBreakeven}` : '> 10 years';
+  document.getElementById('bp-breakeven-ab').textContent = abBreakeven !== null ? `Year ${abBreakeven}` : '> 10 years';
 
   // Update 10-year profit
   document.getElementById('bp-10y-lt-profit').textContent = formatPrice(Math.round(ltFinalProfit));
   document.getElementById('bp-10y-ab-profit').textContent = formatPrice(Math.round(abFinalProfit));
 
-  // Render chart
-  renderProjectionChart(years, ltCumulative, abCumulative);
+  // Render chart with TOTAL ROI (not just cash flow)
+  renderProjectionChart(years, ltTotalROI, abTotalROI);
 }
 
 function renderProjectionChart(years, ltData, abData) {
