@@ -409,7 +409,7 @@ body {
 .zone-listings-list {
   border: 1px solid var(--border);
   border-radius: 2px;
-  max-height: 280px;
+  max-height: 450px;
   overflow-y: auto;
 }
 
