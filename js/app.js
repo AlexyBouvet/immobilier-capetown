@@ -47,7 +47,7 @@ function getZoneLabel(zone) {
 function styleFeature(feature) {
   const id = feature.properties.id;
   const neighborhood = priceData[id];
-  const price = neighborhood ? neighborhood.resale.median : 30000;
+  const price = neighborhood ? neighborhood.purchase.resale.median : 30000;
 
   return {
     fillColor: getPriceColor(price),
@@ -133,26 +133,66 @@ function updateInfoPanel(properties) {
   }
 
   const priceInfo = document.getElementById('price-info');
-  const medianNew = data.newDevelopment.median;
-  const medianResale = data.resale.median;
+  const purchase = data.purchase;
+  const rental = data.rental;
+
+  // Calculate gross yield (annual long-term rental / purchase price * 100)
+  const annualRental = rental.longTerm.median * 12;
+  const grossYield = ((annualRental / purchase.resale.median) * 100).toFixed(1);
 
   priceInfo.innerHTML = `
     <h3>${data.name}</h3>
+
+    <div class="section-title">Purchase Price (per m²)</div>
     <div class="price-grid">
       <div class="price-section">
-        <h4>Neuf</h4>
+        <h4>New Development</h4>
         <p class="price-range new">
-          ${formatPrice(data.newDevelopment.min)} - ${formatPrice(data.newDevelopment.max)}
+          ${formatPrice(purchase.new.min)} - ${formatPrice(purchase.new.max)}
         </p>
-        <p class="price-median">Median: ${formatPrice(medianNew)}/m²</p>
+        <p class="price-median">Median: ${formatPrice(purchase.new.median)}</p>
       </div>
       <div class="price-section">
-        <h4>Occasion</h4>
+        <h4>Resale</h4>
         <p class="price-range resale">
-          ${formatPrice(data.resale.min)} - ${formatPrice(data.resale.max)}
+          ${formatPrice(purchase.resale.min)} - ${formatPrice(purchase.resale.max)}
         </p>
-        <p class="price-median">Median: ${formatPrice(medianResale)}/m²</p>
+        <p class="price-median">Median: ${formatPrice(purchase.resale.median)}</p>
       </div>
+    </div>
+
+    <div class="section-title">Rental (per m²/month)</div>
+    <div class="price-grid">
+      <div class="price-section">
+        <h4>Long-Term</h4>
+        <p class="price-range rental-long">${formatPrice(rental.longTerm.median)}</p>
+        <p class="price-median">${formatPrice(rental.longTerm.min)} - ${formatPrice(rental.longTerm.max)}</p>
+      </div>
+      <div class="price-section">
+        <h4>Short-Term</h4>
+        <p class="price-range rental-short">${formatPrice(rental.shortTerm.median)}</p>
+        <p class="price-median">${formatPrice(rental.shortTerm.min)} - ${formatPrice(rental.shortTerm.max)}</p>
+      </div>
+    </div>
+
+    <div class="section-title">Airbnb Estimate</div>
+    <div class="airbnb-section">
+      <div class="airbnb-stat">
+        <span class="airbnb-label">Nightly Rate</span>
+        <span class="airbnb-value">${formatPrice(rental.airbnb.nightlyRate)}</span>
+      </div>
+      <div class="airbnb-stat">
+        <span class="airbnb-label">Occupancy</span>
+        <span class="airbnb-value">${rental.airbnb.occupancy}%</span>
+      </div>
+      <div class="airbnb-stat">
+        <span class="airbnb-label">Monthly Revenue</span>
+        <span class="airbnb-value highlight">${formatPrice(rental.airbnb.monthlyRevenue)}</span>
+      </div>
+    </div>
+
+    <div class="yield-badge">
+      <span>Gross Yield: ${grossYield}%</span>
     </div>
     <span class="zone-badge">${getZoneLabel(data.zone)}</span>
   `;

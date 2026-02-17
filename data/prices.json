@@ -10,197 +10,387 @@
       "Lightstone",
       "Seeff",
       "Private Property",
-      "Pam Golding"
+      "Pam Golding",
+      "Airbnb"
     ]
   },
   "neighborhoods": {
     "clifton": {
       "name": "Clifton",
       "zone": "atlantic_seaboard_premium",
-      "newDevelopment": { "min": 95000, "max": 210000, "median": 150000 },
-      "resale": { "min": 80000, "max": 180000, "median": 130000 },
+      "purchase": {
+        "new": { "min": 95000, "max": 210000, "median": 150000 },
+        "resale": { "min": 80000, "max": 180000, "median": 130000 }
+      },
+      "rental": {
+        "longTerm": { "min": 280, "max": 450, "median": 350 },
+        "shortTerm": { "min": 420, "max": 650, "median": 520 },
+        "airbnb": { "nightlyRate": 5500, "occupancy": 65, "monthlyRevenue": 107250 }
+      },
       "priceIndex": 100
     },
     "camps_bay": {
       "name": "Camps Bay",
       "zone": "atlantic_seaboard_premium",
-      "newDevelopment": { "min": 92000, "max": 200000, "median": 145000 },
-      "resale": { "min": 80000, "max": 170000, "median": 125000 },
+      "purchase": {
+        "new": { "min": 92000, "max": 200000, "median": 145000 },
+        "resale": { "min": 80000, "max": 170000, "median": 125000 }
+      },
+      "rental": {
+        "longTerm": { "min": 260, "max": 420, "median": 330 },
+        "shortTerm": { "min": 380, "max": 600, "median": 480 },
+        "airbnb": { "nightlyRate": 4500, "occupancy": 68, "monthlyRevenue": 91800 }
+      },
       "priceIndex": 95
     },
     "glen_beach": {
       "name": "Glen Beach",
       "zone": "atlantic_seaboard_premium",
-      "newDevelopment": { "min": 88000, "max": 180000, "median": 130000 },
-      "resale": { "min": 75000, "max": 155000, "median": 112000 },
+      "purchase": {
+        "new": { "min": 88000, "max": 180000, "median": 130000 },
+        "resale": { "min": 75000, "max": 155000, "median": 112000 }
+      },
+      "rental": {
+        "longTerm": { "min": 250, "max": 400, "median": 310 },
+        "shortTerm": { "min": 360, "max": 560, "median": 450 },
+        "airbnb": { "nightlyRate": 4200, "occupancy": 65, "monthlyRevenue": 81900 }
+      },
       "priceIndex": 88
     },
     "bantry_bay": {
       "name": "Bantry Bay",
       "zone": "atlantic_seaboard_premium",
-      "newDevelopment": { "min": 82000, "max": 175000, "median": 125000 },
-      "resale": { "min": 70000, "max": 150000, "median": 110000 },
+      "purchase": {
+        "new": { "min": 82000, "max": 175000, "median": 125000 },
+        "resale": { "min": 70000, "max": 150000, "median": 110000 }
+      },
+      "rental": {
+        "longTerm": { "min": 240, "max": 380, "median": 300 },
+        "shortTerm": { "min": 350, "max": 540, "median": 430 },
+        "airbnb": { "nightlyRate": 4000, "occupancy": 65, "monthlyRevenue": 78000 }
+      },
       "priceIndex": 85
     },
     "bakoven": {
       "name": "Bakoven",
       "zone": "atlantic_seaboard_premium",
-      "newDevelopment": { "min": 85000, "max": 160000, "median": 120000 },
-      "resale": { "min": 72000, "max": 140000, "median": 105000 },
+      "purchase": {
+        "new": { "min": 85000, "max": 160000, "median": 120000 },
+        "resale": { "min": 72000, "max": 140000, "median": 105000 }
+      },
+      "rental": {
+        "longTerm": { "min": 230, "max": 360, "median": 285 },
+        "shortTerm": { "min": 340, "max": 520, "median": 420 },
+        "airbnb": { "nightlyRate": 3800, "occupancy": 60, "monthlyRevenue": 68400 }
+      },
       "priceIndex": 82
     },
     "llandudno": {
       "name": "Llandudno",
       "zone": "atlantic_seaboard",
-      "newDevelopment": { "min": 75000, "max": 150000, "median": 110000 },
-      "resale": { "min": 65000, "max": 130000, "median": 95000 },
+      "purchase": {
+        "new": { "min": 75000, "max": 150000, "median": 110000 },
+        "resale": { "min": 65000, "max": 130000, "median": 95000 }
+      },
+      "rental": {
+        "longTerm": { "min": 200, "max": 320, "median": 250 },
+        "shortTerm": { "min": 300, "max": 480, "median": 380 },
+        "airbnb": { "nightlyRate": 3200, "occupancy": 55, "monthlyRevenue": 52800 }
+      },
       "priceIndex": 75
     },
     "fresnaye": {
       "name": "Fresnaye",
       "zone": "atlantic_seaboard_upper",
-      "newDevelopment": { "min": 70000, "max": 140000, "median": 100000 },
-      "resale": { "min": 60000, "max": 120000, "median": 85000 },
+      "purchase": {
+        "new": { "min": 70000, "max": 140000, "median": 100000 },
+        "resale": { "min": 60000, "max": 120000, "median": 85000 }
+      },
+      "rental": {
+        "longTerm": { "min": 180, "max": 300, "median": 230 },
+        "shortTerm": { "min": 280, "max": 440, "median": 350 },
+        "airbnb": { "nightlyRate": 2800, "occupancy": 58, "monthlyRevenue": 48720 }
+      },
       "priceIndex": 70
     },
     "mouille_point": {
       "name": "Mouille Point",
       "zone": "atlantic_seaboard",
-      "newDevelopment": { "min": 60000, "max": 110000, "median": 80000 },
-      "resale": { "min": 52000, "max": 95000, "median": 70000 },
+      "purchase": {
+        "new": { "min": 60000, "max": 110000, "median": 80000 },
+        "resale": { "min": 52000, "max": 95000, "median": 70000 }
+      },
+      "rental": {
+        "longTerm": { "min": 160, "max": 260, "median": 200 },
+        "shortTerm": { "min": 240, "max": 380, "median": 300 },
+        "airbnb": { "nightlyRate": 2200, "occupancy": 62, "monthlyRevenue": 40920 }
+      },
       "priceIndex": 56
     },
     "sea_point": {
       "name": "Sea Point",
       "zone": "atlantic_seaboard",
-      "newDevelopment": { "min": 58000, "max": 105000, "median": 78000 },
-      "resale": { "min": 50000, "max": 90000, "median": 68000 },
+      "purchase": {
+        "new": { "min": 58000, "max": 105000, "median": 78000 },
+        "resale": { "min": 50000, "max": 90000, "median": 68000 }
+      },
+      "rental": {
+        "longTerm": { "min": 150, "max": 240, "median": 185 },
+        "shortTerm": { "min": 220, "max": 350, "median": 280 },
+        "airbnb": { "nightlyRate": 1800, "occupancy": 65, "monthlyRevenue": 35100 }
+      },
       "priceIndex": 55
     },
     "three_anchor_bay": {
       "name": "Three Anchor Bay",
       "zone": "atlantic_seaboard",
-      "newDevelopment": { "min": 55000, "max": 95000, "median": 72000 },
-      "resale": { "min": 48000, "max": 82000, "median": 63000 },
+      "purchase": {
+        "new": { "min": 55000, "max": 95000, "median": 72000 },
+        "resale": { "min": 48000, "max": 82000, "median": 63000 }
+      },
+      "rental": {
+        "longTerm": { "min": 140, "max": 220, "median": 175 },
+        "shortTerm": { "min": 210, "max": 330, "median": 260 },
+        "airbnb": { "nightlyRate": 1600, "occupancy": 63, "monthlyRevenue": 30240 }
+      },
       "priceIndex": 50
     },
     "green_point": {
       "name": "Green Point",
       "zone": "atlantic_seaboard",
-      "newDevelopment": { "min": 58000, "max": 100000, "median": 75000 },
-      "resale": { "min": 50000, "max": 85000, "median": 65000 },
+      "purchase": {
+        "new": { "min": 58000, "max": 100000, "median": 75000 },
+        "resale": { "min": 50000, "max": 85000, "median": 65000 }
+      },
+      "rental": {
+        "longTerm": { "min": 145, "max": 230, "median": 180 },
+        "shortTerm": { "min": 215, "max": 340, "median": 270 },
+        "airbnb": { "nightlyRate": 1700, "occupancy": 65, "monthlyRevenue": 33150 }
+      },
       "priceIndex": 50
     },
     "de_waterkant": {
       "name": "De Waterkant",
       "zone": "city_bowl",
-      "newDevelopment": { "min": 55000, "max": 95000, "median": 72000 },
-      "resale": { "min": 48000, "max": 80000, "median": 62000 },
+      "purchase": {
+        "new": { "min": 55000, "max": 95000, "median": 72000 },
+        "resale": { "min": 48000, "max": 80000, "median": 62000 }
+      },
+      "rental": {
+        "longTerm": { "min": 140, "max": 220, "median": 175 },
+        "shortTerm": { "min": 210, "max": 330, "median": 260 },
+        "airbnb": { "nightlyRate": 1500, "occupancy": 68, "monthlyRevenue": 30600 }
+      },
       "priceIndex": 48
     },
     "schotsche_kloof": {
       "name": "Schotsche Kloof",
       "zone": "city_bowl",
-      "newDevelopment": { "min": 48000, "max": 82000, "median": 62000 },
-      "resale": { "min": 40000, "max": 70000, "median": 53000 },
+      "purchase": {
+        "new": { "min": 48000, "max": 82000, "median": 62000 },
+        "resale": { "min": 40000, "max": 70000, "median": 53000 }
+      },
+      "rental": {
+        "longTerm": { "min": 120, "max": 190, "median": 150 },
+        "shortTerm": { "min": 180, "max": 280, "median": 225 },
+        "airbnb": { "nightlyRate": 1200, "occupancy": 60, "monthlyRevenue": 21600 }
+      },
       "priceIndex": 42
     },
     "foreshore": {
       "name": "Foreshore",
       "zone": "city_bowl",
-      "newDevelopment": { "min": 45000, "max": 75000, "median": 58000 },
-      "resale": { "min": 38000, "max": 65000, "median": 50000 },
+      "purchase": {
+        "new": { "min": 45000, "max": 75000, "median": 58000 },
+        "resale": { "min": 38000, "max": 65000, "median": 50000 }
+      },
+      "rental": {
+        "longTerm": { "min": 110, "max": 180, "median": 140 },
+        "shortTerm": { "min": 165, "max": 260, "median": 210 },
+        "airbnb": { "nightlyRate": 1100, "occupancy": 58, "monthlyRevenue": 19140 }
+      },
       "priceIndex": 38
     },
     "bo_kaap": {
       "name": "Bo-Kaap",
       "zone": "city_bowl",
-      "newDevelopment": { "min": 50000, "max": 85000, "median": 65000 },
-      "resale": { "min": 42000, "max": 72000, "median": 55000 },
+      "purchase": {
+        "new": { "min": 50000, "max": 85000, "median": 65000 },
+        "resale": { "min": 42000, "max": 72000, "median": 55000 }
+      },
+      "rental": {
+        "longTerm": { "min": 130, "max": 200, "median": 160 },
+        "shortTerm": { "min": 195, "max": 300, "median": 240 },
+        "airbnb": { "nightlyRate": 1400, "occupancy": 70, "monthlyRevenue": 29400 }
+      },
       "priceIndex": 42
     },
     "gardens": {
       "name": "Gardens",
       "zone": "city_bowl_upper",
-      "newDevelopment": { "min": 52000, "max": 82000, "median": 65000 },
-      "resale": { "min": 45000, "max": 70000, "median": 56000 },
+      "purchase": {
+        "new": { "min": 52000, "max": 82000, "median": 65000 },
+        "resale": { "min": 45000, "max": 70000, "median": 56000 }
+      },
+      "rental": {
+        "longTerm": { "min": 135, "max": 210, "median": 165 },
+        "shortTerm": { "min": 200, "max": 310, "median": 250 },
+        "airbnb": { "nightlyRate": 1300, "occupancy": 65, "monthlyRevenue": 25350 }
+      },
       "priceIndex": 43
     },
     "oranjezicht": {
       "name": "Oranjezicht",
       "zone": "city_bowl_upper",
-      "newDevelopment": { "min": 55000, "max": 90000, "median": 70000 },
-      "resale": { "min": 48000, "max": 78000, "median": 60000 },
+      "purchase": {
+        "new": { "min": 55000, "max": 90000, "median": 70000 },
+        "resale": { "min": 48000, "max": 78000, "median": 60000 }
+      },
+      "rental": {
+        "longTerm": { "min": 140, "max": 220, "median": 175 },
+        "shortTerm": { "min": 210, "max": 330, "median": 260 },
+        "airbnb": { "nightlyRate": 1400, "occupancy": 62, "monthlyRevenue": 26040 }
+      },
       "priceIndex": 46
     },
     "tamboerskloof": {
       "name": "Tamboerskloof",
       "zone": "city_bowl_upper",
-      "newDevelopment": { "min": 52000, "max": 85000, "median": 66000 },
-      "resale": { "min": 45000, "max": 72000, "median": 57000 },
+      "purchase": {
+        "new": { "min": 52000, "max": 85000, "median": 66000 },
+        "resale": { "min": 45000, "max": 72000, "median": 57000 }
+      },
+      "rental": {
+        "longTerm": { "min": 130, "max": 205, "median": 162 },
+        "shortTerm": { "min": 195, "max": 305, "median": 245 },
+        "airbnb": { "nightlyRate": 1250, "occupancy": 60, "monthlyRevenue": 22500 }
+      },
       "priceIndex": 44
     },
     "vredehoek": {
       "name": "Vredehoek",
       "zone": "city_bowl_upper",
-      "newDevelopment": { "min": 48000, "max": 78000, "median": 60000 },
-      "resale": { "min": 42000, "max": 66000, "median": 52000 },
+      "purchase": {
+        "new": { "min": 48000, "max": 78000, "median": 60000 },
+        "resale": { "min": 42000, "max": 66000, "median": 52000 }
+      },
+      "rental": {
+        "longTerm": { "min": 120, "max": 190, "median": 150 },
+        "shortTerm": { "min": 180, "max": 280, "median": 225 },
+        "airbnb": { "nightlyRate": 1100, "occupancy": 58, "monthlyRevenue": 19140 }
+      },
       "priceIndex": 38
     },
     "district_six": {
       "name": "District Six",
       "zone": "city_bowl",
-      "newDevelopment": { "min": 28000, "max": 48000, "median": 36000 },
-      "resale": { "min": 24000, "max": 40000, "median": 30000 },
+      "purchase": {
+        "new": { "min": 28000, "max": 48000, "median": 36000 },
+        "resale": { "min": 24000, "max": 40000, "median": 30000 }
+      },
+      "rental": {
+        "longTerm": { "min": 85, "max": 140, "median": 108 },
+        "shortTerm": { "min": 130, "max": 200, "median": 160 },
+        "airbnb": { "nightlyRate": 800, "occupancy": 55, "monthlyRevenue": 13200 }
+      },
       "priceIndex": 18
     },
     "zonnebloem": {
       "name": "Zonnebloem",
       "zone": "city_bowl",
-      "newDevelopment": { "min": 32000, "max": 52000, "median": 40000 },
-      "resale": { "min": 26000, "max": 44000, "median": 34000 },
+      "purchase": {
+        "new": { "min": 32000, "max": 52000, "median": 40000 },
+        "resale": { "min": 26000, "max": 44000, "median": 34000 }
+      },
+      "rental": {
+        "longTerm": { "min": 90, "max": 150, "median": 115 },
+        "shortTerm": { "min": 140, "max": 220, "median": 175 },
+        "airbnb": { "nightlyRate": 850, "occupancy": 55, "monthlyRevenue": 14025 }
+      },
       "priceIndex": 22
     },
     "woodstock": {
       "name": "Woodstock",
       "zone": "eastern",
-      "newDevelopment": { "min": 30000, "max": 50000, "median": 38000 },
-      "resale": { "min": 25000, "max": 42000, "median": 32000 },
+      "purchase": {
+        "new": { "min": 30000, "max": 50000, "median": 38000 },
+        "resale": { "min": 25000, "max": 42000, "median": 32000 }
+      },
+      "rental": {
+        "longTerm": { "min": 95, "max": 155, "median": 120 },
+        "shortTerm": { "min": 145, "max": 230, "median": 180 },
+        "airbnb": { "nightlyRate": 950, "occupancy": 60, "monthlyRevenue": 17100 }
+      },
       "priceIndex": 20
     },
     "salt_river": {
       "name": "Salt River",
       "zone": "eastern",
-      "newDevelopment": { "min": 26000, "max": 42000, "median": 32000 },
-      "resale": { "min": 22000, "max": 35000, "median": 27000 },
+      "purchase": {
+        "new": { "min": 26000, "max": 42000, "median": 32000 },
+        "resale": { "min": 22000, "max": 35000, "median": 27000 }
+      },
+      "rental": {
+        "longTerm": { "min": 80, "max": 130, "median": 100 },
+        "shortTerm": { "min": 120, "max": 195, "median": 150 },
+        "airbnb": { "nightlyRate": 750, "occupancy": 55, "monthlyRevenue": 12375 }
+      },
       "priceIndex": 12
     },
     "observatory": {
       "name": "Observatory",
       "zone": "eastern",
-      "newDevelopment": { "min": 28000, "max": 48000, "median": 36000 },
-      "resale": { "min": 24000, "max": 40000, "median": 30000 },
+      "purchase": {
+        "new": { "min": 28000, "max": 48000, "median": 36000 },
+        "resale": { "min": 24000, "max": 40000, "median": 30000 }
+      },
+      "rental": {
+        "longTerm": { "min": 90, "max": 145, "median": 112 },
+        "shortTerm": { "min": 135, "max": 215, "median": 170 },
+        "airbnb": { "nightlyRate": 900, "occupancy": 62, "monthlyRevenue": 16740 }
+      },
       "priceIndex": 18
     },
     "mowbray": {
       "name": "Mowbray",
       "zone": "eastern",
-      "newDevelopment": { "min": 26000, "max": 44000, "median": 34000 },
-      "resale": { "min": 22000, "max": 38000, "median": 28000 },
+      "purchase": {
+        "new": { "min": 26000, "max": 44000, "median": 34000 },
+        "resale": { "min": 22000, "max": 38000, "median": 28000 }
+      },
+      "rental": {
+        "longTerm": { "min": 85, "max": 135, "median": 105 },
+        "shortTerm": { "min": 125, "max": 200, "median": 158 },
+        "airbnb": { "nightlyRate": 800, "occupancy": 58, "monthlyRevenue": 13920 }
+      },
       "priceIndex": 16
     },
     "rosebank": {
       "name": "Rosebank",
       "zone": "eastern",
-      "newDevelopment": { "min": 28000, "max": 46000, "median": 35000 },
-      "resale": { "min": 24000, "max": 40000, "median": 30000 },
+      "purchase": {
+        "new": { "min": 28000, "max": 46000, "median": 35000 },
+        "resale": { "min": 24000, "max": 40000, "median": 30000 }
+      },
+      "rental": {
+        "longTerm": { "min": 88, "max": 140, "median": 110 },
+        "shortTerm": { "min": 130, "max": 210, "median": 165 },
+        "airbnb": { "nightlyRate": 850, "occupancy": 58, "monthlyRevenue": 14790 }
+      },
       "priceIndex": 18
     },
     "hout_bay": {
       "name": "Hout Bay",
       "zone": "south_peninsula",
-      "newDevelopment": { "min": 42000, "max": 85000, "median": 60000 },
-      "resale": { "min": 35000, "max": 72000, "median": 52000 },
+      "purchase": {
+        "new": { "min": 42000, "max": 85000, "median": 60000 },
+        "resale": { "min": 35000, "max": 72000, "median": 52000 }
+      },
+      "rental": {
+        "longTerm": { "min": 115, "max": 185, "median": 145 },
+        "shortTerm": { "min": 175, "max": 280, "median": 220 },
+        "airbnb": { "nightlyRate": 1800, "occupancy": 55, "monthlyRevenue": 29700 }
+      },
       "priceIndex": 40
     }
   }
