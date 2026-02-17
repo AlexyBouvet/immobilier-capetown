@@ -30,6 +30,152 @@
     Data: The Africanvestor, Property24, Lightstone, Airbnb (Feb 2026)
   </div>
 
+  <!-- Mini Business Plan Modal -->
+  <div id="bp-modal" class="bp-modal">
+    <div class="bp-modal-content">
+      <button class="bp-close" onclick="closeBPModal()">&times;</button>
+
+      <div class="bp-header">
+        <h2 id="bp-title">Business Plan</h2>
+        <span id="bp-zone" class="bp-zone-badge"></span>
+      </div>
+
+      <div class="bp-inputs">
+        <div class="bp-input-group">
+          <label for="bp-size">Apartment Size (m²)</label>
+          <input type="number" id="bp-size" value="35" min="15" max="200" step="5">
+        </div>
+        <div class="bp-input-group">
+          <label>Purchase Type</label>
+          <div class="bp-toggle">
+            <button id="btn-resale" class="bp-toggle-btn active" onclick="setPurchaseType('resale')">Resale</button>
+            <button id="btn-new" class="bp-toggle-btn" onclick="setPurchaseType('new')">New Dev</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bp-summary">
+        <div class="bp-summary-item">
+          <span class="bp-summary-label">Purchase Price</span>
+          <span id="bp-purchase-price" class="bp-summary-value">-</span>
+        </div>
+        <div class="bp-summary-item">
+          <span class="bp-summary-label">Price per m²</span>
+          <span id="bp-price-sqm" class="bp-summary-value">-</span>
+        </div>
+      </div>
+
+      <div class="bp-comparison">
+        <div class="bp-column bp-longterm">
+          <div class="bp-column-header">
+            <h3>Long-Term Rental</h3>
+            <span class="bp-column-icon">🏠</span>
+          </div>
+          <div class="bp-metrics">
+            <div class="bp-metric">
+              <span class="bp-metric-label">Monthly Rent</span>
+              <span id="bp-lt-rent" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric">
+              <span class="bp-metric-label">Annual Revenue</span>
+              <span id="bp-lt-annual" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric">
+              <span class="bp-metric-label">Occupancy</span>
+              <span id="bp-lt-occupancy" class="bp-metric-value">95%</span>
+            </div>
+            <div class="bp-metric bp-metric-sub">
+              <span class="bp-metric-label">Body Corporate</span>
+              <span id="bp-lt-levy" class="bp-metric-value expense">-</span>
+            </div>
+            <div class="bp-metric bp-metric-sub">
+              <span class="bp-metric-label">Rates & Taxes</span>
+              <span id="bp-lt-rates" class="bp-metric-value expense">-</span>
+            </div>
+            <div class="bp-metric bp-metric-sub">
+              <span class="bp-metric-label">Insurance</span>
+              <span id="bp-lt-insurance" class="bp-metric-value expense">-</span>
+            </div>
+            <div class="bp-metric bp-metric-sub">
+              <span class="bp-metric-label">Maintenance (5%)</span>
+              <span id="bp-lt-maintenance" class="bp-metric-value expense">-</span>
+            </div>
+            <div class="bp-metric bp-metric-highlight">
+              <span class="bp-metric-label">Net Annual Income</span>
+              <span id="bp-lt-net" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric bp-metric-yield">
+              <span class="bp-metric-label">Gross Yield</span>
+              <span id="bp-lt-gross-yield" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric bp-metric-yield">
+              <span class="bp-metric-label">Net Yield</span>
+              <span id="bp-lt-net-yield" class="bp-metric-value highlight">-</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bp-column bp-airbnb">
+          <div class="bp-column-header">
+            <h3>Airbnb</h3>
+            <span class="bp-column-icon">✈️</span>
+          </div>
+          <div class="bp-metrics">
+            <div class="bp-metric">
+              <span class="bp-metric-label">Nightly Rate</span>
+              <span id="bp-ab-nightly" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric">
+              <span class="bp-metric-label">Annual Revenue</span>
+              <span id="bp-ab-annual" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric">
+              <span class="bp-metric-label">Occupancy</span>
+              <span id="bp-ab-occupancy" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric bp-metric-sub">
+              <span class="bp-metric-label">Airbnb Fees (15%)</span>
+              <span id="bp-ab-fees" class="bp-metric-value expense">-</span>
+            </div>
+            <div class="bp-metric bp-metric-sub">
+              <span class="bp-metric-label">Cleaning (R400/turn)</span>
+              <span id="bp-ab-cleaning" class="bp-metric-value expense">-</span>
+            </div>
+            <div class="bp-metric bp-metric-sub">
+              <span class="bp-metric-label">Utilities & Supplies</span>
+              <span id="bp-ab-utilities" class="bp-metric-value expense">-</span>
+            </div>
+            <div class="bp-metric bp-metric-sub">
+              <span class="bp-metric-label">Management (20%)</span>
+              <span id="bp-ab-management" class="bp-metric-value expense">-</span>
+            </div>
+            <div class="bp-metric bp-metric-highlight">
+              <span class="bp-metric-label">Net Annual Income</span>
+              <span id="bp-ab-net" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric bp-metric-yield">
+              <span class="bp-metric-label">Gross Yield</span>
+              <span id="bp-ab-gross-yield" class="bp-metric-value">-</span>
+            </div>
+            <div class="bp-metric bp-metric-yield">
+              <span class="bp-metric-label">Net Yield</span>
+              <span id="bp-ab-net-yield" class="bp-metric-value highlight">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bp-verdict">
+        <h4>Recommendation</h4>
+        <p id="bp-recommendation">-</p>
+      </div>
+
+      <div class="bp-footer">
+        <small>Estimates based on market data. Actual results may vary.</small>
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="js/app.js"></script>
 </body>

@@ -6,6 +6,10 @@ let geojsonLayer;
 let priceData = {};
 let selectedLayer = null;
 
+// Business Plan state
+let currentNeighborhood = null;
+let purchaseType = 'resale'; // 'resale' or 'new'
+
 // Map Configuration
 const MAP_CONFIG = {
   center: [-33.92, 18.42],
@@ -198,6 +202,10 @@ function updateInfoPanel(properties) {
       <span>Gross Yield: ${grossYield}%</span>
     </div>
     <span class="zone-badge">${getZoneLabel(data.zone)}</span>
+
+    <button class="bp-open-btn" onclick="openBPModal('${id}')">
+      📊 Open Business Plan
+    </button>
   `;
 
   document.querySelector('.info-panel .instruction').style.display = 'none';
@@ -291,3 +299,170 @@ async function initMap() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initMap);
+
+// ==================== //
+// Business Plan Modal  //
+// ==================== //
+
+function openBPModal(neighborhoodId) {
+  currentNeighborhood = priceData[neighborhoodId];
+  if (!currentNeighborhood) return;
+
+  const modal = document.getElementById('bp-modal');
+  modal.classList.add('active');
+
+  // Set header
+  document.getElementById('bp-title').textContent = currentNeighborhood.name;
+  document.getElementById('bp-zone').textContent = getZoneLabel(currentNeighborhood.zone);
+
+  // Reset to resale
+  purchaseType = 'resale';
+  document.getElementById('btn-resale').classList.add('active');
+  document.getElementById('btn-new').classList.remove('active');
+
+  // Calculate
+  calculateBP();
+
+  // Add event listener for size input
+  document.getElementById('bp-size').addEventListener('input', calculateBP);
+}
+
+function closeBPModal() {
+  document.getElementById('bp-modal').classList.remove('active');
+  currentNeighborhood = null;
+}
+
+function setPurchaseType(type) {
+  purchaseType = type;
+  document.getElementById('btn-resale').classList.toggle('active', type === 'resale');
+  document.getElementById('btn-new').classList.toggle('active', type === 'new');
+  calculateBP();
+}
+
+function calculateBP() {
+  if (!currentNeighborhood) return;
+
+  const size = parseInt(document.getElementById('bp-size').value) || 35;
+  const data = currentNeighborhood;
+  const purchase = data.purchase;
+  const rental = data.rental;
+
+  // Purchase calculations
+  const pricePerSqm = purchaseType === 'new' ? purchase.new.median : purchase.resale.median;
+  const totalPrice = pricePerSqm * size;
+
+  document.getElementById('bp-purchase-price').textContent = formatPrice(totalPrice);
+  document.getElementById('bp-price-sqm').textContent = formatPrice(pricePerSqm) + '/m²';
+
+  // ============ LONG-TERM RENTAL ============
+  const ltRentPerSqm = rental.longTerm.median;
+  const ltMonthlyRent = ltRentPerSqm * size;
+  const ltAnnualRevenue = ltMonthlyRent * 12;
+  const ltOccupancy = 0.95;
+  const ltEffectiveRevenue = ltAnnualRevenue * ltOccupancy;
+
+  // Expenses (annual)
+  const ltLevy = size * 45 * 12; // ~R45/m²/month body corporate
+  const ltRates = totalPrice * 0.005; // ~0.5% of property value
+  const ltInsurance = totalPrice * 0.002; // ~0.2% of property value
+  const ltMaintenance = ltEffectiveRevenue * 0.05; // 5% of revenue
+  const ltTotalExpenses = ltLevy + ltRates + ltInsurance + ltMaintenance;
+
+  const ltNetIncome = ltEffectiveRevenue - ltTotalExpenses;
+  const ltGrossYield = (ltAnnualRevenue / totalPrice) * 100;
+  const ltNetYield = (ltNetIncome / totalPrice) * 100;
+
+  document.getElementById('bp-lt-rent').textContent = formatPrice(ltMonthlyRent) + '/mo';
+  document.getElementById('bp-lt-annual').textContent = formatPrice(ltAnnualRevenue);
+  document.getElementById('bp-lt-occupancy').textContent = '95%';
+  document.getElementById('bp-lt-levy').textContent = formatPrice(ltLevy);
+  document.getElementById('bp-lt-rates').textContent = formatPrice(ltRates);
+  document.getElementById('bp-lt-insurance').textContent = formatPrice(ltInsurance);
+  document.getElementById('bp-lt-maintenance').textContent = formatPrice(ltMaintenance);
+  document.getElementById('bp-lt-net').textContent = formatPrice(ltNetIncome);
+  document.getElementById('bp-lt-gross-yield').textContent = ltGrossYield.toFixed(1) + '%';
+  document.getElementById('bp-lt-net-yield').textContent = ltNetYield.toFixed(1) + '%';
+
+  // ============ AIRBNB ============
+  const abNightlyRate = rental.airbnb.nightlyRate;
+  const abOccupancy = rental.airbnb.occupancy / 100;
+  const abNightsPerYear = 365 * abOccupancy;
+  const abGrossRevenue = abNightlyRate * abNightsPerYear;
+
+  // Expenses (annual)
+  const abFees = abGrossRevenue * 0.15; // Airbnb fees 15%
+  const abTurnovers = abNightsPerYear / 3; // Assume 3-night average stay
+  const abCleaning = abTurnovers * 400; // R400 per turnover
+  const abUtilities = size * 80 * 12; // R80/m²/month for utilities & supplies
+  const abManagement = (abGrossRevenue - abFees) * 0.20; // 20% of net for management
+  const abTotalExpenses = abFees + abCleaning + abUtilities + abManagement + ltLevy + ltRates + ltInsurance;
+
+  const abNetIncome = abGrossRevenue - abTotalExpenses;
+  const abGrossYield = (abGrossRevenue / totalPrice) * 100;
+  const abNetYield = (abNetIncome / totalPrice) * 100;
+
+  document.getElementById('bp-ab-nightly').textContent = formatPrice(abNightlyRate);
+  document.getElementById('bp-ab-annual').textContent = formatPrice(abGrossRevenue);
+  document.getElementById('bp-ab-occupancy').textContent = rental.airbnb.occupancy + '%';
+  document.getElementById('bp-ab-fees').textContent = formatPrice(abFees);
+  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning);
+  document.getElementById('bp-ab-utilities').textContent = formatPrice(abUtilities);
+  document.getElementById('bp-ab-management').textContent = formatPrice(abManagement);
+  document.getElementById('bp-ab-net').textContent = formatPrice(abNetIncome);
+  document.getElementById('bp-ab-gross-yield').textContent = abGrossYield.toFixed(1) + '%';
+  document.getElementById('bp-ab-net-yield').textContent = abNetYield.toFixed(1) + '%';
+
+  // ============ RECOMMENDATION ============
+  const recommendation = generateRecommendation(ltNetYield, abNetYield, abOccupancy, data.zone);
+  document.getElementById('bp-recommendation').innerHTML = recommendation;
+}
+
+function generateRecommendation(ltYield, abYield, abOccupancy, zone) {
+  const diff = abYield - ltYield;
+  const isKiteZone = zone === 'west_coast';
+  const isBeachZone = zone === 'false_bay' || zone === 'west_coast';
+  const isPremium = zone.includes('premium');
+
+  let rec = '';
+
+  if (diff > 4) {
+    rec = `<strong style="color:#27ae60">Airbnb strongly recommended (+${diff.toFixed(1)}% net yield)</strong><br>`;
+    rec += `With ${(abOccupancy * 100).toFixed(0)}% occupancy, Airbnb significantly outperforms long-term rental. `;
+  } else if (diff > 1.5) {
+    rec = `<strong style="color:#3498db">Airbnb preferred (+${diff.toFixed(1)}% net yield)</strong><br>`;
+    rec += `Airbnb offers better returns but requires more management effort. `;
+  } else if (diff > 0) {
+    rec = `<strong style="color:#f39c12">Similar returns - consider your lifestyle</strong><br>`;
+    rec += `Both strategies yield similar returns. Long-term is hands-off, Airbnb requires active management. `;
+  } else {
+    rec = `<strong style="color:#9b59b6">Long-term rental recommended</strong><br>`;
+    rec += `With current occupancy rates, long-term rental is more profitable and much easier to manage. `;
+  }
+
+  if (isKiteZone) {
+    rec += `<br><br>🪁 <em>Kitesurf zone: Peak season Nov-Mar can command premium nightly rates.</em>`;
+  } else if (isBeachZone) {
+    rec += `<br><br>🏖️ <em>Beach location: Summer (Dec-Feb) has highest demand and rates.</em>`;
+  }
+
+  if (isPremium) {
+    rec += `<br><br>💎 <em>Premium area: Focus on quality furnishing for higher nightly rates.</em>`;
+  }
+
+  return rec;
+}
+
+// Close modal on background click
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('bp-modal');
+  if (e.target === modal) {
+    closeBPModal();
+  }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeBPModal();
+  }
+});
