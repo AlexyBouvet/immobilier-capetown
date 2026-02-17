@@ -12,15 +12,15 @@
 
   <div id="info-panel" class="info-panel">
     <div class="panel-tabs">
-      <button class="panel-tab active" onclick="showTab('info')">Info</button>
+      <button class="panel-tab active" onclick="showTab('info')">Zone Info</button>
       <button class="panel-tab" onclick="showTab('rankings')">Top 5</button>
-      <button class="panel-tab" onclick="showTab('listings')">Listings</button>
     </div>
 
     <div id="tab-info" class="tab-content active">
       <h2>Cape Town Property Prices</h2>
-      <p class="instruction">Hover over a neighborhood to see prices</p>
+      <p class="instruction">Click on a neighborhood to see details and listings</p>
       <div id="price-info"></div>
+      <div id="zone-listings" class="zone-listings"></div>
     </div>
 
     <div id="tab-rankings" class="tab-content">
@@ -55,68 +55,6 @@
       </div>
     </div>
 
-    <div id="tab-listings" class="tab-content">
-      <h2>Property Listings</h2>
-      <p class="listings-subtitle">Real offers from Property24 and Private Property</p>
-
-      <div class="listings-filters">
-        <div class="filter-group">
-          <label for="filter-zone">Zone</label>
-          <select id="filter-zone" onchange="filterListings()">
-            <option value="all">All Zones</option>
-            <option value="atlantic_seaboard">Atlantic Seaboard</option>
-            <option value="city_bowl">City Bowl</option>
-            <option value="eastern">Eastern Suburbs</option>
-            <option value="west_coast">West Coast</option>
-            <option value="false_bay">False Bay</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label for="filter-size">Size (m²)</label>
-          <select id="filter-size" onchange="filterListings()">
-            <option value="all">All Sizes</option>
-            <option value="micro">15-30m² (Micro)</option>
-            <option value="small">30-45m² (Studio)</option>
-            <option value="medium">45-65m² (1-Bed)</option>
-            <option value="large">65-90m² (2-Bed)</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label for="filter-price">Max Price</label>
-          <select id="filter-price" onchange="filterListings()">
-            <option value="all">Any Price</option>
-            <option value="1000000">R1M</option>
-            <option value="1500000">R1.5M</option>
-            <option value="2000000">R2M</option>
-            <option value="3000000">R3M</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="listings-stats">
-        <div class="stat-item">
-          <span class="stat-value" id="listings-count">-</span>
-          <span class="stat-label">Listings</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value" id="listings-avg-size">-</span>
-          <span class="stat-label">Avg Size</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value" id="listings-avg-price">-</span>
-          <span class="stat-label">Avg Price/m²</span>
-        </div>
-      </div>
-
-      <div id="listings-container" class="listings-container">
-        <p class="listings-loading">Loading listings...</p>
-      </div>
-
-      <div class="listings-note">
-        <strong>Source:</strong> Property24, Private Property (Feb 2026).
-        Prices may have changed. Always verify before making offers.
-      </div>
-    </div>
   </div>
 
   <div id="legend" class="legend">

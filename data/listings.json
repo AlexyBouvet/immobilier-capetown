@@ -3,8 +3,8 @@
   "source": "Property24, Private Property",
   "listings": [
     {
-      "id": "P24-113842651",
-      "title": "Modern Studio in Sea Point",
+      "id": "sp-1",
+      "title": "Modern Studio Sea Point",
       "neighborhood": "sea_point",
       "zone": "atlantic_seaboard",
       "price": 1295000,
@@ -13,11 +13,11 @@
       "bathrooms": 1,
       "parking": 0,
       "features": ["Pool", "Security", "Balcony"],
-      "url": "https://www.property24.com/for-sale/sea-point/cape-town/western-cape/113842651"
+      "url": "https://www.property24.com/for-sale/sea-point/cape-town/western-cape/9402"
     },
     {
-      "id": "P24-113856432",
-      "title": "1-Bed Apartment Green Point",
+      "id": "gp-1",
+      "title": "1-Bed Green Point",
       "neighborhood": "green_point",
       "zone": "atlantic_seaboard",
       "price": 1650000,
@@ -26,10 +26,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Gym", "Pool", "24h Security"],
-      "url": "https://www.property24.com/for-sale/green-point/cape-town/western-cape/113856432"
+      "url": "https://www.property24.com/for-sale/green-point/cape-town/western-cape/9400"
     },
     {
-      "id": "P24-113789234",
+      "id": "dw-1",
       "title": "Compact Studio De Waterkant",
       "neighborhood": "de_waterkant",
       "zone": "city_bowl",
@@ -39,10 +39,10 @@
       "bathrooms": 1,
       "parking": 0,
       "features": ["Rooftop", "Security"],
-      "url": "https://www.property24.com/for-sale/de-waterkant/cape-town/western-cape/113789234"
+      "url": "https://www.property24.com/for-sale/de-waterkant/cape-town/western-cape/9396"
     },
     {
-      "id": "PP-9872341",
+      "id": "ga-1",
       "title": "Sunny Bachelor Gardens",
       "neighborhood": "gardens",
       "zone": "city_bowl",
@@ -52,10 +52,10 @@
       "bathrooms": 1,
       "parking": 0,
       "features": ["Garden View", "Secure"],
-      "url": "https://www.privateproperty.co.za/for-sale/9872341"
+      "url": "https://www.property24.com/for-sale/gardens/cape-town/western-cape/9398"
     },
     {
-      "id": "P24-113901567",
+      "id": "sp-2",
       "title": "Studio with View Sea Point",
       "neighborhood": "sea_point",
       "zone": "atlantic_seaboard",
@@ -65,10 +65,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Ocean View", "Pool", "Gym"],
-      "url": "https://www.property24.com/for-sale/sea-point/cape-town/western-cape/113901567"
+      "url": "https://www.property24.com/for-sale/sea-point/cape-town/western-cape/9402"
     },
     {
-      "id": "P24-113867890",
+      "id": "ws-1",
       "title": "Renovated 1-Bed Woodstock",
       "neighborhood": "woodstock",
       "zone": "eastern",
@@ -78,10 +78,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Renovated", "Open Plan"],
-      "url": "https://www.property24.com/for-sale/woodstock/cape-town/western-cape/113867890"
+      "url": "https://www.property24.com/for-sale/woodstock/cape-town/western-cape/9424"
     },
     {
-      "id": "PP-9887123",
+      "id": "ob-1",
       "title": "Industrial Loft Observatory",
       "neighborhood": "observatory",
       "zone": "eastern",
@@ -91,10 +91,10 @@
       "bathrooms": 1,
       "parking": 0,
       "features": ["High Ceilings", "Character"],
-      "url": "https://www.privateproperty.co.za/for-sale/9887123"
+      "url": "https://www.property24.com/for-sale/observatory/cape-town/western-cape/9410"
     },
     {
-      "id": "P24-113923456",
+      "id": "bl-1",
       "title": "Beachfront Studio Blouberg",
       "neighborhood": "bloubergstrand",
       "zone": "west_coast",
@@ -104,10 +104,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Beach Access", "View", "Pool"],
-      "url": "https://www.property24.com/for-sale/blouberg/cape-town/western-cape/113923456"
+      "url": "https://www.property24.com/for-sale/bloubergstrand/cape-town/western-cape/9369"
     },
     {
-      "id": "P24-113934567",
+      "id": "bb-1",
       "title": "Kitesurf Haven Big Bay",
       "neighborhood": "big_bay",
       "zone": "west_coast",
@@ -117,10 +117,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Ocean View", "Near Beach", "Secure"],
-      "url": "https://www.property24.com/for-sale/big-bay/cape-town/western-cape/113934567"
+      "url": "https://www.property24.com/for-sale/big-bay/cape-town/western-cape/9368"
     },
     {
-      "id": "PP-9901234",
+      "id": "mz-1",
       "title": "Surf Studio Muizenberg",
       "neighborhood": "muizenberg",
       "zone": "false_bay",
@@ -130,10 +130,10 @@
       "bathrooms": 1,
       "parking": 0,
       "features": ["Walk to Beach", "Colorful Area"],
-      "url": "https://www.privateproperty.co.za/for-sale/9901234"
+      "url": "https://www.property24.com/for-sale/muizenberg/cape-town/western-cape/9408"
     },
     {
-      "id": "P24-113945678",
+      "id": "tk-1",
       "title": "Compact 1-Bed Tamboerskloof",
       "neighborhood": "tamboerskloof",
       "zone": "city_bowl",
@@ -143,10 +143,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Mountain View", "Quiet"],
-      "url": "https://www.property24.com/for-sale/tamboerskloof/cape-town/western-cape/113945678"
+      "url": "https://www.property24.com/for-sale/tamboerskloof/cape-town/western-cape/9420"
     },
     {
-      "id": "P24-113956789",
+      "id": "sr-1",
       "title": "New Development Studio",
       "neighborhood": "salt_river",
       "zone": "eastern",
@@ -156,10 +156,10 @@
       "bathrooms": 1,
       "parking": 0,
       "features": ["New Build", "Modern Finishes"],
-      "url": "https://www.property24.com/for-sale/salt-river/cape-town/western-cape/113956789"
+      "url": "https://www.property24.com/for-sale/salt-river/cape-town/western-cape/9414"
     },
     {
-      "id": "PP-9912345",
+      "id": "bk-1",
       "title": "Bo-Kaap Character Flat",
       "neighborhood": "bo_kaap",
       "zone": "city_bowl",
@@ -169,10 +169,10 @@
       "bathrooms": 1,
       "parking": 0,
       "features": ["Historic", "Central"],
-      "url": "https://www.privateproperty.co.za/for-sale/9912345"
+      "url": "https://www.property24.com/for-sale/bo-kaap/cape-town/western-cape/9371"
     },
     {
-      "id": "P24-113967890",
+      "id": "mp-1",
       "title": "Sea View 2-Bed Mouille Point",
       "neighborhood": "mouille_point",
       "zone": "atlantic_seaboard",
@@ -182,10 +182,10 @@
       "bathrooms": 2,
       "parking": 1,
       "features": ["Premium View", "Pool", "Concierge"],
-      "url": "https://www.property24.com/for-sale/mouille-point/cape-town/western-cape/113967890"
+      "url": "https://www.property24.com/for-sale/mouille-point/cape-town/western-cape/9407"
     },
     {
-      "id": "P24-113978901",
+      "id": "gp-2",
       "title": "Investment Studio Green Point",
       "neighborhood": "green_point",
       "zone": "atlantic_seaboard",
@@ -195,10 +195,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Tenant in Place", "Good Yield"],
-      "url": "https://www.property24.com/for-sale/green-point/cape-town/western-cape/113978901"
+      "url": "https://www.property24.com/for-sale/green-point/cape-town/western-cape/9400"
     },
     {
-      "id": "PP-9923456",
+      "id": "vh-1",
       "title": "Penthouse Studio Vredehoek",
       "neighborhood": "vredehoek",
       "zone": "city_bowl",
@@ -208,10 +208,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Top Floor", "Views", "Quiet"],
-      "url": "https://www.privateproperty.co.za/for-sale/9923456"
+      "url": "https://www.property24.com/for-sale/vredehoek/cape-town/western-cape/9422"
     },
     {
-      "id": "P24-113989012",
+      "id": "tv-1",
       "title": "Modern 1-Bed Table View",
       "neighborhood": "table_view",
       "zone": "west_coast",
@@ -221,10 +221,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["New Complex", "Pool", "Braai Area"],
-      "url": "https://www.property24.com/for-sale/table-view/cape-town/western-cape/113989012"
+      "url": "https://www.property24.com/for-sale/table-view/cape-town/western-cape/9419"
     },
     {
-      "id": "P24-113990123",
+      "id": "ml-1",
       "title": "Entry Level Milnerton",
       "neighborhood": "milnerton",
       "zone": "west_coast",
@@ -234,10 +234,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Secure", "Pet Friendly"],
-      "url": "https://www.property24.com/for-sale/milnerton/cape-town/western-cape/113990123"
+      "url": "https://www.property24.com/for-sale/milnerton/cape-town/western-cape/9406"
     },
     {
-      "id": "PP-9934567",
+      "id": "oz-1",
       "title": "Oranjezicht Period Flat",
       "neighborhood": "oranjezicht",
       "zone": "city_bowl",
@@ -247,10 +247,10 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["High Ceilings", "Character"],
-      "url": "https://www.privateproperty.co.za/for-sale/9934567"
+      "url": "https://www.property24.com/for-sale/oranjezicht/cape-town/western-cape/9411"
     },
     {
-      "id": "P24-114001234",
+      "id": "ta-1",
       "title": "Three Anchor Bay 1-Bed",
       "neighborhood": "three_anchor_bay",
       "zone": "atlantic_seaboard",
@@ -260,7 +260,7 @@
       "bathrooms": 1,
       "parking": 1,
       "features": ["Sea View", "Renovated", "Secure"],
-      "url": "https://www.property24.com/for-sale/three-anchor-bay/cape-town/western-cape/114001234"
+      "url": "https://www.property24.com/for-sale/three-anchor-bay/cape-town/western-cape/9421"
     }
   ],
   "sizeDistribution": {

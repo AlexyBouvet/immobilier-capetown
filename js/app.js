@@ -202,11 +202,15 @@ function updateInfoPanel(properties) {
 
   document.querySelector('.info-panel .instruction').style.display = 'none';
   document.getElementById('price-info').style.display = 'block';
+
+  // Show contextual listings for this neighborhood
+  showZoneListings(id, data.zone);
 }
 
 // Reset info panel to default state
 function resetInfoPanel() {
   document.getElementById('price-info').style.display = 'none';
+  document.getElementById('zone-listings').style.display = 'none';
   document.querySelector('.info-panel .instruction').style.display = 'block';
 }
 
@@ -780,7 +784,7 @@ function highlightNeighborhood(id) {
 }
 
 // ==================== //
-// Listings Tab         //
+// Contextual Listings  //
 // ==================== //
 
 let listingsData = [];
@@ -790,112 +794,83 @@ async function loadListings() {
     const response = await fetch('data/listings.json');
     const data = await response.json();
     listingsData = data.listings;
-    filterListings();
   } catch (error) {
     console.error('Error loading listings:', error);
-    document.getElementById('listings-container').innerHTML = `
-      <div class="listings-empty">
-        <div class="listings-empty-title">Failed to load listings</div>
-        <div class="listings-empty-text">Check console for details</div>
-      </div>
-    `;
   }
 }
 
-function filterListings() {
-  const zoneFilter = document.getElementById('filter-zone').value;
-  const sizeFilter = document.getElementById('filter-size').value;
-  const priceFilter = document.getElementById('filter-price').value;
+function showZoneListings(neighborhoodId, zone) {
+  const container = document.getElementById('zone-listings');
 
-  let filtered = listingsData;
+  // Filter listings for this neighborhood or zone
+  let filtered = listingsData.filter(l => l.neighborhood === neighborhoodId);
 
-  // Zone filter
-  if (zoneFilter !== 'all') {
-    filtered = filtered.filter(l => l.zone === zoneFilter);
+  // If no exact match, show zone listings
+  if (filtered.length === 0) {
+    filtered = listingsData.filter(l => l.zone === zone);
   }
 
-  // Size filter
-  if (sizeFilter !== 'all') {
-    const sizeRanges = {
-      'micro': [15, 30],
-      'small': [30, 45],
-      'medium': [45, 65],
-      'large': [65, 90]
-    };
-    const [min, max] = sizeRanges[sizeFilter];
-    filtered = filtered.filter(l => l.size >= min && l.size < max);
-  }
-
-  // Price filter
-  if (priceFilter !== 'all') {
-    const maxPrice = parseInt(priceFilter);
-    filtered = filtered.filter(l => l.price <= maxPrice);
-  }
-
-  displayListings(filtered);
-}
-
-function displayListings(listings) {
-  const container = document.getElementById('listings-container');
-
-  if (listings.length === 0) {
+  if (filtered.length === 0) {
     container.innerHTML = `
+      <div class="zone-listings-header">
+        <h4>Available Listings</h4>
+      </div>
       <div class="listings-empty">
-        <div class="listings-empty-title">No listings found</div>
-        <div class="listings-empty-text">Try adjusting your filters</div>
+        <div class="listings-empty-text">No listings in this area</div>
+        <a href="https://www.property24.com/for-sale/cape-town/western-cape/432" target="_blank" class="search-link">
+          Search on Property24
+        </a>
       </div>
     `;
-    document.getElementById('listings-count').textContent = '0';
-    document.getElementById('listings-avg-size').textContent = '-';
-    document.getElementById('listings-avg-price').textContent = '-';
+    container.style.display = 'block';
     return;
   }
 
-  // Calculate stats
-  const avgSize = Math.round(listings.reduce((sum, l) => sum + l.size, 0) / listings.length);
-  const avgPricePerSqm = Math.round(listings.reduce((sum, l) => sum + (l.price / l.size), 0) / listings.length);
+  // Get neighborhood name for search link
+  const neighborhoodName = priceData[neighborhoodId]?.name || 'Cape Town';
+  const searchUrl = `https://www.property24.com/for-sale/${neighborhoodId.replace(/_/g, '-')}/cape-town/western-cape/432`;
 
-  document.getElementById('listings-count').textContent = listings.length;
-  document.getElementById('listings-avg-size').textContent = avgSize + 'm²';
-  document.getElementById('listings-avg-price').textContent = 'R' + (avgPricePerSqm / 1000).toFixed(0) + 'k';
+  container.innerHTML = `
+    <div class="zone-listings-header">
+      <h4>Listings (${filtered.length})</h4>
+      <a href="${searchUrl}" target="_blank" class="see-all-link">See all on Property24</a>
+    </div>
+    <div class="zone-listings-list">
+      ${filtered.slice(0, 5).map(listing => {
+        const pricePerSqm = Math.round(listing.price / listing.size);
+        const neighborhood = priceData[listing.neighborhood];
 
-  // Render listing cards
-  container.innerHTML = listings.map(listing => {
-    const pricePerSqm = Math.round(listing.price / listing.size);
-    const neighborhood = priceData[listing.neighborhood];
+        let yieldBadge = '';
+        if (neighborhood) {
+          const annualRent = neighborhood.rental.longTerm.median * listing.size * 12;
+          const grossYield = ((annualRent / listing.price) * 100).toFixed(1);
+          yieldBadge = `<span class="listing-yield">${grossYield}%</span>`;
+        }
 
-    // Estimate yield if we have price data
-    let yieldBadge = '';
-    if (neighborhood) {
-      const annualRent = neighborhood.rental.longTerm.median * listing.size * 12;
-      const grossYield = ((annualRent / listing.price) * 100).toFixed(1);
-      yieldBadge = `<span class="listing-yield">${grossYield}% yield</span>`;
-    }
-
-    return `
-      <div class="listing-card" onclick="window.open('${listing.url}', '_blank')">
-        <div class="listing-info">
-          <div class="listing-zone">${getZoneLabel(listing.zone)}</div>
-          <div class="listing-title">${listing.title}</div>
-          <div class="listing-details">
-            <span>${listing.size}m²</span>
-            <span>${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + '-bed'}</span>
-            <span>${listing.bathrooms} bath</span>
-            ${listing.parking > 0 ? `<span>P${listing.parking}</span>` : ''}
+        return `
+          <div class="listing-card" onclick="window.open('${listing.url}', '_blank')">
+            <div class="listing-info">
+              <div class="listing-title">${listing.title}</div>
+              <div class="listing-details">
+                <span>${listing.size}m²</span>
+                <span>${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms + '-bed'}</span>
+                ${listing.parking > 0 ? `<span>P${listing.parking}</span>` : ''}
+              </div>
+            </div>
+            <div class="listing-price-col">
+              <div class="listing-price">${formatPrice(listing.price)}</div>
+              <div class="listing-price-sqm">R${(pricePerSqm / 1000).toFixed(0)}k/m²</div>
+              ${yieldBadge}
+            </div>
           </div>
-        </div>
-        <div class="listing-price-col">
-          <div class="listing-price">${formatPrice(listing.price)}</div>
-          <div class="listing-price-sqm">R${(pricePerSqm / 1000).toFixed(0)}k/m²</div>
-          ${yieldBadge}
-        </div>
-      </div>
-    `;
-  }).join('');
+        `;
+      }).join('')}
+    </div>
+  `;
+  container.style.display = 'block';
 }
 
-// Load listings when switching to tab
+// Load listings on init
 document.addEventListener('DOMContentLoaded', function() {
-  // Wait for price data to load, then load listings
   setTimeout(loadListings, 500);
 });
