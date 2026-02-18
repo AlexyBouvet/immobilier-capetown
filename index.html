@@ -41,8 +41,9 @@
       <!-- TABS -->
       <nav class="main-tabs">
         <button class="main-tab active" onclick="showTab('zone')">Zone Info</button>
-        <button class="main-tab" onclick="showTab('rankings')">Rankings</button>
+        <button class="main-tab" onclick="showTab('rankings')">Zone Rankings</button>
         <button class="main-tab" onclick="showTab('all-listings')">All Listings</button>
+        <button class="main-tab" onclick="showTab('topics')">Topics</button>
       </nav>
 
       <!-- TAB: Selected Zone -->
@@ -135,6 +136,95 @@
         </div>
 
         <div id="all-listings-grid" class="listings-grid"></div>
+      </section>
+
+      <!-- TAB: Topics -->
+      <section id="tab-topics" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>Topics</h2>
+            <p class="section-subtitle">Key considerations for non-resident investors</p>
+          </div>
+        </div>
+        <div class="topics-grid">
+
+          <div class="topic-card">
+            <div class="topic-icon">🏦</div>
+            <h3>Financing</h3>
+            <ul>
+              <li>Non-residents can access SA mortgages — typically <strong>50% LTV max</strong></li>
+              <li>Interest rates currently ~<strong>11–11.5%</strong> (prime rate)</li>
+              <li>Loan term: up to 20 years</li>
+              <li>SA banks require foreign income proof + SA bank account</li>
+              <li>No mortgage → full cash purchase, higher yield</li>
+            </ul>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">🧾</div>
+            <h3>Taxes for Non-Residents</h3>
+            <ul>
+              <li><strong>Transfer duty</strong>: 0% under R1.21M, 3% up to R1.66M, escalating above</li>
+              <li><strong>Conveyancing</strong>: ~R45 000 fixed</li>
+              <li><strong>Rental income tax</strong>: ~25% effective (after deductions)</li>
+              <li><strong>France–SA treaty</strong>: avoids double taxation</li>
+              <li><strong>CGT on sale</strong>: ~18% on capital gain (40% inclusion × 45% marginal)</li>
+              <li><strong>Agent commission on sale</strong>: ~8% of sale price</li>
+            </ul>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">🏠</div>
+            <h3>Airbnb Regulations</h3>
+            <ul>
+              <li>Cape Town allows short-term rentals — no blanket ban</li>
+              <li>Some buildings have HOA rules restricting Airbnb — check body corporate rules</li>
+              <li>City Bowl / Sea Point: high tourist demand year-round</li>
+              <li>West Coast / Blouberg: kite season (Nov–Mar) drives premium rates</li>
+              <li><strong>Management fee</strong>: 15–25% of revenue (local co-host)</li>
+              <li>Platform fees: ~15% (Airbnb) or ~12% (direct)</li>
+            </ul>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">📋</div>
+            <h3>Buying Process</h3>
+            <ul>
+              <li>Make an offer → OTP (Offer to Purchase) signed by both parties</li>
+              <li>Conveyancer appointed (by seller) — ~6–8 weeks to transfer</li>
+              <li>SA bank account needed for transfer and ongoing costs</li>
+              <li>Foreign capital must be declared to SARB (South African Reserve Bank)</li>
+              <li>Repatriation of funds: possible but requires proof of origin</li>
+              <li>No restriction on foreign ownership of SA property</li>
+            </ul>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">📊</div>
+            <h3>Market Context</h3>
+            <ul>
+              <li>ZAR currently weak vs EUR (~R20/€1) → entry prices look cheap in euros</li>
+              <li>Cape Town prices: <strong>+5–8%/yr</strong> historically (City Bowl outperforms)</li>
+              <li>Rental demand strong: UCT, expats, digital nomads, corporate</li>
+              <li>Studios/micros: highest Airbnb yields but more management intensive</li>
+              <li>2-beds: better long-term tenants, lower yield but hands-off</li>
+            </ul>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">⚠️</div>
+            <h3>Risks</h3>
+            <ul>
+              <li><strong>Load shedding</strong>: power cuts affect tenant satisfaction — check if building has backup power</li>
+              <li><strong>Body corporate fees</strong>: can rise significantly in older buildings</li>
+              <li><strong>Vacancy risk</strong>: Airbnb occupancy can drop off-season</li>
+              <li><strong>Currency risk</strong>: ZAR depreciation reduces EUR returns over time</li>
+              <li><strong>Legislative risk</strong>: future Airbnb restrictions possible</li>
+              <li>All estimates are indicative — consult a local property attorney</li>
+            </ul>
+          </div>
+
+        </div>
       </section>
     </main>
   </div>
