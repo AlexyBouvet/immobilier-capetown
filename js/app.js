@@ -10,6 +10,36 @@ let selectedLayer = null;
 let currentNeighborhood = null;
 let purchaseType = 'resale'; // 'resale' or 'new'
 
+// BP preferences persistence
+const BP_STORAGE_KEY = 'bp-preferences';
+function saveBPPreferences() {
+  const prefs = {
+    size: document.getElementById('bp-size').value,
+    appreciation: document.getElementById('bp-appreciation').value,
+    rentIncrease: document.getElementById('bp-rent-increase').value,
+    ltv: document.getElementById('bp-ltv').value,
+    rate: document.getElementById('bp-rate').value
+  };
+  localStorage.setItem(BP_STORAGE_KEY, JSON.stringify(prefs));
+}
+function restoreBPPreferences() {
+  try {
+    const prefs = JSON.parse(localStorage.getItem(BP_STORAGE_KEY));
+    if (!prefs) return;
+    if (prefs.size) document.getElementById('bp-size').value = prefs.size;
+    if (prefs.appreciation) document.getElementById('bp-appreciation').value = prefs.appreciation;
+    if (prefs.rentIncrease) document.getElementById('bp-rent-increase').value = prefs.rentIncrease;
+    if (prefs.ltv) document.getElementById('bp-ltv').value = prefs.ltv;
+    if (prefs.rate) document.getElementById('bp-rate').value = prefs.rate;
+  } catch (e) {}
+}
+
+// EUR/ZAR conversion
+const ZAR_EUR_RATE = 0.05;
+function formatEur(zarAmount) {
+  return '\u20ac' + Math.round(zarAmount * ZAR_EUR_RATE).toLocaleString('fr-FR');
+}
+
 // Map Configuration
 const MAP_CONFIG = {
   center: [-33.92, 18.42],
@@ -277,8 +307,22 @@ document.addEventListener('DOMContentLoaded', initMap);
 // ==================== //
 
 let bpChart = null;
+let _bpCleanupListeners = null;
+
+function _addBPListeners(handler) {
+  _removeBPListeners();
+  const ids = ['bp-size', 'bp-appreciation', 'bp-rent-increase', 'bp-ltv', 'bp-rate'];
+  ids.forEach(id => document.getElementById(id).addEventListener('input', handler));
+  _bpCleanupListeners = () => ids.forEach(id => document.getElementById(id).removeEventListener('input', handler));
+}
+
+function _removeBPListeners() {
+  if (_bpCleanupListeners) { _bpCleanupListeners(); _bpCleanupListeners = null; }
+}
 
 function openBPModal(neighborhoodId) {
+  currentListing = null;
+  document.getElementById('bp-listing-cta').style.display = 'none';
   currentNeighborhood = priceData[neighborhoodId];
   if (!currentNeighborhood) return;
 
@@ -294,46 +338,45 @@ function openBPModal(neighborhoodId) {
   document.getElementById('btn-resale').classList.add('active');
   document.getElementById('btn-new').classList.remove('active');
 
-  // Calculate
+  // Restore saved preferences then calculate
+  restoreBPPreferences();
   calculateBP();
 
-  // Add event listeners
-  document.getElementById('bp-size').addEventListener('input', calculateBP);
-  document.getElementById('bp-appreciation').addEventListener('input', calculateBP);
-  document.getElementById('bp-rent-increase').addEventListener('input', calculateBP);
-  document.getElementById('bp-ltv').addEventListener('input', calculateBP);
-  document.getElementById('bp-rate').addEventListener('input', calculateBP);
+  const bpHandler = () => { saveBPPreferences(); calculateBP(); };
+  _addBPListeners(bpHandler);
 }
 
 function closeBPModal() {
   document.getElementById('bp-modal').classList.remove('active');
+  _removeBPListeners();
   currentNeighborhood = null;
+  currentListing = null;
 }
 
 function setPurchaseType(type) {
   purchaseType = type;
   document.getElementById('btn-resale').classList.toggle('active', type === 'resale');
   document.getElementById('btn-new').classList.toggle('active', type === 'new');
-  calculateBP();
+  if (currentListing) { calculateListingBP(currentListing); } else { calculateBP(); }
 }
 
 function calculateBP() {
   if (!currentNeighborhood) return;
-
   const size = parseInt(document.getElementById('bp-size').value) || 35;
-  const data = currentNeighborhood;
-  const purchase = data.purchase;
-  const rental = data.rental;
-
-  // Purchase calculations
-  const pricePerSqm = purchaseType === 'new' ? purchase.new.median : purchase.resale.median;
+  const pricePerSqm = purchaseType === 'new' ? currentNeighborhood.purchase.new.median : currentNeighborhood.purchase.resale.median;
   const totalPrice = pricePerSqm * size;
+  _renderBPModal(totalPrice, size, currentNeighborhood);
+}
+
+function _renderBPModal(totalPrice, size, data) {
+  const rental = data.rental;
+  const pricePerSqm = Math.round(totalPrice / size);
 
   // Calculate acquisition costs for display
   const transferDutyDisplay = calculateTransferDuty(totalPrice);
   const acquisitionTotal = transferDutyDisplay + 45000;
 
-  document.getElementById('bp-purchase-price').textContent = formatPrice(totalPrice);
+  document.getElementById('bp-purchase-price').innerHTML = `${formatPrice(totalPrice)} <small style="color:#888;font-weight:400">${formatEur(totalPrice)}</small>`;
   document.getElementById('bp-purchase-price').dataset.tooltip = `${formatPrice(pricePerSqm)}/m² × ${size}m²`;
 
   document.getElementById('bp-tax-acq-total').textContent = '+' + formatPrice(acquisitionTotal);
@@ -356,11 +399,27 @@ function calculateBP() {
   const ltMaintenance = ltEffectiveRevenue * 0.05; // 5% of revenue
   const ltTotalExpenses = ltLevy + ltRates + ltInsurance + ltMaintenance;
 
-  const ltNetIncome = ltEffectiveRevenue - ltTotalExpenses;
-  const ltGrossYield = (ltAnnualRevenue / totalPrice) * 100;
-  const ltNetYield = (ltNetIncome / totalPrice) * 100;
+  // Mortgage calculation (shared between LT and Airbnb)
+  const ltv = parseFloat(document.getElementById('bp-ltv').value) / 100;
+  const interestRate = parseFloat(document.getElementById('bp-rate').value) / 100;
+  const ltvFinal = isNaN(ltv) ? 0 : ltv;
+  const rateFinal = isNaN(interestRate) || interestRate === 0 ? 0.11 : interestRate;
+  const loanAmount = totalPrice * ltvFinal;
+  const monthlyRate = rateFinal / 12;
+  const numPayments = 240; // 20 years
+  const monthlyMortgage = loanAmount > 0
+    ? (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1)
+    : 0;
+  const annualMortgage = monthlyMortgage * 12;
 
-  document.getElementById('bp-lt-rent').textContent = formatPrice(ltMonthlyRent) + '/mo';
+  const totalInvestment = totalPrice + acquisitionTotal; // purchase + transfer duty + conveyancing
+  const ltNetIncomePreTax = ltEffectiveRevenue - ltTotalExpenses - annualMortgage;
+  const ltIncomeTax = Math.max(0, ltNetIncomePreTax * 0.25); // 25% effective rate non-residents
+  const ltNetIncome = ltNetIncomePreTax - ltIncomeTax;
+  const ltGrossYield = (ltAnnualRevenue / totalInvestment) * 100;
+  const ltNetYield = (ltNetIncome / totalInvestment) * 100;
+
+  document.getElementById('bp-lt-rent').innerHTML = `${formatPrice(ltMonthlyRent)}/mo <small style="color:#888;font-weight:400">${formatEur(ltMonthlyRent)}</small>`;
   document.getElementById('bp-lt-rent').dataset.tooltip = `${ltRentPerSqm} R/m² × ${size}m² = ${formatPrice(ltMonthlyRent)}/month`;
 
   document.getElementById('bp-lt-annual').textContent = formatPrice(ltAnnualRevenue);
@@ -375,11 +434,23 @@ function calculateBP() {
   document.getElementById('bp-lt-maintenance').textContent = formatPrice(ltMaintenance);
   document.getElementById('bp-lt-maintenance').dataset.tooltip = `5% of effective revenue\n${formatPrice(ltEffectiveRevenue)} × 5% = ${formatPrice(ltMaintenance)}`;
 
-  document.getElementById('bp-lt-net').textContent = formatPrice(ltNetIncome);
-  document.getElementById('bp-lt-net').dataset.tooltip = `${formatPrice(ltEffectiveRevenue)} revenue\n- ${formatPrice(ltTotalExpenses)} expenses\n= ${formatPrice(ltNetIncome)} net annual`;
+  const ltMortgageRow = document.getElementById('bp-lt-mortgage-row');
+  if (annualMortgage > 0) {
+    ltMortgageRow.style.display = '';
+    document.getElementById('bp-lt-mortgage').textContent = formatPrice(annualMortgage);
+    document.getElementById('bp-lt-mortgage').dataset.tooltip = `Loan: ${formatPrice(loanAmount)} (${(ltvFinal*100).toFixed(0)}% LTV)\nRate: ${(rateFinal*100).toFixed(1)}% over 20yr\n${formatPrice(Math.round(monthlyMortgage))}/month`;
+  } else {
+    ltMortgageRow.style.display = 'none';
+  }
+
+  document.getElementById('bp-lt-tax').textContent = formatPrice(ltIncomeTax);
+  document.getElementById('bp-lt-tax').dataset.tooltip = `Income tax: 25% flat rate (non-residents)\nApplied on net operating income\n${formatPrice(ltNetIncomePreTax)} × 25% = ${formatPrice(ltIncomeTax)}`;
+
+  document.getElementById('bp-lt-net').innerHTML = `${formatPrice(ltNetIncome)} <small style="color:#888;font-weight:400">${formatEur(ltNetIncome)}/yr</small>`;
+  document.getElementById('bp-lt-net').dataset.tooltip = `${formatPrice(ltEffectiveRevenue)} revenue\n- ${formatPrice(ltTotalExpenses)} expenses${annualMortgage > 0 ? `\n- ${formatPrice(annualMortgage)} mortgage` : ''}\n= ${formatPrice(ltNetIncome)} net annual`;
 
   document.getElementById('bp-lt-net-yield').textContent = ltNetYield.toFixed(1) + '%';
-  document.getElementById('bp-lt-net-yield').dataset.tooltip = `Net Yield = Net Income / Purchase Price\n${formatPrice(ltNetIncome)} / ${formatPrice(totalPrice)}\n= ${ltNetYield.toFixed(2)}%`;
+  document.getElementById('bp-lt-net-yield').dataset.tooltip = `Net Yield (after tax) = Net Income / Total Investment\n${formatPrice(ltNetIncome)} / ${formatPrice(totalInvestment)}\n(Price ${formatPrice(totalPrice)} + Acquisition ${formatPrice(acquisitionTotal)})\n= ${ltNetYield.toFixed(2)}%`;
 
   // ============ AIRBNB ============
   const abNightlyRate = rental.airbnb.nightlyRate;
@@ -395,9 +466,11 @@ function calculateBP() {
   const abManagement = (abGrossRevenue - abFees) * 0.20; // 20% of net for management
   const abTotalExpenses = abFees + abCleaning + abUtilities + abManagement + ltLevy + ltRates + ltInsurance;
 
-  const abNetIncome = abGrossRevenue - abTotalExpenses;
-  const abGrossYield = (abGrossRevenue / totalPrice) * 100;
-  const abNetYield = (abNetIncome / totalPrice) * 100;
+  const abNetIncomePreTax = abGrossRevenue - abTotalExpenses - annualMortgage;
+  const abIncomeTax = Math.max(0, abNetIncomePreTax * 0.25);
+  const abNetIncome = abNetIncomePreTax - abIncomeTax;
+  const abGrossYield = (abGrossRevenue / totalInvestment) * 100;
+  const abNetYield = (abNetIncome / totalInvestment) * 100;
 
   document.getElementById('bp-ab-nightly').textContent = formatPrice(abNightlyRate);
   document.getElementById('bp-ab-nightly').dataset.tooltip = `Market rate for this area`;
@@ -417,11 +490,23 @@ function calculateBP() {
   document.getElementById('bp-ab-management').textContent = formatPrice(abManagement);
   document.getElementById('bp-ab-management').dataset.tooltip = `20% of net (after platform fees)\n(${formatPrice(abGrossRevenue)} - ${formatPrice(abFees)}) × 20%\n= ${formatPrice(abManagement)}`;
 
-  document.getElementById('bp-ab-net').textContent = formatPrice(abNetIncome);
-  document.getElementById('bp-ab-net').dataset.tooltip = `${formatPrice(abGrossRevenue)} gross revenue\n- ${formatPrice(abTotalExpenses)} total expenses\n= ${formatPrice(abNetIncome)} net annual`;
+  const abMortgageRow = document.getElementById('bp-ab-mortgage-row');
+  if (annualMortgage > 0) {
+    abMortgageRow.style.display = '';
+    document.getElementById('bp-ab-mortgage').textContent = formatPrice(annualMortgage);
+    document.getElementById('bp-ab-mortgage').dataset.tooltip = `Same loan: ${formatPrice(loanAmount)}\n${formatPrice(Math.round(monthlyMortgage))}/month × 12`;
+  } else {
+    abMortgageRow.style.display = 'none';
+  }
+
+  document.getElementById('bp-ab-tax').textContent = formatPrice(abIncomeTax);
+  document.getElementById('bp-ab-tax').dataset.tooltip = `Income tax: 25% flat rate (non-residents)\nApplied on net operating income\n${formatPrice(abNetIncomePreTax)} × 25% = ${formatPrice(abIncomeTax)}`;
+
+  document.getElementById('bp-ab-net').innerHTML = `${formatPrice(abNetIncome)} <small style="color:#888;font-weight:400">${formatEur(abNetIncome)}/yr</small>`;
+  document.getElementById('bp-ab-net').dataset.tooltip = `${formatPrice(abGrossRevenue)} gross revenue\n- ${formatPrice(abTotalExpenses)} total expenses${annualMortgage > 0 ? `\n- ${formatPrice(annualMortgage)} mortgage` : ''}\n= ${formatPrice(abNetIncome)} net annual`;
 
   document.getElementById('bp-ab-net-yield').textContent = abNetYield.toFixed(1) + '%';
-  document.getElementById('bp-ab-net-yield').dataset.tooltip = `Net Yield = Net Income / Purchase Price\n${formatPrice(abNetIncome)} / ${formatPrice(totalPrice)}\n= ${abNetYield.toFixed(2)}%`;
+  document.getElementById('bp-ab-net-yield').dataset.tooltip = `Net Yield (after tax) = Net Income / Total Investment\n${formatPrice(abNetIncome)} / ${formatPrice(totalInvestment)}\n(Price ${formatPrice(totalPrice)} + Acquisition ${formatPrice(acquisitionTotal)})\n= ${abNetYield.toFixed(2)}%`;
 
   // ============ RECOMMENDATION ============
   const recommendation = generateRecommendation(ltNetYield, abNetYield, abOccupancy, data.zone);
@@ -794,10 +879,10 @@ function generateRecommendation(ltYield, abYield, abOccupancy, zone) {
   let rec = '';
 
   if (diff > 4) {
-    rec = `<strong style="color:#27ae60">Airbnb strongly recommended (+${diff.toFixed(1)}% net yield)</strong><br>`;
+    rec = `<strong style="color:#27ae60">Airbnb strongly recommended (${abYield.toFixed(1)}% net yield vs ${ltYield.toFixed(1)}% LT)</strong><br>`;
     rec += `With ${(abOccupancy * 100).toFixed(0)}% occupancy, Airbnb significantly outperforms long-term rental. `;
   } else if (diff > 1.5) {
-    rec = `<strong style="color:#3498db">Airbnb preferred (+${diff.toFixed(1)}% net yield)</strong><br>`;
+    rec = `<strong style="color:#3498db">Airbnb preferred (${abYield.toFixed(1)}% net yield vs ${ltYield.toFixed(1)}% LT)</strong><br>`;
     rec += `Airbnb offers better returns but requires more management effort. `;
   } else if (diff > 0) {
     rec = `<strong style="color:#f39c12">Similar returns - consider your lifestyle</strong><br>`;
@@ -1037,8 +1122,15 @@ function calculateListingYields(listing, neighborhood) {
   const ltMaintenance = ltEffectiveRevenue * 0.05;
   const ltTotalExpenses = ltLevy + ltRates + ltInsurance + ltMaintenance;
 
-  const ltNetIncome = ltEffectiveRevenue - ltTotalExpenses;
-  const ltNetYield = (ltNetIncome / totalPrice) * 100;
+  // Acquisition costs + total investment (match _renderBPModal)
+  const transferDuty = calculateTransferDuty(totalPrice);
+  const acquisitionTotal = transferDuty + 45000;
+  const totalInvestment = totalPrice + acquisitionTotal;
+
+  const ltNetIncomePreTax = ltEffectiveRevenue - ltTotalExpenses;
+  const ltIncomeTax = Math.max(0, ltNetIncomePreTax * 0.25);
+  const ltNetIncome = ltNetIncomePreTax - ltIncomeTax;
+  const ltNetYield = (ltNetIncome / totalInvestment) * 100;
 
   // ============ AIRBNB (same as BP) ============
   const abNightlyRate = rental.airbnb.nightlyRate;
@@ -1054,8 +1146,10 @@ function calculateListingYields(listing, neighborhood) {
   const abManagement = (abGrossRevenue - abFees) * 0.20;
   const abTotalExpenses = abFees + abCleaning + abUtilities + abManagement + ltLevy + ltRates + ltInsurance;
 
-  const abNetIncome = abGrossRevenue - abTotalExpenses;
-  const abNetYield = (abNetIncome / totalPrice) * 100;
+  const abNetIncomePreTax = abGrossRevenue - abTotalExpenses;
+  const abIncomeTax = Math.max(0, abNetIncomePreTax * 0.25);
+  const abNetIncome = abNetIncomePreTax - abIncomeTax;
+  const abNetYield = (abNetIncome / totalInvestment) * 100;
 
   const bestYield = Math.max(ltNetYield, abNetYield);
 
@@ -1066,10 +1160,8 @@ function calculateListingYields(listing, neighborhood) {
 function createListingCard(listing, neighborhood) {
   const pricePerSqm = Math.round(listing.price / listing.size);
 
-  // Favorite badge
-  const favoriteHtml = listing.favorite ? `
-    <div class="listing-favorite-badge">TOP PICK</div>
-  ` : '';
+  // Favorite badge (inline with title)
+  const favoriteBadge = listing.favorite ? `<span class="listing-favorite-badge">TOP PICK</span>` : '';
 
   // Calculate yields for compact display
   let yieldHtml = '';
@@ -1098,7 +1190,6 @@ function createListingCard(listing, neighborhood) {
 
   return `
     <div class="listing-card ${listing.favorite ? 'favorite' : ''}">
-      ${favoriteHtml}
       <div class="listing-header">
         <div class="listing-meta">
           <span class="listing-size">${listing.size}m²</span>
@@ -1107,7 +1198,7 @@ function createListingCard(listing, neighborhood) {
         </div>
         <div class="listing-price">${formatPrice(listing.price)}</div>
       </div>
-      <div class="listing-title">${listing.title}</div>
+      <div class="listing-title">${listing.title}${favoriteBadge}</div>
       <div class="listing-sqm">R${(pricePerSqm / 1000).toFixed(0)}k/m²</div>
       ${yieldHtml}
       <div class="listing-actions">
@@ -1172,7 +1263,8 @@ function openListingBP(listingId) {
   document.getElementById('bp-title').textContent = listing.title;
   document.getElementById('bp-zone').textContent = `${listing.size}m² - ${formatPrice(listing.price)}`;
 
-  // Set the size input to the listing's actual size
+  // Restore saved preferences (except size, which is fixed for listings)
+  restoreBPPreferences();
   document.getElementById('bp-size').value = listing.size;
 
   // Determine if it's new or resale based on price per sqm
@@ -1182,133 +1274,59 @@ function openListingBP(listingId) {
   document.getElementById('btn-resale').classList.toggle('active', !isNew);
   document.getElementById('btn-new').classList.toggle('active', isNew);
 
+  // Show CTA if listing has URL
+  const ctaDiv = document.getElementById('bp-listing-cta');
+  if (listing.url) {
+    document.getElementById('bp-listing-url').href = listing.url;
+    ctaDiv.style.display = '';
+  } else {
+    ctaDiv.style.display = 'none';
+  }
+
   // Calculate with listing's actual price
   calculateListingBP(listing);
 
-  // Add event listeners
-  document.getElementById('bp-size').addEventListener('input', () => calculateListingBP(listing));
-  document.getElementById('bp-appreciation').addEventListener('input', () => calculateListingBP(listing));
-  document.getElementById('bp-rent-increase').addEventListener('input', () => calculateListingBP(listing));
-  document.getElementById('bp-ltv').addEventListener('input', () => calculateListingBP(listing));
-  document.getElementById('bp-rate').addEventListener('input', () => calculateListingBP(listing));
+  const listingHandler = () => { saveBPPreferences(); calculateListingBP(listing); };
+  _addBPListeners(listingHandler);
 }
 
-// Calculate BP for a specific listing (uses actual price instead of zone average)
 function calculateListingBP(listing) {
   if (!currentNeighborhood || !listing) return;
-
-  const size = listing.size; // Use actual listing size
-  const data = currentNeighborhood;
-  const rental = data.rental;
-
-  // Use ACTUAL listing price
-  const totalPrice = listing.price;
-  const pricePerSqm = Math.round(totalPrice / size);
-
-  // Calculate acquisition costs for display
-  const transferDutyDisplay = calculateTransferDuty(totalPrice);
-  const acquisitionTotal = transferDutyDisplay + 45000;
-
-  document.getElementById('bp-purchase-price').textContent = formatPrice(totalPrice);
-  document.getElementById('bp-purchase-price').dataset.tooltip = `${formatPrice(pricePerSqm)}/m² × ${size}m²`;
-
-  document.getElementById('bp-tax-acq-total').textContent = '+' + formatPrice(acquisitionTotal);
-  document.getElementById('bp-tax-acq-total').dataset.tooltip = `Transfer Duty: ${formatPrice(transferDutyDisplay)}\nConveyancing: ~R45 000`;
-
-  document.getElementById('bp-price-sqm').textContent = formatPrice(pricePerSqm) + '/m²';
-  document.getElementById('bp-price-sqm').dataset.tooltip = `${formatPrice(totalPrice)} / ${size}m²`;
-
-  // ============ LONG-TERM RENTAL ============
-  const ltRentPerSqm = rental.longTerm.median;
-  const ltMonthlyRent = ltRentPerSqm * size;
-  const ltAnnualRevenue = ltMonthlyRent * 12;
-  const ltOccupancy = 0.95;
-  const ltEffectiveRevenue = ltAnnualRevenue * ltOccupancy;
-
-  const ltLevy = size * 45 * 12;
-  const ltRates = totalPrice * 0.005;
-  const ltInsurance = totalPrice * 0.002;
-  const ltMaintenance = ltEffectiveRevenue * 0.05;
-  const ltTotalExpenses = ltLevy + ltRates + ltInsurance + ltMaintenance;
-
-  const ltNetIncome = ltEffectiveRevenue - ltTotalExpenses;
-  const ltGrossYield = (ltAnnualRevenue / totalPrice) * 100;
-  const ltNetYield = (ltNetIncome / totalPrice) * 100;
-
-  document.getElementById('bp-lt-rent').textContent = formatPrice(ltMonthlyRent) + '/mo';
-  document.getElementById('bp-lt-rent').dataset.tooltip = `${ltRentPerSqm} R/m² × ${size}m² = ${formatPrice(ltMonthlyRent)}/month`;
-
-  document.getElementById('bp-lt-annual').textContent = formatPrice(ltAnnualRevenue);
-  document.getElementById('bp-lt-annual').dataset.tooltip = `${formatPrice(ltMonthlyRent)} × 12 months × 95% occ.\n= ${formatPrice(ltEffectiveRevenue)} effective`;
-
-  document.getElementById('bp-lt-levy').textContent = formatPrice(ltLevy);
-  document.getElementById('bp-lt-levy').dataset.tooltip = `Body Corporate: R45/m² × ${size}m² × 12\n= ${formatPrice(ltLevy)}/year`;
-
-  document.getElementById('bp-lt-rates').textContent = formatPrice(ltRates + ltInsurance);
-  document.getElementById('bp-lt-rates').dataset.tooltip = `Rates: ${formatPrice(totalPrice)} × 0.5% = ${formatPrice(ltRates)}\nInsurance: ${formatPrice(totalPrice)} × 0.2% = ${formatPrice(ltInsurance)}`;
-
-  document.getElementById('bp-lt-maintenance').textContent = formatPrice(ltMaintenance);
-  document.getElementById('bp-lt-maintenance').dataset.tooltip = `5% of effective revenue\n${formatPrice(ltEffectiveRevenue)} × 5% = ${formatPrice(ltMaintenance)}`;
-
-  document.getElementById('bp-lt-net').textContent = formatPrice(ltNetIncome);
-  document.getElementById('bp-lt-net').dataset.tooltip = `${formatPrice(ltEffectiveRevenue)} revenue\n- ${formatPrice(ltTotalExpenses)} expenses\n= ${formatPrice(ltNetIncome)} net annual`;
-
-  document.getElementById('bp-lt-net-yield').textContent = ltNetYield.toFixed(1) + '%';
-  document.getElementById('bp-lt-net-yield').dataset.tooltip = `Net Yield = Net Income / Purchase Price\n${formatPrice(ltNetIncome)} / ${formatPrice(totalPrice)}\n= ${ltNetYield.toFixed(2)}%`;
-
-  // ============ AIRBNB ============
-  const abNightlyRate = rental.airbnb.nightlyRate;
-  const abOccupancy = rental.airbnb.occupancy / 100;
-  const abNightsPerYear = 365 * abOccupancy;
-  const abGrossRevenue = abNightlyRate * abNightsPerYear;
-
-  const abFees = abGrossRevenue * 0.15;
-  const abTurnovers = abNightsPerYear / 3;
-  const abCleaning = abTurnovers * 400;
-  const abUtilities = size * 80 * 12;
-  const abManagement = (abGrossRevenue - abFees) * 0.20;
-  const abTotalExpenses = abFees + abCleaning + abUtilities + abManagement + ltLevy + ltRates + ltInsurance;
-
-  const abNetIncome = abGrossRevenue - abTotalExpenses;
-  const abGrossYield = (abGrossRevenue / totalPrice) * 100;
-  const abNetYield = (abNetIncome / totalPrice) * 100;
-
-  document.getElementById('bp-ab-nightly').textContent = formatPrice(abNightlyRate);
-  document.getElementById('bp-ab-nightly').dataset.tooltip = `Market rate for this area`;
-
-  document.getElementById('bp-ab-annual').textContent = formatPrice(abGrossRevenue);
-  document.getElementById('bp-ab-annual').dataset.tooltip = `${formatPrice(abNightlyRate)}/night × 365 days × ${(abOccupancy*100).toFixed(0)}% occ.\n= ${Math.round(abNightsPerYear)} nights/year\n= ${formatPrice(abGrossRevenue)} gross`;
-
-  document.getElementById('bp-ab-occupancy').textContent = rental.airbnb.occupancy;
-  document.getElementById('bp-ab-occupancy-header').textContent = rental.airbnb.occupancy + '% occ.';
-
-  document.getElementById('bp-ab-fees').textContent = formatPrice(abFees);
-  document.getElementById('bp-ab-fees').dataset.tooltip = `Airbnb platform fee: 15%\n${formatPrice(abGrossRevenue)} × 15% = ${formatPrice(abFees)}`;
-
-  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning + abUtilities);
-  document.getElementById('bp-ab-cleaning').dataset.tooltip = `Cleaning: R400 × ${Math.round(abTurnovers)} turnovers = ${formatPrice(abCleaning)}\nUtilities: R80/m² × ${size}m² × 12 = ${formatPrice(abUtilities)}`;
-
-  document.getElementById('bp-ab-management').textContent = formatPrice(abManagement);
-  document.getElementById('bp-ab-management').dataset.tooltip = `20% of net (after platform fees)\n(${formatPrice(abGrossRevenue)} - ${formatPrice(abFees)}) × 20%\n= ${formatPrice(abManagement)}`;
-
-  document.getElementById('bp-ab-net').textContent = formatPrice(abNetIncome);
-  document.getElementById('bp-ab-net').dataset.tooltip = `${formatPrice(abGrossRevenue)} gross revenue\n- ${formatPrice(abTotalExpenses)} total expenses\n= ${formatPrice(abNetIncome)} net annual`;
-
-  document.getElementById('bp-ab-net-yield').textContent = abNetYield.toFixed(1) + '%';
-  document.getElementById('bp-ab-net-yield').dataset.tooltip = `Net Yield = Net Income / Purchase Price\n${formatPrice(abNetIncome)} / ${formatPrice(totalPrice)}\n= ${abNetYield.toFixed(2)}%`;
-
-  // ============ RECOMMENDATION ============
-  const recommendation = generateRecommendation(ltNetYield, abNetYield, abOccupancy, data.zone);
-  document.getElementById('bp-recommendation').innerHTML = recommendation;
-
-  // ============ 10-YEAR PROJECTION ============
-  calculateProjection(totalPrice, ltNetIncome, abNetIncome, size);
-
-  // ============ TAXES ============
-  calculateTaxes(totalPrice, ltAnnualRevenue, abGrossRevenue);
+  _renderBPModal(listing.price, listing.size, currentNeighborhood);
 }
 
 let currentListing = null;
+
+// JS tooltip - uses position:fixed to escape overflow:hidden containers
+(function() {
+  const tip = document.createElement('div');
+  tip.id = 'js-tooltip';
+  tip.style.cssText = 'position:fixed;background:#1a1a1a;color:white;padding:8px 12px;font-size:11px;line-height:1.6;white-space:pre-line;max-width:320px;z-index:9999;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.3);pointer-events:none;display:none';
+  document.body.appendChild(tip);
+
+  document.addEventListener('mouseover', function(e) {
+    const el = e.target.closest('[data-tooltip]');
+    if (!el) return;
+    tip.textContent = el.dataset.tooltip;
+    tip.style.display = 'block';
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (tip.style.display === 'none') return;
+    let x = e.clientX + 14, y = e.clientY - 44;
+    const r = tip.getBoundingClientRect();
+    if (x + r.width > window.innerWidth - 8) x = e.clientX - r.width - 14;
+    if (y < 8) y = e.clientY + 14;
+    tip.style.left = x + 'px';
+    tip.style.top = y + 'px';
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    if (!e.relatedTarget || !e.relatedTarget.closest('[data-tooltip]')) {
+      tip.style.display = 'none';
+    }
+  });
+})();
 
 // Load listings on init
 document.addEventListener('DOMContentLoaded', function() {

@@ -14,8 +14,8 @@
   --text-muted: #999;
 
   /* Strategy colors */
-  --lt-color: #6366F1;  /* Long-Term: Indigo */
-  --ab-color: #F97316;  /* Airbnb: Orange */
+  --lt-color: #5B7FA6;  /* Long-Term: Steel blue */
+  --ab-color: #C4834A;  /* Airbnb: Copper */
 
   /* UI colors */
   --ui-primary: #475569;    /* Slate - buttons, tabs, navigation */
@@ -70,6 +70,12 @@
   border-top-color: #1a1a1a;
   margin-bottom: -6px;
   z-index: 101;
+}
+
+/* Tooltips inside BP modal: disabled (JS tooltip used instead to escape overflow:hidden) */
+.bp-modal [data-tooltip]:hover::after,
+.bp-modal [data-tooltip]:hover::before {
+  display: none;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -418,16 +424,18 @@ body {
 }
 
 .listing-favorite-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: #F59E0B;
-  color: white;
-  font-size: 9px;
+  display: inline-block;
+  background: rgba(245, 158, 11, 0.1);
+  color: #B45309;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 4px 10px;
+  letter-spacing: 0.6px;
+  padding: 1px 5px;
   text-transform: uppercase;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  vertical-align: middle;
+  margin-left: 5px;
+  position: static;
 }
 
 .listing-header {
@@ -793,14 +801,14 @@ body {
 .bp-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto 1fr auto auto;
+  grid-template-rows: auto auto auto auto auto 1fr auto auto;
   flex: 1;
   overflow: hidden;
 }
 
 .bp-header {
   grid-column: 1 / -1;
-  padding: 8px 16px;
+  padding: 8px 52px 8px 16px;
   border-bottom: 2px solid var(--text);
   display: flex;
   justify-content: space-between;
@@ -927,7 +935,7 @@ body {
 }
 
 .bp-metrics {
-  flex: 1;
+  flex: 0 0 auto;
   padding: 6px 12px;
   overflow-y: auto;
 }
@@ -992,8 +1000,10 @@ body {
   padding: 8px 16px;
   display: grid;
   grid-template-columns: 1fr 280px;
+  grid-template-rows: auto 1fr;
   gap: 12px;
   border-bottom: 1px solid var(--border);
+  overflow: hidden;
 }
 
 .bp-projection h3 {
@@ -1010,7 +1020,8 @@ body {
   background: #fafafa;
   border: 1px solid var(--border);
   padding: 8px;
-  height: 180px;
+  height: 100%;
+  min-height: 160px;
 }
 
 .bp-projection-right {
@@ -1082,6 +1093,22 @@ body {
   font-weight: 700;
   color: white;
 }
+
+.bp-cta-btn {
+  display: block;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #1a1a1a;
+  color: white;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.3px;
+  border: 1px solid #444;
+  transition: background 0.15s;
+}
+.bp-cta-btn:hover { background: #333; }
 
 /* Taxes row */
 .bp-taxes {
