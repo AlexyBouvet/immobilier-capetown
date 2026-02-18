@@ -470,8 +470,9 @@ function _renderBPModal(totalPrice, size, data) {
   const abTurnovers = abNightsPerYear / 3; // Assume 3-night average stay
   const abCleaning = abTurnovers * 400; // R400 per turnover
   const abUtilities = size * 80 * 12; // R80/m²/month for utilities & supplies
+  const abMaintenance = abGrossRevenue * 0.07; // 7% of revenue (higher wear than LT)
   const abManagement = (abGrossRevenue - abFees) * 0.20; // 20% of net for management
-  const abTotalExpenses = abFees + abCleaning + abUtilities + abManagement + ltLevy + ltRates + ltInsurance;
+  const abTotalExpenses = abFees + abCleaning + abUtilities + abMaintenance + abManagement + ltLevy + ltRates + ltInsurance;
 
   const abNetIncomePreTax = abGrossRevenue - abTotalExpenses - annualMortgage;
   const abIncomeTax = Math.max(0, abNetIncomePreTax * 0.25);
@@ -491,8 +492,8 @@ function _renderBPModal(totalPrice, size, data) {
   document.getElementById('bp-ab-fees').textContent = formatPrice(abFees);
   document.getElementById('bp-ab-fees').dataset.tooltip = `Airbnb platform fee: 15%\n${formatPrice(abGrossRevenue)} × 15% = ${formatPrice(abFees)}`;
 
-  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning + abUtilities);
-  document.getElementById('bp-ab-cleaning').dataset.tooltip = `Cleaning: R400 × ${Math.round(abTurnovers)} turnovers = ${formatPrice(abCleaning)}\nUtilities: R80/m² × ${size}m² × 12 = ${formatPrice(abUtilities)}`;
+  document.getElementById('bp-ab-cleaning').textContent = formatPrice(abCleaning + abUtilities + abMaintenance);
+  document.getElementById('bp-ab-cleaning').dataset.tooltip = `Cleaning: R400 × ${Math.round(abTurnovers)} turnovers = ${formatPrice(abCleaning)}\nUtilities: R80/m² × ${size}m² × 12 = ${formatPrice(abUtilities)}\nMaintenance: 7% revenue = ${formatPrice(abMaintenance)}`;
 
   document.getElementById('bp-ab-management').textContent = formatPrice(abManagement);
   document.getElementById('bp-ab-management').dataset.tooltip = `20% of net (after platform fees)\n(${formatPrice(abGrossRevenue)} - ${formatPrice(abFees)}) × 20%\n= ${formatPrice(abManagement)}`;
@@ -1078,8 +1079,9 @@ function calculateRankings() {
       const abTurnovers = (365 * abOccupancy) / 3;
       const abCleaning = abTurnovers * 400;
       const abUtilities = size * 80 * 12;
+      const abMaintenance = abGross * 0.07;
       const abManagement = (abGross - abFees) * 0.20;
-      const abNet = abGross - abFees - abCleaning - abUtilities - abManagement - ltLevy - ltRates - ltInsurance;
+      const abNet = abGross - abFees - abCleaning - abUtilities - abMaintenance - abManagement - ltLevy - ltRates - ltInsurance;
       const abNetYield = (abNet / totalPrice) * 100;
 
       if (purchaseType === 'resale') {
@@ -1189,8 +1191,9 @@ function calculateListingYields(listing, neighborhood) {
   const abTurnovers = abNightsPerYear / 3;
   const abCleaning = abTurnovers * 400;
   const abUtilities = size * 80 * 12;
+  const abMaintenance = abGrossRevenue * 0.07; // 7% of revenue (higher wear than LT)
   const abManagement = (abGrossRevenue - abFees) * 0.20;
-  const abTotalExpenses = abFees + abCleaning + abUtilities + abManagement + ltLevy + ltRates + ltInsurance;
+  const abTotalExpenses = abFees + abCleaning + abUtilities + abMaintenance + abManagement + ltLevy + ltRates + ltInsurance;
 
   const abNetIncomePreTax = abGrossRevenue - abTotalExpenses;
   const abIncomeTax = Math.max(0, abNetIncomePreTax * 0.25);
