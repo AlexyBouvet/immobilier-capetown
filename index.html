@@ -33,34 +33,17 @@
           <div class="legend-item"><span class="color-box" style="background:#8E44AD"></span><span>140k+</span></div>
         </div>
       </div>
-      <p class="map-instructions">Click a zone to analyze</p>
+      <p class="map-instructions">Click a zone to filter listings</p>
     </aside>
 
     <!-- RIGHT: Content Area -->
     <main class="content-area">
       <!-- TABS -->
       <nav class="main-tabs">
-        <button class="main-tab active" onclick="showTab('zone')">Zone Info</button>
-        <button class="main-tab" onclick="showTab('rankings')">Zone Rankings</button>
-        <button class="main-tab" onclick="showTab('all-listings')">All Listings</button>
+        <button class="main-tab active" onclick="showTab('all-listings')">All Listings</button>
         <button class="main-tab" onclick="showTab('top-picks')">Top Picks</button>
+        <button class="main-tab" onclick="showTab('rankings')">Zone Rankings</button>
       </nav>
-
-      <!-- TAB: Selected Zone -->
-      <section id="tab-zone" class="tab-content active">
-        <div class="zone-header">
-          <h2 id="zone-title">Select a zone</h2>
-          <div id="zone-badges" class="zone-badges"></div>
-        </div>
-
-        <div id="zone-stats" class="zone-stats">
-          <p class="zone-instruction">Click on a neighborhood in the map to see price data, rental yields, and available listings.</p>
-        </div>
-
-        <div id="zone-price-info" class="zone-price-grid"></div>
-
-        <div id="zone-listings" class="listings-grid"></div>
-      </section>
 
       <!-- TAB: Rankings -->
       <section id="tab-rankings" class="tab-content">
@@ -97,7 +80,7 @@
       </section>
 
       <!-- TAB: All Listings -->
-      <section id="tab-all-listings" class="tab-content">
+      <section id="tab-all-listings" class="tab-content active">
         <div class="section-header">
           <div>
             <h2>All Listings</h2>

@@ -109,10 +109,7 @@ function highlightFeature(e) {
 
   layer.bringToFront();
 
-  // Only update info panel on hover if nothing is selected
-  if (!selectedLayer) {
-    updateInfoPanel(layer.feature.properties);
-  }
+  // (no panel update on hover - zone info tab removed)
 }
 
 // Reset highlight when mouse leaves
@@ -120,9 +117,7 @@ function resetHighlight(e) {
   if (selectedLayer !== e.target) {
     geojsonLayer.resetStyle(e.target);
   }
-  if (!selectedLayer) {
-    resetInfoPanel();
-  }
+  // (no panel reset on hover - zone info tab removed)
 }
 
 // Select feature on click
@@ -143,7 +138,18 @@ function selectFeature(e) {
   });
 
   layer.bringToFront();
-  updateInfoPanel(layer.feature.properties);
+
+  // Switch to All Listings tab and filter by clicked zone
+  const zoneId = layer.feature.properties.id;
+  const zoneSelect = document.getElementById('filter-zone');
+  const hasOption = Array.from(zoneSelect.options).some(opt => opt.value === zoneId);
+  zoneSelect.value = hasOption ? zoneId : 'all';
+
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.main-tab[onclick="showTab(\'all-listings\')"]').classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-all-listings').classList.add('active');
+  populateAllListings();
 }
 
 // Event handlers for each feature
@@ -232,7 +238,8 @@ function closeSelection() {
   if (selectedLayer) {
     geojsonLayer.resetStyle(selectedLayer);
     selectedLayer = null;
-    resetInfoPanel();
+    document.getElementById('filter-zone').value = 'all';
+    filterListings();
   }
 }
 
@@ -1132,6 +1139,7 @@ async function loadListings() {
     const data = await response.json();
     listingsData = data.listings;
     searchUrls = data.searchUrls || {};
+    populateAllListings();
   } catch (error) {
     console.error('Error loading listings:', error);
   }
