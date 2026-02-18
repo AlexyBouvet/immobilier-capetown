@@ -1177,56 +1177,6 @@ body {
 
 .bp-section-divider { display: none; }
 
-/* Topics tab */
-.topics-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  padding: 16px 0;
-}
-
-.topic-card {
-  border: 1px solid var(--border);
-  padding: 16px;
-  background: white;
-}
-
-.topic-icon {
-  font-size: 20px;
-  margin-bottom: 8px;
-}
-
-.topic-card h3 {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid var(--text);
-}
-
-.topic-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.topic-card ul li {
-  font-size: 12px;
-  color: var(--text-secondary);
-  padding: 4px 0;
-  border-bottom: 1px solid #f0f0f0;
-  line-height: 1.5;
-}
-
-.topic-card ul li:last-child { border-bottom: none; }
-
-.topic-card ul li strong { color: var(--text); }
-
-@media (max-width: 900px) {
-  .topics-grid { grid-template-columns: 1fr 1fr; }
-}
 
 /* Hidden elements for JS compatibility */
 .bp-projection-inputs { display: none; }

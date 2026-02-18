@@ -948,6 +948,44 @@ function showTab(tabName) {
   if (tabName === 'all-listings') {
     populateAllListings();
   }
+
+  // Populate top picks when switching to that tab
+  if (tabName === 'top-picks') {
+    populateTopPicks();
+  }
+}
+
+function populateTopPicks() {
+  const container = document.getElementById('top-picks-grid');
+  if (!container || !listingsData || listingsData.length === 0) return;
+
+  // Start with manually curated favorites
+  let picks = listingsData.filter(l => l.favorite);
+
+  // If fewer than 4 favorites, fill up with best yields
+  if (picks.length < 4) {
+    const favoriteIds = new Set(picks.map(l => l.id));
+    const rest = listingsData
+      .filter(l => !favoriteIds.has(l.id))
+      .sort((a, b) => {
+        const yA = calculateListingYields(a, priceData[a.neighborhood]);
+        const yB = calculateListingYields(b, priceData[b.neighborhood]);
+        return (yB ? yB.bestYield : -999) - (yA ? yA.bestYield : -999);
+      });
+    picks = [...picks, ...rest.slice(0, 6 - picks.length)];
+  }
+
+  // Sort picks by best yield descending
+  picks.sort((a, b) => {
+    const yA = calculateListingYields(a, priceData[a.neighborhood]);
+    const yB = calculateListingYields(b, priceData[b.neighborhood]);
+    return (yB ? yB.bestYield : -999) - (yA ? yA.bestYield : -999);
+  });
+
+  container.innerHTML = picks.map(listing => {
+    const neighborhood = priceData[listing.neighborhood];
+    return createListingCard(listing, neighborhood);
+  }).join('');
 }
 
 function populateAllListings() {
