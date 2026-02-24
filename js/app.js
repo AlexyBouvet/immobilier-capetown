@@ -1238,6 +1238,28 @@ function calculateListingYields(listing, neighborhood) {
 function createListingCard(listing, neighborhood) {
   const pricePerSqm = Math.round(listing.price / listing.size);
 
+  // Position in neighborhood price range (min-max R/m²)
+  let sqmRangeHtml = '';
+  if (neighborhood && neighborhood.purchase && neighborhood.purchase.resale) {
+    const minSqm = neighborhood.purchase.resale.min;
+    const maxSqm = neighborhood.purchase.resale.max;
+    const range = maxSqm - minSqm;
+    const position = range > 0 ? Math.round(((pricePerSqm - minSqm) / range) * 100) : 50;
+    const clampedPos = Math.max(0, Math.min(100, position));
+    const posClass = clampedPos <= 33 ? 'range-low' : clampedPos <= 66 ? 'range-mid' : 'range-high';
+    const posLabel = clampedPos <= 20 ? 'Tres bas' : clampedPos <= 40 ? 'Bas' : clampedPos <= 60 ? 'Milieu' : clampedPos <= 80 ? 'Haut' : 'Tres haut';
+    const overRange = position > 100 ? ` (+${position - 100}%)` : position < 0 ? ` (sous)` : '';
+    sqmRangeHtml = `
+      <div class="listing-sqm-range">
+        <div class="sqm-range-bar">
+          <div class="sqm-range-fill ${posClass}" style="width: ${clampedPos}%"></div>
+          <div class="sqm-range-marker ${posClass}" style="left: ${clampedPos}%"></div>
+        </div>
+        <span class="sqm-range-label ${posClass}">${posLabel}${overRange}</span>
+        <span class="sqm-range-bounds">R${(minSqm/1000).toFixed(0)}k - R${(maxSqm/1000).toFixed(0)}k</span>
+      </div>`;
+  }
+
   // Favorite badge (inline with title)
   const favoriteBadge = listing.favorite ? `<span class="listing-favorite-badge">TOP PICK</span>` : '';
 
@@ -1277,7 +1299,10 @@ function createListingCard(listing, neighborhood) {
         <div class="listing-price">${formatPrice(listing.price)}</div>
       </div>
       <div class="listing-title">${listing.title}${favoriteBadge}</div>
-      <div class="listing-sqm">R${(pricePerSqm / 1000).toFixed(0)}k/m²</div>
+      <div class="listing-sqm-row">
+        <span class="listing-sqm">R${(pricePerSqm / 1000).toFixed(0)}k/m²</span>
+      </div>
+      ${sqmRangeHtml}
       ${yieldHtml}
       <div class="listing-actions">
         <button class="btn-simulate" onclick="openListingBP('${listing.id}')">Simulate →</button>

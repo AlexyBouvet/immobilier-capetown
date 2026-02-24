@@ -472,10 +472,64 @@ body {
   line-height: 1.3;
 }
 
+.listing-sqm-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
 .listing-sqm {
   font-size: 11px;
   color: var(--text-muted);
+}
+
+/* Price range bar */
+.listing-sqm-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 12px;
+}
+.sqm-range-bar {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  min-width: 60px;
+}
+.sqm-range-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+.sqm-range-marker {
+  position: absolute;
+  top: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: translateX(-5px);
+  border: 2px solid white;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+.sqm-range-fill.range-low { background: #22c55e; }
+.sqm-range-fill.range-mid { background: #f59e0b; }
+.sqm-range-fill.range-high { background: #ef4444; }
+.sqm-range-marker.range-low { background: #16a34a; }
+.sqm-range-marker.range-mid { background: #d97706; }
+.sqm-range-marker.range-high { background: #dc2626; }
+.sqm-range-label {
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sqm-range-label.range-low { color: #15803d; }
+.sqm-range-label.range-mid { color: #92400e; }
+.sqm-range-label.range-high { color: #991b1b; }
+.sqm-range-bounds {
+  font-size: 9px;
+  color: var(--text-muted);
+  white-space: nowrap;
 }
 
 /* Yield indicators - compact horizontal bar */
@@ -871,13 +925,59 @@ body {
   grid-column: 1 / -1;
   display: flex;
   gap: 24px;
-  padding: 0 16px;
-  height: 24px;
+  padding: 0 12px 0 16px;
+  height: 28px;
   background: #f5f5f5;
   border-bottom: 1px solid var(--border);
   justify-content: center;
   align-items: center;
 }
+
+/* Recompute button */
+.bp-recompute-btn {
+  margin-left: auto;
+  padding: 4px 12px;
+  background: var(--ui-primary);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.bp-recompute-btn:hover { background: var(--ui-hover); }
+
+/* Inline parameter inputs inside column metrics */
+.bp-inline-param {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 9px;
+  color: #999;
+  margin-left: 3px;
+}
+.bp-inline-input {
+  width: 30px;
+  padding: 1px 3px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  color: #555;
+  font-size: 9px;
+  font-weight: 600;
+  text-align: right;
+  -moz-appearance: textfield;
+}
+.bp-inline-input:focus {
+  border-color: var(--ui-primary);
+  outline: none;
+  color: #222;
+}
+.bp-inline-input::-webkit-outer-spin-button,
+.bp-inline-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 .bp-summary-item {
   display: flex;
