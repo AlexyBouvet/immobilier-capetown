@@ -804,13 +804,21 @@ Pas un nouvel impôt, mais une **reclassification** : les propriétés utilisée
 
 ---
 
-## Sources de Listings - Multi-portails (2026-02-24)
+## Sources de Listings - Multi-portails (2026-02-25)
 
 ### Categorie: Marche
 
-- **Remax (remaxliving.co.za) ajoute comme source** : 24 listings disponibles ajoutes, principalement CBD (18), Woodstock (4), Observatory (1), Green Point (1), Table View (1). URLs individuelles testables et fiables.
-- **Total listings passe de 87 a 111** (87 Private Property + 24 Remax)
+- **Remax (remaxliving.co.za) ajoute comme source** : 72 listings Remax ajoutes (toutes gammes de prix, sans plafond)
+- **Total listings : 159** (87 Private Property + 72 Remax), 179 URLs validees (listings + search URLs)
+- **Quartiers premium couverts** : Sea Point (15), De Waterkant (10), Green Point (8), Vredehoek (8), Gardens (8), Mouille Point (4), Three Anchor Bay (3)
 - **Seeff, Pam Golding, Rawson** : testes mais URLs individuelles inaccessibles (403/404/SPA JavaScript). Non integres pour respecter la validation automatique.
 - **Property24** reste bloque (anti-bot 503)
-- **Constat CBD Remax** : forte concentration d'annonces Airbnb-friendly dans le City Centre via Remax (Icon Building, Cartwrights Corner, St Martini Gardens, Harbour Arch). Prix : R1.35M-R3M. A croiser avec les donnees de rendement.
-- **Woodstock Remax** : 4 studios ~R1.5M, 41-42m2 avec parking - potentiel Airbnb similaire aux listings Private Property existants.
+- **Constat CBD Remax** : forte concentration d'annonces Airbnb-friendly dans le City Centre via Remax (Icon Building, Cartwrights Corner, St Martini Gardens, Harbour Arch)
+- **Constat Atlantic Seaboard** : Sea Point R3.3M-R12.6M, Mouille Point R3.6M-R14.8M - utile pour comparer les yields premium vs quartiers abordables
+
+### Categorie: Outil
+
+- **Barre de fourchette prix/m2** ajoutee sur chaque carte listing : position visuelle dans la fourchette min-max du quartier (vert=bas, orange=milieu, rouge=haut). Plus utile que la mediane pour negocier avec les vendeurs.
+- **Filtres corriges** : dropdown zone avec les 20 quartiers groupes par zone, filtres prix jusqu'a R15M, filtre Studio ajoute
+- **Clic carte corrige** : clic quartier filtre les listings, clic fond de carte deselectionne
+- **Cache Vercel** : desactive sur tous les fichiers (max-age=0) pour eviter les donnees perimees
