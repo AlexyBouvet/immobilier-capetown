@@ -1247,8 +1247,8 @@ function createListingCard(listing, neighborhood) {
     const position = range > 0 ? Math.round(((pricePerSqm - minSqm) / range) * 100) : 50;
     const clampedPos = Math.max(0, Math.min(100, position));
     const posClass = clampedPos <= 33 ? 'range-low' : clampedPos <= 66 ? 'range-mid' : 'range-high';
-    const posLabel = clampedPos <= 20 ? 'Tres bas' : clampedPos <= 40 ? 'Bas' : clampedPos <= 60 ? 'Milieu' : clampedPos <= 80 ? 'Haut' : 'Tres haut';
-    const overRange = position > 100 ? ` (+${position - 100}%)` : position < 0 ? ` (sous)` : '';
+    const posLabel = clampedPos <= 20 ? 'Very low' : clampedPos <= 40 ? 'Low' : clampedPos <= 60 ? 'Mid' : clampedPos <= 80 ? 'High' : 'Very high';
+    const overRange = position > 100 ? ` (+${position - 100}%)` : position < 0 ? ` (below)` : '';
     sqmRangeHtml = `
       <div class="listing-sqm-range">
         <div class="sqm-range-bar">
