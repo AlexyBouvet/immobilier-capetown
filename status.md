@@ -1,6 +1,6 @@
 # Cape Town Investment - Achat Immobilier
 
-> Derniere mise a jour : 2026-02-17
+> Derniere mise a jour : 2026-02-24
 
 ---
 
@@ -52,6 +52,64 @@ Etude de marche pour l'achat d'un appartement a Cape Town en vue d'un investisse
 ---
 
 ## Journal des apprentissages
+
+### 2026-02-18 - Municipal Rates Commercial + Analyse Montclaire
+
+**Categorie: Fiscalite / Reglementation**
+
+**Municipal rates (taxe fonciere SA) - deux taux:**
+- **Residential**: ~0.6% de la valeur du bien/an → R7,392/an sur R2.5M (R616/mois)
+- **Commercial**: ~1.3-1.5% de la valeur du bien/an → ~R33,000-37,000/an sur R2.5M
+- Impact reclassification: **+R25,000-30,000/an** de charges supplementaires
+- La ville de Cape Town (fev 2026) force la reclassification commercial pour tout STR "principalement commercial"
+- "STR permitted" dans une annonce = autorise par le body corporate, MAIS ne garantit PAS le maintien du taux residentiel
+- **A verifier avant achat**: taux actuel (residential vs commercial) deja applique
+
+**Donnees reelles Montclaire 603 Sea Point (confirme Private Property, jan 2026):**
+- Prix: R2,495,000 pour 33m² (R75,600/m²) - top floor
+- Body corporate (levies): R2,500/mois = R30,000/an (vs defaut R45/m²/mo = R17,820 pour 33m²)
+- Rates actuelles (residentiel): R616/mois = R7,392/an
+- Vues Signal Hill + Lion's Head, 24h security, concierge, STR explicitement autorise
+
+**Benchmark Airbnb Sea Point (confirme fev 2026 = peak season):**
+- Comparable Montclaire: ~$98/nuit = **R1,790/nuit** en fevrier (peak)
+- Off-peak (mai-oct): estimation R800-1,000/nuit
+- Annual blended (67% occ): ~R345,000 gross/an
+- yield NOI apres charges: ~7% brut, ~5.2% net apres tax
+
+**Analyse yield 15% sur Montclaire:**
+- Impossible au prix de marche (R2,495,000) avec nightly rates reelles
+- Pour 15% net il faudrait R3,200+/nuit en moyenne annuelle (hors de portee pour studio 33m²)
+- Conclusion: Sea Point = buy pour plus-value, pas pour yield court terme
+
+**Corrections parametres BP (2026-02-18):**
+- Maintenance: corriger de 7% a 3% (standard hotellerie, pas hospitality agressif)
+- Body Corporate defaut: peut etre jusqu'a R75/m²/mo pour immeubles securises Sea Point
+- Management: 20% reste raisonnable pour conciergerie professionnelle SA
+
+---
+
+### 2026-02-18 - Analyse Yield 15% par Quartier
+
+**Categorie: Marche / Analyse**
+
+Calcul du nightly rate minimum pour atteindre 15% yield NOI brut.
+Parametres: 35m², resale median, maintenance 3%, management 20%, platform 15%, body corp R45/m²/mo, commercial rates 0.7% purchase.
+
+| Quartier | Prix achat (35m²) | Nightly needed | Market rate | Ecart | Faisable |
+|----------|------------------|----------------|-------------|-------|----------|
+| **Big Bay** | R1,330,000 | R1,772 | R1,800 | +R28 | ✓ OUI |
+| **Muizenberg** (min) | R630,000 | R1,009 | R1,200 | +R191 | ✓ OUI |
+| **Bloubergstrand** (min) | R840,000 | R1,241 | R1,400 | +R159 | ✓ OUI |
+| Muizenberg (median) | R840,000 | R1,291 | R1,200 | -R91 | ~proche |
+| Bloubergstrand (median) | R1,120,000 | R1,603 | R1,400 | -R203 | ~proche |
+| Milnerton (min) | R630,000 | R1,121 | R1,100 | -R21 | ~tres proche |
+| Sea Point | R2,380,000 | R3,056 | R1,800 | -R1,256 | ✗ NON |
+| Woodstock | R1,120,000 | R1,603 | R950 | -R653 | ✗ NON |
+
+**Conclusion:** Pour 15% yield, cibler Big Bay (median OK) ou Muizenberg/Bloubergstrand en negociant sous le median. Les zones Atlantic Seaboard premium sont hors cible sur le yield - interesse uniquement pour plus-value.
+
+---
 
 ### 2026-02-17 - Redesign UI Professionnel + ROE Indicator
 
@@ -617,8 +675,142 @@ Chaque valeur calculee affiche maintenant sa formule au survol:
 
 ---
 
+### 2026-02-23 - Contact Agent Theresa : Montclaire 603 Sea Point
+
+**Categorie: Contact / Listing**
+
+**Listing**: Montclaire 603, 4 Frere Road, Sea Point (T5363815) - R2,495,000
+**Agent**: Theresa - +27 82 783 5300 (Business Account WhatsApp)
+
+**Historique (mercredi 19 fév) :**
+- Alexy a contacté Theresa via WhatsApp sur le listing Private Property
+- Theresa : offre déjà acceptée, acheteur en train de faire son bond
+- Alexy s'est positionné cash buyer (pas de bond, close rapide et propre)
+- Theresa : "will keep you posted", doit d'abord faire les COC's, puis arrangerait une visite
+- Alexy a demandé un timeline estimé, pas de réponse visible
+
+**Statut**: En attente - premier acheteur sur bond, Alexy en backup cash
+- [ ] Follow-up Theresa : demander où ils en sont sur le bond et les COC's
+
+---
+
 ## Notes
 
 - Pour donnees Airbnb plus precises par quartier: souscrire AirDNA (~$20/mois)
 - Contacter property managers locaux pour taux reels
 - Scraper calendriers Airbnb pour verifier disponibilites
+
+---
+
+### 2026-02-20 - Contact Property Manager : Magnetic Property (Jayson Sprawson)
+
+**Categorie: Contact**
+
+Contact recu via **Dheena** par WhatsApp.
+
+- **Nom**: Jayson Sprawson — CEO & Founder
+- **Entreprise**: Magnetic Property (anciennement Magnetic B&B)
+- **Site**: magneticproperty.co.za
+- **WhatsApp / Tel**: +27 74 315 0466
+- **Email**: jayson@magneticproperty.co.za
+- **Adresse**: Cardiff Street, De Waterkant, Cape Town
+- **Instagram**: @magneticbnb_capetown
+
+**Ce qu'ils font :**
+- Gestion complète Airbnb (150+ listings actifs, 5 000+ reviews, note 4.84★)
+- Conseil en investissement immobilier (sourcing, acquisition, transfer)
+- Ameublement & design intérieur (fournitures complètes)
+- Ménage, maintenance, communication guests
+- Pricing dynamique (intégration Airbnb + Booking.com)
+- Expériences pour guests (winelands tours, navettes aéroport, vélo)
+- Enregistrés PPRA (Property Practitioners Regulatory Authority)
+- +40% de croissance du portefeuille sur les 12 derniers mois
+
+**Statut**: ✅ Message WhatsApp envoyé le 2026-02-20
+
+**Next steps**:
+- [x] Attendre réponse Jayson - répondu : dispo mardi après-midi
+- [x] Caler RDV : **lundi 23 fév à 14h** - bureaux Cardiff Street, De Waterkant
+- [ ] Questions à préparer pour le RDV :
+  - Commission % et services inclus dans la gestion
+  - Son ressenti sur la Short-Term Letting By-Law et comment ses clients s'y préparent
+  - Zones qu'il recommande pour acheter en ce moment
+  - Délais et process pour onboarder un nouvel appart
+
+---
+
+### 2026-02-20 - Réglementation Airbnb Cape Town (Short-Term Letting By-law)
+
+**Categorie: Réglementation / Fiscalite — CRITIQUE**
+
+**Nom officiel**: *Short-Term Letting By-Law* (aussi appelé "Commercial Rates By-Law STR")
+
+#### Ce que c'est
+Pas un nouvel impôt, mais une **reclassification** : les propriétés utilisées principalement en STR passeront des taux municipaux *résidentiels* aux taux *commerciaux*.
+
+**Seuil de reclassification (40% rule)** : Si plus de 40% de la surface du bien est utilisée ou disponible pour de la location transactionnelle (short-term), le bien est considéré "commercial".
+
+#### Statut actuel (fév 2026)
+- **DRAFT — pas encore adopté**
+- En finalisation interne au sein du City Council
+- Participation publique pas encore ouverte (attendue Q2/Q3 2026)
+- Aucune date d'entrée en vigueur annoncée
+- Mayor Geordin Hill-Lewis a confirmé publiquement le 5 fév 2026
+
+#### Impact financier estimé
+| Élément | Avant (résidentiel) | Après (commercial) |
+|---------|--------------------|--------------------|
+| Rates annuelles sur R2.5M | ~R18,000/an | ~R50,000/an |
+| Hausse | — | **+R32,000/an (+178%)** |
+| Impact sur net yield | — | **-1.5 à -2.5 pts de %** |
+
+#### Probabilité d'adoption
+**~70-80%** — volonté politique claire, déjà dans la Rates Policy 2025/26, pression sur l'immobilier locatif. Possibles modifications après participation publique.
+
+#### Timeline réaliste
+- Q2/Q3 2026 : participation publique
+- Fin 2026 / 2027 : entrée en vigueur probable
+- Délai de grâce possible pour les opérateurs existants
+
+#### Workarounds analysés
+1. **Location 31+ jours** : ne fonctionne pas → c'est le *taux de rotation global* qui détermine la classification, pas la durée d'un séjour individuel
+2. **Long-term rental** : seule vraie exemption — si on loue 6-12 mois à un même locataire, on reste résidentiel. Mais ça tue le modèle Airbnb
+3. **Absorber la hausse** : viable si yield reste > 5% net — nécessite de monter les nightly rates de 5-8%
+4. **Vendre avant** : option si la hausse rend l'investissement non rentable
+5. **Attendre les détails finals** : les règles exactes de la "primary use determination" ne sont pas encore publiées
+
+#### Impact sur nos BP
+- Scénario pessimiste : +R32k/an de charges → net yield passe de ~6% à ~4.5% sur R2.5M
+- Scénario optimiste (modifications post-participation) : hausse limitée, opérateurs professionnels épargnés
+- **À intégrer dans le BP calculator** : toggle "réglementation Airbnb" pour simuler les deux cas
+
+#### Sources
+- Bloomberg (5 fév 2026) : annonce Mayor Hill-Lewis
+- City of Cape Town clarification (9 fév 2026) : "pas un nouvel impôt"
+- Getaway.co.za, IOL, STBB, Houst, Airbnb Rules SA (Hostaway)
+- Rates Policy 2025/26 — City of Cape Town (officiel)
+
+---
+
+## TO REVIEW / CORRECTIONS BP (2026-02-18)
+
+### Hypotheses a revoir
+
+- **Marge sur le menage** : verifier si le cleaning fee charge au guest couvre (ou depasse) le cout reel du menage → potentiellement une source de revenu supplementaire, pas juste un cout
+- **Maintenance 7%** : trop eleve. En hotellerie, le standard est **2% a 3%** du revenu. Revoir a la baisse.
+- **Conciergerie/Management** : fourchette reelle = **20% a 30%** du revenu (notre 20% est dans le bas de la fourchette, ok mais a noter)
+- **"Net Annual"** → renommer en **"Net Operating Income (NOI)"** : terminologie standard en immobilier commercial
+- **Short-term rental Cape Town** : verifier la fiscalite specifique → les locations courte duree sont potentiellement taxees comme les hotels (taxes touristiques, municipal levies). A investiguer avant tout investissement.
+
+---
+
+## Sources de Listings - Multi-portails (2026-02-24)
+
+### Categorie: Marche
+
+- **Remax (remaxliving.co.za) ajoute comme source** : 24 listings disponibles ajoutes, principalement CBD (18), Woodstock (4), Observatory (1), Green Point (1), Table View (1). URLs individuelles testables et fiables.
+- **Total listings passe de 87 a 111** (87 Private Property + 24 Remax)
+- **Seeff, Pam Golding, Rawson** : testes mais URLs individuelles inaccessibles (403/404/SPA JavaScript). Non integres pour respecter la validation automatique.
+- **Property24** reste bloque (anti-bot 503)
+- **Constat CBD Remax** : forte concentration d'annonces Airbnb-friendly dans le City Centre via Remax (Icon Building, Cartwrights Corner, St Martini Gardens, Harbour Arch). Prix : R1.35M-R3M. A croiser avec les donnees de rendement.
+- **Woodstock Remax** : 4 studios ~R1.5M, 41-42m2 avec parking - potentiel Airbnb similaire aux listings Private Property existants.

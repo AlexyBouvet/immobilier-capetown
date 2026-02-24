@@ -93,9 +93,38 @@
             <label>Zone</label>
             <select id="filter-zone" onchange="filterListings()">
               <option value="all">All Zones</option>
-              <option value="table_view">Table View</option>
-              <option value="milnerton">Milnerton</option>
-              <option value="big_bay">Big Bay</option>
+              <optgroup label="West Coast">
+                <option value="table_view">Table View</option>
+                <option value="milnerton">Milnerton</option>
+                <option value="big_bay">Big Bay</option>
+                <option value="bloubergstrand">Bloubergstrand</option>
+              </optgroup>
+              <optgroup label="Atlantic Seaboard">
+                <option value="sea_point">Sea Point</option>
+                <option value="green_point">Green Point</option>
+                <option value="mouille_point">Mouille Point</option>
+                <option value="three_anchor_bay">Three Anchor Bay</option>
+              </optgroup>
+              <optgroup label="City Bowl">
+                <option value="de_waterkant">De Waterkant</option>
+                <option value="bo_kaap">Bo-Kaap</option>
+                <option value="cape_town_city_centre">City Centre</option>
+                <option value="zonnebloem">Zonnebloem</option>
+              </optgroup>
+              <optgroup label="City Bowl Upper">
+                <option value="gardens">Gardens</option>
+                <option value="tamboerskloof">Tamboerskloof</option>
+                <option value="vredehoek">Vredehoek</option>
+              </optgroup>
+              <optgroup label="Eastern">
+                <option value="woodstock">Woodstock</option>
+                <option value="observatory">Observatory</option>
+                <option value="salt_river">Salt River</option>
+              </optgroup>
+              <optgroup label="Southern Suburbs">
+                <option value="claremont">Claremont</option>
+                <option value="rondebosch">Rondebosch</option>
+              </optgroup>
             </select>
           </div>
           <div class="filter-group">
@@ -106,12 +135,15 @@
               <option value="1250000">Under R1.25M</option>
               <option value="1500000">Under R1.5M</option>
               <option value="2000000">Under R2M</option>
+              <option value="2500000">Under R2.5M</option>
+              <option value="3000000">Under R3M</option>
             </select>
           </div>
           <div class="filter-group">
             <label>Bedrooms</label>
             <select id="filter-beds" onchange="filterListings()">
               <option value="all">Any</option>
+              <option value="0">Studio</option>
               <option value="1">1 Bed</option>
               <option value="2">2 Bed</option>
             </select>
@@ -178,6 +210,10 @@
             <label for="bp-rate">Interest Rate %</label>
             <input type="number" id="bp-rate" value="11" min="5" max="20" step="0.5">
           </div>
+          <div class="bp-input-group">
+            <label for="bp-price-override">R/m² override</label>
+            <input type="number" id="bp-price-override" placeholder="auto" min="5000" max="300000" step="500">
+          </div>
         </div>
 
         <div class="bp-summary">
@@ -193,6 +229,7 @@
             <span class="bp-summary-label">Price/m²</span>
             <span id="bp-price-sqm" class="bp-summary-value">-</span>
           </div>
+          <button class="bp-recompute-btn" onclick="recomputeBP()">↻ Recompute BP</button>
         </div>
 
         <div class="bp-comparison">
@@ -200,15 +237,15 @@
             <div class="bp-column-header"><h3>Long-Term</h3></div>
             <div class="bp-metrics">
               <div class="bp-metric">
-                <span class="bp-metric-label">Monthly Rent</span>
+                <span class="bp-metric-label">Rent/m²/mo <span class="bp-inline-param">R<input type="number" id="bp-lt-rent-input" class="bp-inline-input" style="width:42px" min="50" max="1000" step="10"></span></span>
                 <span id="bp-lt-rent" class="bp-metric-value">-</span>
               </div>
               <div class="bp-metric">
-                <span class="bp-metric-label">Annual Revenue</span>
+                <span class="bp-metric-label">Annual Revenue <span class="bp-inline-param"><input type="number" id="bp-lt-occupancy" class="bp-inline-input" min="50" max="100" step="1">% occ.</span></span>
                 <span id="bp-lt-annual" class="bp-metric-value">-</span>
               </div>
               <div class="bp-metric bp-metric-sub">
-                <span class="bp-metric-label">Body Corporate</span>
+                <span class="bp-metric-label">Body Corporate <span class="bp-inline-param">R<input type="number" id="bp-lt-levy-rate" class="bp-inline-input" style="width:34px" min="10" max="200" step="5">/m²</span></span>
                 <span id="bp-lt-levy" class="bp-metric-value expense">-</span>
               </div>
               <div class="bp-metric bp-metric-sub">
@@ -216,7 +253,7 @@
                 <span id="bp-lt-rates" class="bp-metric-value expense">-</span>
               </div>
               <div class="bp-metric bp-metric-sub">
-                <span class="bp-metric-label">Maintenance</span>
+                <span class="bp-metric-label">Maintenance <span class="bp-inline-param"><input type="number" id="bp-lt-maintenance-rate" class="bp-inline-input" min="0" max="20" step="0.5">%</span></span>
                 <span id="bp-lt-maintenance" class="bp-metric-value expense">-</span>
               </div>
               <div class="bp-metric bp-metric-sub" id="bp-lt-mortgage-row" style="display:none">
@@ -228,7 +265,7 @@
                 <span id="bp-lt-tax" class="bp-metric-value expense">-</span>
               </div>
               <div class="bp-metric bp-metric-highlight">
-                <span class="bp-metric-label">Net Annual</span>
+                <span class="bp-metric-label">Net Operating Income</span>
                 <span id="bp-lt-net" class="bp-metric-value">-</span>
               </div>
               <div class="bp-metric">
@@ -242,23 +279,23 @@
             <div class="bp-column-header"><h3>Airbnb <span id="bp-ab-occupancy-header" class="bp-occupancy-badge">55% occ.</span></h3></div>
             <div class="bp-metrics">
               <div class="bp-metric">
-                <span class="bp-metric-label">Nightly Rate</span>
+                <span class="bp-metric-label">Nightly Rate <span class="bp-inline-param">R<input type="number" id="bp-ab-nightly-input" class="bp-inline-input" style="width:50px" min="100" max="20000" step="50">/night</span></span>
                 <span id="bp-ab-nightly" class="bp-metric-value">-</span>
               </div>
               <div class="bp-metric">
-                <span class="bp-metric-label">Annual Revenue (<span id="bp-ab-occupancy">-</span>%)</span>
+                <span class="bp-metric-label">Annual Revenue <span class="bp-inline-param"><input type="number" id="bp-ab-occupancy-input" class="bp-inline-input" min="10" max="100" step="1">% occ.</span></span>
                 <span id="bp-ab-annual" class="bp-metric-value">-</span>
               </div>
               <div class="bp-metric bp-metric-sub">
-                <span class="bp-metric-label">Platform Fees</span>
+                <span class="bp-metric-label">Platform Fees <span class="bp-inline-param"><input type="number" id="bp-ab-fees-rate" class="bp-inline-input" min="0" max="30" step="0.5">%</span></span>
                 <span id="bp-ab-fees" class="bp-metric-value expense">-</span>
               </div>
               <div class="bp-metric bp-metric-sub">
-                <span class="bp-metric-label">Cleaning, Utils & Maint.</span>
+                <span class="bp-metric-label">Cleaning, Utils & Maint. <span class="bp-inline-param"><input type="number" id="bp-ab-maintenance-rate" class="bp-inline-input" min="0" max="20" step="0.5">% maint.</span></span>
                 <span id="bp-ab-cleaning" class="bp-metric-value expense">-</span>
               </div>
               <div class="bp-metric bp-metric-sub">
-                <span class="bp-metric-label">Management 20%</span>
+                <span class="bp-metric-label">Management <span class="bp-inline-param"><input type="number" id="bp-ab-mgmt-rate" class="bp-inline-input" min="0" max="40" step="1">%</span></span>
                 <span id="bp-ab-management" class="bp-metric-value expense">-</span>
               </div>
               <div class="bp-metric bp-metric-sub" id="bp-ab-mortgage-row" style="display:none">
@@ -270,7 +307,7 @@
                 <span id="bp-ab-tax" class="bp-metric-value expense">-</span>
               </div>
               <div class="bp-metric bp-metric-highlight">
-                <span class="bp-metric-label">Net Annual</span>
+                <span class="bp-metric-label">Net Operating Income</span>
                 <span id="bp-ab-net" class="bp-metric-value">-</span>
               </div>
               <div class="bp-metric">

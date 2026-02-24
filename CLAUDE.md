@@ -21,7 +21,8 @@ A chaque fois que nous apprenons quelque chose de nouveau sur ce projet (prix, r
 Avant d'ajouter un nouveau listing dans `data/listings.json`:
 1. **Toujours tester l'URL** avec WebFetch pour verifier qu'elle fonctionne (status 200)
 2. **Ne jamais utiliser Property24** - leur protection anti-bot bloque les tests automatises
-3. **Utiliser uniquement Private Property** pour les listings
+3. **Utiliser Private Property ou Remax** (remaxliving.co.za) pour les listings - les deux passent la validation automatique
+4. **Ne pas utiliser Seeff, Pam Golding, Rawson** - leurs URLs individuelles ne sont pas accessibles (403/404/SPA)
 
 Pour valider tous les liens existants:
 ```bash
